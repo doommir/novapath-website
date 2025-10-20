@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LIGHT MODE - Purple/Violet Dark Theme */
+/* LIGHT MODE - Purple/Violet Dark Theme with Teal Accent */
 :root {
   --button-outline: rgba(255,255,255, .15);
   --badge-outline: rgba(255,255,255, .08);
@@ -14,17 +14,17 @@
   --elevate-1: rgba(255,255,255, .05);
   --elevate-2: rgba(255,255,255, .10);
 
-  --background: 260 40% 8%;
+  --background: 240 30% 8%;
 
   --foreground: 270 20% 95%;
 
   --border: 260 30% 20%;
 
-  --card: 260 35% 12%;
+  --card: 240 25% 12%;
 
   --card-foreground: 270 20% 95%;
 
-  --card-border: 260 30% 18%;
+  --card-border: 260 25% 18%;
 
   --sidebar: 260 35% 14%;
 
@@ -48,9 +48,9 @@
 
   --popover-border: 260 30% 24%;
 
-  --primary: 270 70% 60%;
+  --primary: 262 90% 66%;
 
-  --primary-foreground: 270 70% 98%;
+  --primary-foreground: 262 90% 98%;
 
   --secondary: 260 30% 22%;
 
@@ -60,18 +60,18 @@
 
   --muted-foreground: 260 20% 65%;
 
-  --accent: 260 35% 20%;
+  --accent: 188 94% 43%;
 
-  --accent-foreground: 270 20% 90%;
+  --accent-foreground: 188 94% 98%;
 
   --destructive: 0 70% 55%;
 
   --destructive-foreground: 0 70% 98%;
 
   --input: 260 25% 30%;
-  --ring: 270 70% 60%;
-  --chart-1: 270 70% 60%;
-  --chart-2: 280 65% 65%;
+  --ring: 262 90% 66%;
+  --chart-1: 262 90% 66%;
+  --chart-2: 271 91% 65%;
   --chart-3: 145 65% 50%;
   --chart-4: 35 80% 55%;
   --chart-5: 320 60% 65%;
@@ -132,17 +132,17 @@
   --elevate-1: rgba(255,255,255, .05);
   --elevate-2: rgba(255,255,255, .10);
 
-  --background: 260 40% 8%;
+  --background: 240 30% 8%;
 
   --foreground: 270 20% 95%;
 
   --border: 260 30% 20%;
 
-  --card: 260 35% 12%;
+  --card: 240 25% 12%;
 
   --card-foreground: 270 20% 95%;
 
-  --card-border: 260 30% 18%;
+  --card-border: 260 25% 18%;
 
   --sidebar: 260 35% 14%;
 
@@ -166,9 +166,9 @@
 
   --popover-border: 260 30% 24%;
 
-  --primary: 270 70% 60%;
+  --primary: 262 90% 66%;
 
-  --primary-foreground: 270 70% 98%;
+  --primary-foreground: 262 90% 98%;
 
   --secondary: 260 30% 22%;
 
@@ -178,18 +178,18 @@
 
   --muted-foreground: 260 20% 65%;
 
-  --accent: 260 35% 20%;
+  --accent: 188 94% 43%;
 
-  --accent-foreground: 270 20% 90%;
+  --accent-foreground: 188 94% 98%;
 
   --destructive: 0 70% 55%;
 
   --destructive-foreground: 0 70% 98%;
 
   --input: 260 25% 30%;
-  --ring: 270 70% 60%;
-  --chart-1: 270 70% 60%;
-  --chart-2: 280 65% 65%;
+  --ring: 262 90% 66%;
+  --chart-1: 262 90% 66%;
+  --chart-2: 271 91% 65%;
   --chart-3: 145 65% 50%;
   --chart-4: 35 80% 55%;
   --chart-5: 320 60% 65%;
@@ -345,5 +345,19 @@
   .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
+  }
+
+  /* Custom animations */
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 6s ease-in-out infinite;
   }
 }

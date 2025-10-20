@@ -1,0 +1,95 @@
+Here’s a ready-to-drop Replit system prompt to update your current landing page code so it looks and feels premium — like a cross between Linear.app, Vercel, and Notion AI, but with a charter-school brain.
+
+Paste this in Replit’s AI prompt editor (or into the “/replit” instruction pane if you’re using the Replit Agent):
+
+⸻
+
+🧠 Prompt for Replit (Landing Page Redesign)
+
+System Prompt / Build Task:
+
+You are updating a production-ready marketing site for NovaPath, a startup that automates K-12 school operations with AI. The current version is visually clean but generic. You will elevate it to a high-end, modern SaaS design with stronger hierarchy, subtle animation, and emotional resonance.
+
+⸻
+
+🎯 Core Goal
+
+Transform the page so it feels alive, intelligent, and trustworthy — AI for schools that actually works — while keeping it fast, accessible, and lightweight.
+
+⸻
+
+🧩 Specific Build Instructions
+
+1. Hero Section
+	•	Add animated gradient background (slow radial pulse, purple → indigo → electric blue).
+	•	Add slight motion to the dashboard mockup (hover float + blur glow).
+	•	Replace headline with:
+
+AI that runs your school — not just "helps" it.
+
+Subtext:
+
+NovaPath automates reports, attendance, and insights so your team can focus on teaching — not toggling tabs.
+
+
+	•	CTA button: full-width on mobile, add glowing border + hover state (pulse glow).
+	•	Add microtext under button: “⚡ Trusted by early charter and district pilots.”
+
+2. Three Steps Section
+	•	Replace copy with:
+	1.	Plug in what you already use.
+NovaPath syncs instantly with Google, Clever, and your SIS/LMS.
+	2.	Let AI handle the boring parts.
+Attendance follow-ups, grading workflows, parent emails — all on autopilot.
+	3.	See what’s working, live.
+Dashboards reveal what’s improving and where to focus next.
+	•	Animate cards on scroll (fade + lift).
+	•	Use accent icons with a gradient accent (teal or cyan pop).
+
+3. Waitlist Section
+	•	Move CTA higher (visible on first screen scroll).
+	•	Add confirmation animation: on submit → fade in “✅ You’re in. Your first automation prompt is on its way.”
+	•	Include role-based dropdown tags: Principal / Coach / IT / Data / Teacher.
+	•	Add soft glow under the form for depth.
+
+4. Add Subtle Motion + Depth Globally
+	•	Use framer-motion or react-spring for small fade/slide reveals.
+	•	Apply glass-morphism cards (slight transparency with background blur).
+	•	Hover interactions on buttons and icons.
+	•	Smooth scroll for anchor links.
+
+5. Typography + Palette
+	•	Font: Inter or Satoshi for clean geometric feel.
+	•	Color system:
+	•	#8B5CF6 (core purple)
+	•	#A855F7 (gradient mid)
+	•	#06B6D4 (teal accent)
+	•	#0F0F1C (background)
+	•	Add contrast to CTA and data visualization mockups (use cyan accent).
+
+6. Meta Polish
+	•	Add small favicon animation (rotating NP symbol).
+	•	Include OG tags and SEO meta description:
+“NovaPath automates K-12 school workflows using AI — from attendance to analytics — no extra headcount required.”
+	•	Lazy-load dashboard image for faster initial load.
+
+⸻
+
+🧠 Implementation Notes
+	•	Framework: Next.js + Tailwind (keep clean utility naming).
+	•	Animations: Framer Motion or CSS keyframes only — no JS heavy libs.
+	•	Maintain responsive behavior for iPad & mobile.
+	•	Re-use your existing purple gradient but introduce accent glow lines behind key sections.
+	•	Keep build under 150 KB JS total for instant TTI.
+
+⸻
+
+🚀 Deliverable
+
+Return a full updated page component (LandingPage.jsx or index.tsx) + tailwind.config.js accent updates.
+Include hover/scroll motion examples inline.
+Ensure code runs without extra installs (use existing dependencies).
+
+⸻
+
+Would you like me to write the exact JSX/Tailwind code that this Replit prompt would produce (the rebuilt hero + three-step + CTA sections)? I can generate the production-ready version next.

@@ -1,56 +1,86 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link2, Zap, BarChart3 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const steps = [
   {
     icon: Link2,
-    title: "Connect your data & tools",
-    description: "Seamlessly integrate with your existing systems—SIS, LMS, and communication platforms.",
+    title: "Plug in what you already use.",
+    description: "NovaPath syncs instantly with Google, Clever, and your SIS/LMS.",
   },
   {
     icon: Zap,
-    title: "Automate routine tasks",
-    description: "Free up time with AI-powered workflows for attendance, grading, and parent communication.",
+    title: "Let AI handle the boring parts.",
+    description: "Attendance follow-ups, grading workflows, parent emails — all on autopilot.",
   },
   {
     icon: BarChart3,
-    title: "Track impact in real time",
-    description: "Get actionable insights through intuitive dashboards that show what's working.",
+    title: "See what's working, live.",
+    description: "Dashboards reveal what's improving and where to focus next.",
   },
 ];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
 
 export default function HowItWorks() {
   return (
     <section className="py-16 md:py-24 bg-background">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-4" data-testid="text-section-label">
             How It Works
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground" data-testid="text-how-it-works-title">
             Three steps to transform your school operations
           </h2>
-        </div>
-        <div className="grid gap-8 md:grid-cols-3">
+        </motion.div>
+        <motion.div 
+          className="grid gap-8 md:grid-cols-3"
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <Card key={index} data-testid={`card-step-${index + 1}`} className="hover-elevate bg-card/50 backdrop-blur-sm">
-                <CardContent className="pt-6">
-                  <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-primary-foreground">
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-foreground" data-testid={`text-step-title-${index + 1}`}>
-                    {step.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed" data-testid={`text-step-description-${index + 1}`}>
-                    {step.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={item}>
+                <Card data-testid={`card-step-${index + 1}`} className="h-full hover-elevate bg-card/50 backdrop-blur-sm border-border/50">
+                  <CardContent className="pt-6">
+                    <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 text-foreground" data-testid={`text-step-title-${index + 1}`}>
+                      {step.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed" data-testid={`text-step-description-${index + 1}`}>
+                      {step.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
