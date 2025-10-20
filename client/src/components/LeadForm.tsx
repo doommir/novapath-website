@@ -74,11 +74,11 @@ export default function LeadForm({ prefillEmail }: LeadFormProps) {
   if (submitted) {
     return (
       <div 
-        className="mx-auto max-w-md rounded-lg bg-chart-3/10 border border-chart-3/20 p-6 text-center"
+        className="mx-auto max-w-md rounded-lg bg-chart-3/10 border border-chart-3/30 p-6 text-center backdrop-blur-sm"
         data-testid="message-success"
       >
         <CheckCircle2 className="h-12 w-12 text-chart-3 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold mb-2">You're on the list!</h3>
+        <h3 className="text-xl font-semibold mb-2 text-foreground">You're on the list!</h3>
         <p className="text-muted-foreground">
           Check your inbox in 60 seconds.
         </p>
@@ -189,7 +189,7 @@ export default function LeadForm({ prefillEmail }: LeadFormProps) {
               <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <p>
                 Something went wrong—try again or email{" "}
-                <a href="mailto:hello@novapath.ai" className="underline">
+                <a href="mailto:hello@novapath.ai" className="underline hover:text-destructive-foreground">
                   hello@novapath.ai
                 </a>
                 .

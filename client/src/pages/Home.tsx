@@ -20,13 +20,13 @@ export default function Home() {
       <Hero onCtaClick={scrollToForm} />
       <HowItWorks />
       
-      <section className="py-16 md:py-24" ref={formRef}>
+      <section className="py-16 md:py-24 bg-background" ref={formRef}>
         <div className="mx-auto max-w-6xl px-6">
           <div className="text-center mb-12">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4" data-testid="text-waitlist-label">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-4" data-testid="text-waitlist-label">
               Get Early Access
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-waitlist-title">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground" data-testid="text-waitlist-title">
               Join the waitlist
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-waitlist-description">

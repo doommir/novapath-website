@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="py-8 border-t">
+    <footer className="py-8 border-t bg-background">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-muted-foreground">
           <a 
@@ -10,7 +10,7 @@ export default function Footer() {
           >
             About
           </a>
-          <span className="hidden md:inline">•</span>
+          <span className="hidden md:inline text-border">•</span>
           <a 
             href="#privacy" 
             className="hover:text-foreground transition-colors"
@@ -18,7 +18,7 @@ export default function Footer() {
           >
             Privacy
           </a>
-          <span className="hidden md:inline">•</span>
+          <span className="hidden md:inline text-border">•</span>
           <a 
             href="#contact" 
             className="hover:text-foreground transition-colors"

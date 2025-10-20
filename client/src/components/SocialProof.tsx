@@ -10,7 +10,7 @@ const logos = [
 
 export default function SocialProof() {
   return (
-    <section className="py-12 md:py-16 bg-muted/50">
+    <section className="py-12 md:py-16 bg-card/30 border-y">
       <div className="mx-auto max-w-6xl px-6">
         <div className="text-center">
           <div className="flex justify-center items-center gap-8 md:gap-12 mb-6 flex-wrap">
@@ -19,10 +19,10 @@ export default function SocialProof() {
               return (
                 <div 
                   key={index} 
-                  className="opacity-40 hover:opacity-60 transition-opacity"
+                  className="opacity-30 hover:opacity-50 transition-opacity"
                   data-testid={`logo-${index + 1}`}
                 >
-                  <Icon className="h-8 w-8 md:h-10 md:w-10 text-foreground" />
+                  <Icon className="h-8 w-8 md:h-10 md:w-10 text-muted-foreground" />
                 </div>
               );
             })}
