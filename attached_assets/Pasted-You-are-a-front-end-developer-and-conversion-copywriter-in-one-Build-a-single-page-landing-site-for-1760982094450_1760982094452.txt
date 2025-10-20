@@ -1,0 +1,45 @@
+You are a front-end developer and conversion copywriter in one.
+Build a single-page landing site for NovaPath (an AI-powered education + ops toolkit for schools).
+
+Goal: capture emails for early access. The email capture must actually work (post to a webhook or Google Sheet).
+
+Functional Requirements
+	1.	Responsive layout (mobile-first, 9:16 preview looks great; scales to desktop).
+	2.	Hero with:
+	•	Headline: “Run AI-First Schools, Without the Chaos.”
+	•	Subheadline: “NovaPath gives K-12 teams automated workflows, data insights, and plug-and-play tools—no extra headcount.”
+	•	Primary CTA button: “Join the Waitlist” (scrolls to form).
+	3.	Lead Form (required)
+	•	Fields: Email (required), Role (dropdown: Teacher, Admin, Coach, IT), School/District (optional)
+	•	POST to a test endpoint you generate (mock server) or to a placeholder like https://example.com/lead (make it easy to swap later).
+	•	Success message inline (“You’re on the list—check your inbox in 60 seconds.”).
+	•	Error state inline (“Something went wrong—try again or email hello@novapath.ai.”).
+	4.	How It Works (3 steps) with icons/emojis:
+	•	Connect your data & tools
+	•	Automate routine tasks
+	•	Track impact in real time
+	5.	Social proof strip: small logos (use tasteful placeholders) + line: “Pilot-ready for charter and district teams.”
+	6.	Privacy footer (About • Privacy • Contact) and a one-line privacy promise near the form: “We never share your email. One click to unsubscribe.”
+
+Design & Copy Guidelines
+	•	Modern SaaS; white background; soft gradient accents (indigo → blue). Rounded buttons. System font or Inter.
+	•	Keep copy conversational and benefit-led.
+	•	Include on-page section labels (small caps) to guide scanning.
+
+Tech / Delivery
+	•	Ship a self-contained project with HTML/CSS/JS.
+	•	Organize code clearly; comment each section.
+	•	Provide a live preview and show the code view.
+	•	Make the webhook/Sheet URL a single constant at the top of the JS for easy swapping.
+
+Demo Instructions (for filming)
+	•	Pre-fill the email field with test+video@novapath.ai for a visible success test.
+	•	After submit, show the success toast/badge and surface the JSON response (if mock).
+	•	Add a tiny line under the CTA: “Get the exact prompt + code by joining the email list.”
+
+Stretch (if time remains, optional):
+	•	Add a simple progress bar on submit.
+	•	Add basic honeypot or required validation to reduce spam.
+	•	Add a ?ref= URL param that stores in a hidden field and passes with the lead.
+
+Context for the build-off: This page will link to an email opt-in so viewers can get the prompt + code (your build should make that CTA visually clear).
