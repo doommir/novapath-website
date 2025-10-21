@@ -16,7 +16,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Return success
       res.json({ success: true, lead });
     } catch (error) {
-      console.error("Error creating lead:", error);
+      console.error("Error creating lead:", error instanceof Error ? error.message : "Unknown error");
       
       // Handle validation errors
       if (error instanceof Error && error.name === "ZodError") {
@@ -29,7 +29,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Handle other errors
       res.status(500).json({ 
         success: false, 
-        error: "Failed to save lead" 
+        error: "Failed to save lead"
       });
     }
   });

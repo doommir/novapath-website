@@ -1,5 +1,7 @@
-import { type User, type InsertUser, type Lead, type InsertLead } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, users, leads } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -52,4 +54,32 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DbStorage implements IStorage {
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return user;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(insertUser).returning();
+    return user;
+  }
+
+  async createLead(insertLead: InsertLead): Promise<Lead> {
+    const [lead] = await db.insert(leads).values({
+      email: insertLead.email,
+      role: insertLead.role,
+      school: insertLead.school ?? null,
+      referrer: insertLead.referrer ?? null,
+    }).returning();
+    return lead;
+  }
+}
+
+// Use database storage for production
+export const storage = new DbStorage();

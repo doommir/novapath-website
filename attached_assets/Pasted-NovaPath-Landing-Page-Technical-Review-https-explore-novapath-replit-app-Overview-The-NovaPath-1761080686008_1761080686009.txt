@@ -1,0 +1,66 @@
+NovaPath Landing Page Technical Review (https://explore‑novapath.replit.app
+)
+Overview
+
+The NovaPath landing page is a single‑page application hosted on Replit that markets an AI‑powered platform for school operations. The page uses a modern dark theme, gradient backgrounds and vector icons. It features a hero section, a feature overview (“three steps”), a waitlist sign‑up form, and a simple footer. Client‑side assets are served via a single JS bundle and CSS file loaded into a root div, suggesting the page is built using a JavaScript framework (likely React or Svelte)
+explore-novapath.replit.app
+.
+
+Page structure and content
+
+Hero section: Presents a headline (“AI that runs your school — not just ‘helps’ it.”) with supporting copy, an embedded dashboard image and a purple call‑to‑action button labelled “Join the Waitlist.”
+
+How It Works: Summarises the product in three cards (plug in existing tools, automate boring parts, see what’s working). Each card includes an icon, a title and a sentence of description.
+
+Waitlist form: Includes fields for email, role (dropdown with values such as Principal, Teacher, Coach, IT and Data) and an optional school/district text box. A purple “Join the Waitlist” button submits the form. A note states that email addresses will not be shared and that unsubscribing is one click.
+
+Footer: Contains a tagline (“Pilot‑ready for charter and district teams”) with icons, followed by small links: About, Privacy and Contact. The copyright displays “© 2025 NovaPath. All rights reserved.”
+
+Navigation and link testing
+
+Clicking the Join the Waitlist button in the hero section scrolls the user to the waitlist form as expected (no page reload). This behaviour indicates in‑page anchor navigation rather than full routing.
+
+The About, Privacy and Contact links change the URL hash to #about, #privacy and #contact respectively, but there are no anchor targets defined in the DOM. The page does not scroll or display any content when these links are clicked (it remains on the waitlist section), so these links effectively do nothing. This is likely an oversight.
+
+There is no top navigation bar or way to return to the hero section except manually scrolling.
+
+Waitlist form functionality
+
+Email field: No client‑side validation appears to run on blur. Entering an invalid email (“test”) leaves the input field with the same styling and does not display an error message. Without submitting, it is unclear whether the form will reject invalid emails server‑side.
+
+Role dropdown: Works correctly. Options display as a list and the selection persists once chosen. The list closes automatically after selection.
+
+School/District text box: Accepts free‑form input as expected. This field is labelled optional.
+
+Submission: Because submitting would store user information, the form was not fully submitted. Based on visible cues, there is no disabled/enabled state change on the “Join the Waitlist” button when the email field is empty or invalid. This suggests the form does not provide user feedback until after a submission attempt.
+
+Technical implementation notes
+
+The HTML source contains a root div and a single module script (/assets/index‑CES1nmL0.js) along with a stylesheet (/assets/index‑QK5Qgvr-.css)
+explore-novapath.replit.app
+. This pattern is typical of a compiled front‑end framework (e.g., React + Vite or SvelteKit) where all components are rendered via JavaScript.
+
+External font resources are preconnected to Google Fonts and the Inter typeface is loaded
+explore-novapath.replit.app
+.
+
+Meta tags include Open Graph and Twitter card data for social sharing, but there is no canonical link tag. The page title and description align with the marketing copy in the hero section
+explore-novapath.replit.app
+.
+
+The design is responsive; elements stack correctly on narrow viewports. Colour contrast between text and background is adequate but some text (e.g., the small note about unsubscribing) could be larger for better readability.
+
+Images have descriptive alt text (e.g., “NovaPath dashboard showing automated workflows and data insights”) as revealed by the parsed content
+explore-novapath.replit.app
+, which aids accessibility.
+
+Identified issues / bugs
+Issue	Description	Impact	Possible fix
+Footer links non‑functional	The About, Privacy and Contact links update the URL hash but do not scroll to any content or open new pages. They likely reference anchors that are missing.	Users cannot access information about the company, privacy policy or contact details. This damages credibility and may violate privacy regulations.	Add corresponding sections to the page or route users to separate pages containing the relevant information. Alternatively, remove the links until content is available.
+No client‑side email validation	The email input accepts invalid strings and does not display any error on blur; the “Join the Waitlist” button remains clickable.	Users may submit malformed email addresses, leading to bounce errors or lost leads.	Implement HTML5 type="email" (if not already) or add client‑side validation with user feedback (red border, error message). Disable the submit button until the email is valid.
+Lack of confirmation for form submission	The page does not show a preview of the data to be submitted or a success/failure message after submission (not tested).	Users have no visibility on whether they have successfully joined the waitlist.	Add a confirmation or toast notification after form submission and handle error states gracefully.
+Missing navigation back to top	There is no “Back to top” link or sticky header; users must manually scroll up.	Minor usability inconvenience, especially on long pages.	Add a small “back to top” button or sticky navigation for easier exploration.
+Inactive About/Privacy/Contact sections	The page includes hashed anchors but no accessible content.	Leaves the site incomplete; may signal neglect to visitors.	Provide minimal placeholder text or remove anchors until ready.
+Overall assessment
+
+NovaPath’s landing page conveys a clear value proposition and uses modern design and responsive layout. The hero CTA effectively scrolls users to a waitlist form. However, several issues undermine the experience: essential footer links do nothing, there is no immediate validation for email input, and there is no feedback on form submission. Technically, the site appears to be built as a single‑page app using a front‑end framework, hosted on Replit. Addressing the missing sections and adding basic form validation would significantly improve usability and trust.
