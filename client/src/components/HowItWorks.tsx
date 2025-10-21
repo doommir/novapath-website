@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link2, Zap, BarChart3 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const steps = [
   {
@@ -20,31 +20,37 @@ const steps = [
   },
 ];
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
-};
-
 export default function HowItWorks() {
+  const reducedMotion = useReducedMotion();
+  
+  const container = {
+    hidden: { opacity: reducedMotion ? 1 : 0 },
+    show: {
+      opacity: 1,
+      transition: reducedMotion ? { duration: 0 } : {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 20 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: reducedMotion ? { duration: 0 } : undefined
+    }
+  };
+  
   return (
     <section className="py-16 md:py-24 bg-background">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div 
           className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.5 }}
         >
           <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-4" data-testid="text-section-label">
             How It Works

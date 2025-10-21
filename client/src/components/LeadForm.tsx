@@ -22,7 +22,7 @@ import {
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const roles = [
   { value: "principal", label: "Principal" },
@@ -39,6 +39,7 @@ interface LeadFormProps {
 export default function LeadForm({ prefillEmail }: LeadFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [referrer, setReferrer] = useState<string>("");
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -78,18 +79,18 @@ export default function LeadForm({ prefillEmail }: LeadFormProps) {
       <motion.div 
         className="mx-auto max-w-md rounded-lg bg-chart-3/10 border border-chart-3/30 p-6 text-center backdrop-blur-sm shadow-lg"
         data-testid="message-success"
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
+        transition={reducedMotion ? { duration: 0 } : { duration: 0.5, type: "spring" }}
       >
         <motion.div
-          initial={{ scale: 0 }}
+          initial={reducedMotion ? { scale: 1 } : { scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          transition={reducedMotion ? { duration: 0 } : { delay: 0.2, type: "spring", stiffness: 200 }}
         >
           <CheckCircle2 className="h-12 w-12 text-chart-3 mx-auto mb-4" />
         </motion.div>
-        <h3 className="text-xl font-semibold mb-2 text-foreground">✅ You're in. Your first automation prompt is on its way.</h3>
+        <h3 className="text-xl font-semibold mb-2 text-foreground">You're in. Your first automation prompt is on its way.</h3>
         <p className="text-muted-foreground">
           Check your inbox in 60 seconds.
         </p>
