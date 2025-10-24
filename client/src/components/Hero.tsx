@@ -11,9 +11,10 @@ export default function Hero({ onCtaClick }: HeroProps) {
   const reducedMotion = useReducedMotion();
   
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[hsl(271,91%,65%)] via-[hsl(262,90%,50%)] to-background">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(262,90%,66%,0.3),transparent_50%)] animate-pulse-slow" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,hsl(188,94%,43%,0.15),transparent_50%)]" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1600px_1200px_at_50%_40%,hsl(188,94%,55%,0.35),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_1000px_at_70%_60%,hsl(300,75%,60%,0.32),transparent_50%)] animate-pulse-slow" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1300px_900px_at_30%_50%,hsl(262,90%,75%,0.28),transparent_50%)]" />
       
       <div className="relative mx-auto max-w-6xl px-6 py-20 md:py-32">
         <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
@@ -31,7 +32,7 @@ export default function Hero({ onCtaClick }: HeroProps) {
             </p>
             <Button 
               size="lg" 
-              className="text-lg px-8 w-full md:w-auto shadow-[0_0_20px_hsl(262,90%,66%,0.3)] hover:shadow-[0_0_30px_hsl(262,90%,66%,0.5)] transition-shadow duration-300" 
+              className="text-lg px-8 w-full md:w-auto shadow-[0_0_40px_-5px_hsl(262,90%,66%,0.4)] hover:shadow-[0_0_60px_-5px_hsl(262,90%,66%,0.6)] transition-shadow duration-300" 
               onClick={onCtaClick}
               data-testid="button-join-waitlist"
             >

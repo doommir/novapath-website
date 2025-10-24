@@ -1,23 +1,30 @@
 # NovaPath Landing Page - Design Guidelines
 
 ## Design Approach
-**Reference-Based Approach**: Drawing inspiration from modern SaaS leaders like Linear (clean typography, subtle animations), Stripe (trust-building design, clear CTAs), and Vercel (gradient accents, minimal aesthetic). This is a conversion-focused landing page requiring clear visual hierarchy and trustworthy design.
+**Sophisticated Dark Aesthetic**: Inspired by cutting-edge tech brands with a premium, minimal approach. Features a near-black background with soft glowing orbs in teal and purple/magenta, creating a sophisticated, immersive experience. This is a conversion-focused landing page requiring clear visual hierarchy and trust-building design.
 
 ## Core Design Elements
 
 ### A. Color Palette
 
 **Primary Colors:**
-- Background: Pure white (#FFFFFF)
-- Gradient Accent: Soft indigo-to-blue gradient (230 60% 65% → 215 70% 60%)
-- Primary CTA: Indigo (230 60% 55%)
-- Text Primary: Near-black (220 15% 15%)
-- Text Secondary: Medium gray (220 10% 45%)
+- Background: Near-black (240 10% 3%) - creates sophisticated, immersive base
+- Primary: Vibrant purple (262 90% 66%) - for CTAs and key elements
+- Accent: Bright teal/cyan (188 94% 43%) - for highlights and accents
+- Text Primary: Pure white (0 0% 98%) - maximum contrast for readability
+- Text Secondary: Light gray (240 5% 70%) - for supporting information
+
+**Glowing Orb Effects:**
+- Teal glow: Soft radial gradients using hsl(188, 94%, 55%) at 35% opacity, 1600x1200px ellipse
+- Magenta glow: Soft radial gradients using hsl(300, 75%, 60%) at 32% opacity, 1400x1000px ellipse (animated pulse)
+- Purple glow: Soft radial gradients using hsl(262, 90%, 75%) at 28% opacity, 1300x900px ellipse
+- Large, diffuse ellipses with 50% gradient stop for concentrated, luminous glow
+- Layered over black-to-background gradient base for enhanced contrast and visibility
 
 **Accent & State Colors:**
-- Success: Green (145 65% 45%)
+- Success: Green (145 65% 50%)
 - Error: Red (0 70% 55%)
-- Border/Divider: Light gray (220 10% 90%)
+- Border/Divider: Subtle dark gray (240 10% 12%)
 
 ### B. Typography
 
@@ -44,12 +51,14 @@
 ### D. Component Library
 
 **Hero Section:**
-- Centered layout with max-w-3xl for text content
-- Gradient background applied to hero area only (indigo → blue, subtle, diagonal)
-- Headline with strong hierarchy
-- Subheadline in secondary text color
-- Primary CTA button (rounded-lg, px-8, py-3) with scroll-to-form behavior
+- Near-black background with multiple soft glowing orbs positioned strategically
+- Three overlapping radial gradients create depth (teal, purple, magenta)
+- Centered layout with max-w-6xl container
+- Pure white headline text with strong hierarchy
+- Light gray subheadline
+- Primary CTA button with purple glow shadow effect
 - Generous vertical spacing (py-20 to py-32)
+- Dashboard image with subtle glow effect on hover
 
 **Lead Capture Form:**
 - Clean input fields with border-2 and focus states (indigo ring)
@@ -61,10 +70,12 @@
 - Honeypot field (visually hidden)
 
 **How It Works:**
-- 3-card layout with icons/emojis at top
-- Step number or icon in circle (indigo background)
+- 3-card layout with minimal glass-morphism effect
+- Icon containers with subtle borders (not gradient backgrounds)
+- Purple-colored icons for visual consistency
+- Semi-transparent card backgrounds with backdrop blur
+- Subtle card borders for depth
 - Short headline and description per card
-- Subtle card borders or light background
 
 **Social Proof Strip:**
 - Light gray background section

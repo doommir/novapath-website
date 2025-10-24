@@ -72,8 +72,8 @@ export default function HowItWorks() {
               <motion.div key={index} variants={item}>
                 <Card data-testid={`card-step-${index + 1}`} className="h-full hover-elevate bg-card/50 backdrop-blur-sm border-border/50">
                   <CardContent className="pt-6">
-                    <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg">
-                      <Icon className="h-6 w-6" />
+                    <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-card border border-border/30">
+                      <Icon className="h-6 w-6 text-primary" />
                     </div>
                     <h3 className="text-xl font-semibold mb-3 text-foreground" data-testid={`text-step-title-${index + 1}`}>
                       {step.title}
