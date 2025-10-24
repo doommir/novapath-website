@@ -90,9 +90,9 @@ export default function LeadForm({ prefillEmail }: LeadFormProps) {
         >
           <CheckCircle2 className="h-12 w-12 text-chart-3 mx-auto mb-4" />
         </motion.div>
-        <h3 className="text-xl font-semibold mb-2 text-foreground">You're in. Your first automation prompt is on its way.</h3>
+        <h3 className="text-xl font-semibold mb-2 text-foreground">You're on the list! Talk soon.</h3>
         <p className="text-muted-foreground">
-          Check your inbox in 60 seconds.
+          We'll reach out when we're ready to launch.
         </p>
       </motion.div>
     );
