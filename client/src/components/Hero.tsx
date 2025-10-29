@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import heroImage from "@assets/generated_images/NovaPath_dashboard_interface_mockup_4885786c.png";
 
 interface HeroProps {
   onCtaClick: () => void;
@@ -52,13 +51,17 @@ export default function Hero({ onCtaClick }: HeroProps) {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
-              <img 
-                src={heroImage} 
-                alt="NovaPath dashboard showing automated workflows and data insights" 
+              <video 
+                src="/demo-video.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="relative rounded-xl shadow-2xl w-full"
-                data-testid="img-hero-dashboard"
-                loading="lazy"
-              />
+                data-testid="video-hero-demo"
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
           </motion.div>
         </div>
