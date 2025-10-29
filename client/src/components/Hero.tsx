@@ -59,6 +59,7 @@ export default function Hero({ onCtaClick }: HeroProps) {
                   controls
                   loop
                   playsInline
+                  preload="metadata"
                   className="relative rounded-xl shadow-2xl w-full"
                   data-testid="video-hero-demo"
                 >
