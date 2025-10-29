@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import heroImage from "@assets/generated_images/NovaPath_dashboard_interface_mockup_4885786c.png";
+import demoVideo from "@assets/202510291134 (1)_1761779868970.mp4";
 
 interface HeroProps {
   onCtaClick: () => void;
@@ -54,7 +55,7 @@ export default function Hero({ onCtaClick }: HeroProps) {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
                 <video 
-                  src="/demo-video.mp4"
+                  src={demoVideo}
                   autoPlay
                   loop
                   muted
