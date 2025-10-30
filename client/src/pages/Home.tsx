@@ -4,9 +4,12 @@ import HowItWorks from "@/components/HowItWorks";
 import SocialProof from "@/components/SocialProof";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
+import { motion, useReducedMotion } from "framer-motion";
+import heroImage from "@assets/generated_images/NovaPath_dashboard_interface_mockup_4885786c.png";
 
 export default function Home() {
   const formRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -19,6 +22,30 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Hero onCtaClick={scrollToForm} />
       <HowItWorks />
+      
+      <section className="py-16 md:py-24 bg-background">
+        <div className="mx-auto max-w-4xl px-6">
+          <motion.div 
+            className="group"
+            initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+            whileHover={reducedMotion ? {} : { y: -8, scale: 1.02 }}
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
+              <img 
+                src={heroImage} 
+                alt="NovaPath dashboard showing automated workflows and data insights" 
+                className="relative rounded-xl shadow-2xl w-full"
+                data-testid="img-hero-dashboard"
+                loading="lazy"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
       
       <section className="py-16 md:py-24 bg-background" ref={formRef}>
         <div className="mx-auto max-w-6xl px-6">

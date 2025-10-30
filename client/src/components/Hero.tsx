@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import heroImage from "@assets/generated_images/NovaPath_dashboard_interface_mockup_4885786c.png";
 import demoVideo from "@assets/202510291134 (1)_1761779868970.mp4";
 
 interface HeroProps {
@@ -44,7 +43,7 @@ export default function Hero({ onCtaClick }: HeroProps) {
               <Zap className="h-3.5 w-3.5 text-accent" /> Trusted by early charter and district pilots.
             </p>
           </motion.div>
-          <div className="order-first md:order-last space-y-8">
+          <div className="order-first md:order-last">
             <motion.div 
               className="group"
               initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
@@ -65,25 +64,6 @@ export default function Hero({ onCtaClick }: HeroProps) {
                 >
                   Your browser does not support the video tag.
                 </video>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="group"
-              initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.4 }}
-              whileHover={reducedMotion ? {} : { y: -8, scale: 1.02 }}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
-                <img 
-                  src={heroImage} 
-                  alt="NovaPath dashboard showing automated workflows and data insights" 
-                  className="relative rounded-xl shadow-2xl w-full"
-                  data-testid="img-hero-dashboard"
-                  loading="lazy"
-                />
               </div>
             </motion.div>
           </div>
