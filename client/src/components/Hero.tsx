@@ -59,7 +59,7 @@ export default function Hero({ onCtaClick }: HeroProps) {
                   loop
                   playsInline
                   preload="metadata"
-                  className="relative rounded-xl shadow-2xl w-full"
+                  className="relative rounded-xl shadow-2xl w-full border-4 border-border"
                   data-testid="video-hero-demo"
                 >
                   Your browser does not support the video tag.
