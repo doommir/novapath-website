@@ -24,26 +24,45 @@ export default function Home() {
       <HowItWorks />
       
       <section className="py-16 md:py-24 bg-background">
-        <div className="mx-auto max-w-4xl px-6">
-          <motion.div 
-            className="group"
-            initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-            whileHover={reducedMotion ? {} : { y: -8, scale: 1.02 }}
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
-              <img 
-                src={heroImage} 
-                alt="NovaPath dashboard showing automated workflows and data insights" 
-                className="relative rounded-xl shadow-2xl w-full"
-                data-testid="img-hero-dashboard"
-                loading="lazy"
-              />
-            </div>
-          </motion.div>
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+            <motion.div
+              initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-4" data-testid="text-dashboard-label">
+                See it in action
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground" data-testid="text-dashboard-title">
+                Your command center for school operations
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed" data-testid="text-dashboard-description">
+                Real-time insights, automated workflows, and actionable data — all in one intuitive dashboard designed for educators.
+              </p>
+            </motion.div>
+            
+            <motion.div 
+              className="group"
+              initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
+              whileHover={reducedMotion ? {} : { y: -8, scale: 1.02 }}
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
+                <img 
+                  src={heroImage} 
+                  alt="NovaPath dashboard showing automated workflows and data insights" 
+                  className="relative rounded-xl shadow-2xl w-full"
+                  data-testid="img-hero-dashboard"
+                  loading="lazy"
+                />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
       
