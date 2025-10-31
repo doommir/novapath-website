@@ -20,7 +20,7 @@ const principles = [
   },
   {
     icon: Globe,
-    title: "Equity & Access",
+    title: "Fairness & Access",
     description: "Multilingual, low-bandwidth modes built in.",
   },
   {
