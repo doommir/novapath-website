@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
+import Principles from "@/components/Principles";
 import SocialProof from "@/components/SocialProof";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
@@ -22,6 +23,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Hero onCtaClick={scrollToForm} />
       <HowItWorks />
+      <Principles />
       
       <section className="py-16 md:py-24 bg-background">
         <div className="mx-auto max-w-6xl px-6">
@@ -33,13 +35,13 @@ export default function Home() {
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
             >
               <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-4" data-testid="text-dashboard-label">
-                See it in action
+                From Human Moments to Measurable Impact
               </p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground" data-testid="text-dashboard-title">
-                Your command center for school operations
+                Automation you can audit. Decisions you can trust.
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed" data-testid="text-dashboard-description">
-                Real-time insights, automated workflows, and actionable data — all in one intuitive dashboard designed for educators.
+                See every workflow, review every decision, and track the impact of your team's human-centered approach — all in one transparent dashboard.
               </p>
             </motion.div>
             
@@ -73,10 +75,10 @@ export default function Home() {
               Get Early Access
             </p>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground" data-testid="text-waitlist-title">
-              Join the waitlist
+              Join the schools shaping Human-Centered AI
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-waitlist-description">
-              Be among the first to experience AI-powered school operations. We'll keep you updated on our progress.
+              Be part of a pilot program building AI that respects educators and empowers students. We'll keep you updated every step of the way.
             </p>
           </div>
           <LeadForm prefillEmail={prefillEmail} />

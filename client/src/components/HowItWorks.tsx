@@ -1,22 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Link2, Zap, BarChart3 } from "lucide-react";
+import { User, Sparkles, UserCheck } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const steps = [
   {
-    icon: Link2,
-    title: "Plug in what you already use.",
-    description: "NovaPath syncs instantly with Google, Clever, and your SIS/LMS.",
+    icon: User,
+    title: "Human Inquiry",
+    description: "A teacher initiates a workflow — attendance, check-in, alert. Every automation begins with a person.",
   },
   {
-    icon: Zap,
-    title: "Let AI handle the boring parts.",
-    description: "Attendance follow-ups, grading workflows, parent emails — all on autopilot.",
+    icon: Sparkles,
+    title: "AI Insight",
+    description: "NovaPath drafts or analyzes, surfacing next steps. The system works in the background, but never decides alone.",
   },
   {
-    icon: BarChart3,
-    title: "See what's working, live.",
-    description: "Dashboards reveal what's improving and where to focus next.",
+    icon: UserCheck,
+    title: "Human Reflection",
+    description: "Staff review, adjust, and approve. No automation is final until a human approves it.",
   },
 ];
 
@@ -56,7 +56,7 @@ export default function HowItWorks() {
             How It Works
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground" data-testid="text-how-it-works-title">
-            Three steps to transform your school operations
+            How Human Moments Become Intelligent Workflows
           </h2>
         </motion.div>
         <motion.div 

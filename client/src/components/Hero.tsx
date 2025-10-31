@@ -25,22 +25,35 @@ export default function Hero({ onCtaClick }: HeroProps) {
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white" data-testid="text-hero-headline">
-              AI that runs your school — not just "helps" it.
+              Human-Centered AI for Schools That Still Believe in Teachers.
             </h1>
             <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
-              NovaPath automates reports, attendance, and insights so your team can focus on teaching — not toggling tabs.
+              Human moments drive NovaPath's automations — turning teacher insights into transparent, ethical workflows that save time without losing trust.
             </p>
-            <Button 
-              size="lg" 
-              className="text-lg px-8 w-full md:w-auto shadow-[0_0_40px_-5px_hsl(262,90%,66%,0.4)] hover:shadow-[0_0_60px_-5px_hsl(262,90%,66%,0.6)] transition-shadow duration-300" 
-              onClick={onCtaClick}
-              data-testid="button-join-waitlist"
-            >
-              Join the Waitlist
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+              <Button 
+                size="lg" 
+                className="text-lg px-8 shadow-[0_0_40px_-5px_hsl(262,90%,66%,0.4)] hover:shadow-[0_0_60px_-5px_hsl(262,90%,66%,0.6)] transition-shadow duration-300" 
+                onClick={onCtaClick}
+                data-testid="button-join-waitlist"
+              >
+                Join the Waitlist
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="text-lg px-8 bg-background/20 backdrop-blur-sm border-border/50 hover:bg-background/30" 
+                onClick={() => {
+                  document.querySelector('[data-testid="text-section-label"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+                data-testid="button-see-how-it-works"
+              >
+                See How It Works
+              </Button>
+            </div>
             <p className="text-sm text-foreground/70 mt-4 flex items-center justify-center md:justify-start gap-1" data-testid="text-pilot-trust">
-              <Zap className="h-3.5 w-3.5 text-accent" /> Trusted by early charter and district pilots.
+              <Zap className="h-3.5 w-3.5 text-accent" /> Built with educators, for educators.
             </p>
           </motion.div>
           <div className="order-first md:order-last">

@@ -1,0 +1,93 @@
+🌐 ExploreNovaPath.com — Human-Centered AI Improvement Plan
+1. Core Philosophy
+
+Theme: Human-Centered AI — where human moments drive automations.
+Goal: Recast NovaPath as the ethical infrastructure layer of school operations — a platform that listens to humans, not replaces them.
+
+Element	Current State	Target Direction
+Brand voice	System-driven (“AI that runs your school”)	Human-first (“AI that supports your school — freeing educators to focus on what matters”)
+Concept	Automation efficiency	Human-in-loop trust + educator empowerment
+Visual mood	Startup tech	Civic-tech calm + educator warmth
+2. Homepage Redesign
+Hero Section
+
+Headline:
+
+“Human-Centered AI for Schools That Still Believe in Teachers.”
+
+Subhead:
+
+Human moments drive NovaPath’s automations — turning teacher insights into transparent, ethical workflows that save time without losing trust.
+
+CTAs:
+
+See How It Works (scrolls to H–AI–H loop)
+
+Join the Pilot (waitlist form)
+
+Visual:
+A looping animation showing:
+Human → AI → Human
+labels: Inquiry → Insight → Reflection
+
+“How It Works” Section
+
+Title: “How Human Moments Become Intelligent Workflows”
+
+Text:
+
+Every NovaPath automation begins with people:
+
+Human Inquiry: A teacher initiates a workflow (attendance, check-in, alert).
+
+AI Insight: NovaPath drafts or analyzes, surfacing next steps.
+
+Human Reflection: Staff review, adjust, and approve.
+
+No automation is final until a human approves.
+
+Visual:
+3-stage horizontal flowchart with icons (teacher → AI → teacher).
+
+“Our Principles” Section
+
+Title: “Built on Human-Centered AI Principles”
+
+Principle	Short Description
+Human Oversight	Every workflow requires educator review and sign-off.
+Privacy by Design	Student data never trains external models; retention <30 days.
+Transparency	Every automation has a traceable log and visible rationale.
+Equity & Access	Multilingual, low-bandwidth modes built in.
+Professional Empowerment	Training and reflection tools built into the interface.
+
+CTA: See Our Responsible AI Statement
+
+“In Action” Section (Optional)
+
+Headline: “From Human Moments to Measurable Impact.”
+Grid of real-world use cases:
+
+Attendance alerts → drafted, teacher-approved.
+
+SEL check-ins → summarized, counselor-reviewed.
+
+Data dashboards → generated, principal-approved.
+
+Closing Section
+
+Tagline:
+
+“Automation you can audit. Decisions you can trust.”
+
+CTA: Join the schools shaping Human-Centered AI.
+
+3. Supporting Pages
+About / Ethos Page
+
+Title: “Why We Build Human-Centered AI.”
+Copy:
+
+We believe every innovation in education should begin with a human moment — the teacher noticing, the counselor checking in, the admin connecting data to care.
+NovaPath’s role: turn those moments into systems that scale without losing the humanity that started them.
+
+Include founder quote or educator testimonial for authenticity.
