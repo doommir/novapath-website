@@ -2,7 +2,7 @@
 
 ## Overview
 
-NovaPath is a single-page landing site for an AI-powered education operations toolkit targeting K-12 schools. The application is a lead generation platform designed to capture email addresses for early access waitlist signups. It features a modern SaaS design with a hero section, feature explanations, social proof elements, and a functional lead capture form. The site is built as a full-stack TypeScript application with React frontend and Express backend, following a mobile-first responsive design approach.
+NovaPath is a single-page landing site for an AI-powered education operations toolkit targeting K-12 schools. The application is a lead generation platform designed to capture email addresses for early access waitlist signups. It features a modern SaaS design with a hero section, interactive demo experience, human-centered AI principles, and a functional lead capture form. The site emphasizes a human-centered approach where "AI supports your school — freeing educators to focus on what matters." The messaging communicates that humans remain in control while AI serves as a supportive tool, built with educators for educators. The site is built as a full-stack TypeScript application with React frontend and Express backend, following a mobile-first responsive design approach.
 
 ## User Preferences
 
@@ -142,4 +142,22 @@ Preferred communication style: Simple, everyday language.
 - Database URL configuration via environment variable (DATABASE_URL)
 - Form submission currently uses in-memory storage but architected for easy migration to PostgreSQL
 - Referral tracking supports `?ref=` URL parameter for marketing attribution
-- Demo mode supports `?demo=true` parameter to prefill test email
+
+## Recent Changes
+
+### November 3, 2025 - Interactive Demo Implementation
+- Created InteractiveDemo component with multi-step workflow experience
+- Replaced static video with interactive demo in "How It Works" section
+- Demo flow: Welcome → Check-In Form → AI Processing → Results Display → Human Review → Complete
+- Features realistic sample data (student observations, attendance logs, peer mapping, counselor alerts)
+- Demonstrates Human → AI → Human loop with smooth animations using framer-motion
+- Includes timeout cleanup on unmount to prevent edge-case state updates
+- All steps tested end-to-end with automated testing
+- Updated Hero section with "See How It Works" secondary CTA button
+- Changed "Equity & Access" to "Fairness & Access" in Principles section
+
+### Design Philosophy
+- Human-centered AI messaging throughout all sections
+- Interactive demo reinforces "AI suggests, humans decide" principle
+- Every automation example shows human oversight and final approval
+- Transparent, ethical workflow design built with educators for educators
