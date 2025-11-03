@@ -212,8 +212,22 @@ export function InteractiveDemo() {
       // Wait to show processing animation
       await new Promise(resolve => setTimeout(resolve, 3000));
       
+      // Step 4: Get results intro
+      const resultsResponse = await fetch('/api/demo/results-intro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkIn: transcript })
+      });
+      
+      if (!resultsResponse.ok) {
+        throw new Error('Failed to get results intro');
+      }
+      
+      const resultsData = await resultsResponse.json();
+      setResultsIntro(resultsData.intro);
+      
       setStep("results");
-      await TTS.speakResults();
+      await TTS.speakResults(resultsData.intro);
     } catch (error) {
       console.error('Error in check-in flow:', error);
       // Fallback to results on error
@@ -222,8 +236,30 @@ export function InteractiveDemo() {
   };
 
   const handleReview = async () => {
-    setStep("review");
-    await TTS.speakReview();
+    try {
+      // Get review message
+      const reviewResponse = await fetch('/api/demo/review-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentName: 'Maya' })
+      });
+      
+      if (!reviewResponse.ok) {
+        throw new Error('Failed to get review message');
+      }
+      
+      const reviewData = await reviewResponse.json();
+      setReviewMessage(reviewData.message);
+      
+      setStep("review");
+      await TTS.speakReview(reviewData.message);
+    } catch (error) {
+      console.error('Error in review flow:', error);
+      // Fallback to review screen with default message
+      setReviewMessage("Your teacher will review this before anything happens.");
+      setStep("review");
+      await TTS.speakReview("Your teacher will review this before anything happens.");
+    }
   };
 
   const handleApprove = () => {
