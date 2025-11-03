@@ -89,8 +89,12 @@ export const TTS = (() => {
     await say(humanize(`${greeting} ${prompt}`), { rate: 0.92, pitch: 0.93 });
   }
 
-  async function speakProcessing() {
-    await say(humanize("Thanks. Let me look at what you said."), { rate: 0.93, pitch: 0.93 });
+  async function speakValidation(validationText: string) {
+    await say(humanize(validationText), { rate: 0.91, pitch: 0.92 });
+  }
+  
+  async function speakPeerPrompt(promptText: string) {
+    await say(humanize(promptText), { rate: 0.92, pitch: 0.93 });
   }
 
   async function speakResults() {
@@ -113,7 +117,8 @@ export const TTS = (() => {
     say, 
     humanize, 
     speakGreeting, 
-    speakProcessing, 
+    speakValidation,
+    speakPeerPrompt,
     speakResults, 
     speakReview,
     stop 

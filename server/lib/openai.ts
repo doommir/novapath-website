@@ -2,10 +2,23 @@
 // Charges are billed to your credits.
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY
-});
+// Lazy initialization - only create client if credentials are available
+let openai: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI | null {
+  if (openai) return openai;
+  
+  const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
+  const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
+  
+  if (!baseURL || !apiKey) {
+    console.warn("OpenAI integration not configured. Using fallback responses.");
+    return null;
+  }
+  
+  openai = new OpenAI({ baseURL, apiKey });
+  return openai;
+}
 
 export interface PeerPrompt {
   peerName: string;
@@ -23,8 +36,19 @@ export async function generatePeerPrompts(
   studentCheckIn: string,
   peerNames: string[]
 ): Promise<PeerPrompt[]> {
+  const client = getOpenAIClient();
+  
+  // Fallback if OpenAI not configured
+  if (!client) {
+    return peerNames.map(name => ({
+      peerName: name,
+      prompt: `${name}, Maya mentioned you're working together. How are you feeling about the project?`,
+      emotion: "stressed"
+    }));
+  }
+  
   try {
-    const response = await openai.chat.completions.create({
+    const response = await client.chat.completions.create({
       model: "gpt-5", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
       messages: [
         {
@@ -79,8 +103,15 @@ export async function generateEmotionalValidation(
   studentCheckIn: string,
   studentName: string
 ): Promise<string> {
+  const client = getOpenAIClient();
+  
+  // Fallback if OpenAI not configured
+  if (!client) {
+    return `I hear you're feeling stressed, ${studentName}. That's completely valid when you're working on big projects.`;
+  }
+  
   try {
-    const response = await openai.chat.completions.create({
+    const response = await client.chat.completions.create({
       model: "gpt-5", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
       messages: [
         {

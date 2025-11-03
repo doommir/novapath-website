@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { TTS } from "@/lib/tts";
 
-type DemoStep = "welcome" | "listening" | "processing" | "results" | "review" | "complete";
+type DemoStep = "welcome" | "listening" | "validating" | "facilitating" | "processing" | "results" | "review" | "complete";
 
 const sampleStudentResponse = `I'm feeling kinda stressed about the science fair. Marcus and I are working together but I'm worried we're falling behind. We have so much to do and I don't know if we'll finish in time.`;
 
@@ -60,6 +60,8 @@ export function InteractiveDemo() {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [usedVoice, setUsedVoice] = useState(false);
+  const [validationText, setValidationText] = useState("");
+  const [peerPrompts, setPeerPrompts] = useState<Array<{peerName: string; prompt: string}>>([]);
   const processingTimeoutRef = useRef<number | null>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -147,13 +149,58 @@ export function InteractiveDemo() {
       recognitionRef.current.stop();
     }
     
-    setStep("processing");
-    await TTS.speakProcessing();
+    // Step 1: Validate emotion
+    setStep("validating");
     
-    processingTimeoutRef.current = window.setTimeout(async () => {
+    try {
+      // Call API to get emotional validation
+      const validationResponse = await fetch('/api/demo/validate-emotion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          checkIn: transcript, 
+          studentName: 'Maya' 
+        })
+      });
+      const validationData = await validationResponse.json();
+      setValidationText(validationData.validation);
+      
+      // Speak the validation
+      await TTS.speakValidation(validationData.validation);
+      
+      // Step 2: Facilitate peer support
+      setStep("facilitating");
+      
+      // Call API to get peer prompts
+      const promptsResponse = await fetch('/api/demo/peer-prompts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          checkIn: transcript, 
+          peerNames: ['Marcus', 'Jordan'] 
+        })
+      });
+      const promptsData = await promptsResponse.json();
+      setPeerPrompts(promptsData.prompts || []);
+      
+      // Speak peer prompts
+      for (const prompt of promptsData.prompts || []) {
+        await TTS.speakPeerPrompt(prompt.prompt);
+      }
+      
+      // Step 3: Process workflows
+      setStep("processing");
+      
+      // Wait a bit to show processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       setStep("results");
       await TTS.speakResults();
-    }, 3000);
+    } catch (error) {
+      console.error('Error in check-in flow:', error);
+      // Fallback to results on error
+      setStep("results");
+    }
   };
 
   const handleReview = async () => {
@@ -298,6 +345,73 @@ export function InteractiveDemo() {
                 Submit Check-In
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+            </div>
+          </motion.div>
+        )}
+
+        {step === "validating" && (
+          <motion.div
+            key="validating"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="text-center space-y-8 py-12"
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border border-primary/20"
+            >
+              <Volume2 className="w-10 h-10 text-primary" />
+            </motion.div>
+            <div className="space-y-4">
+              <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-validating-title">
+                AI Validating Your Emotion
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto italic" data-testid="text-validation">
+                "{validationText || 'I hear you\'re feeling stressed, Maya. That\'s completely valid when you\'re working on big projects.'}"
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {step === "facilitating" && (
+          <motion.div
+            key="facilitating"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-6"
+          >
+            <div className="space-y-2 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20 mb-4">
+                <Users className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-facilitating-title">
+                AI Facilitating Peer Support
+              </h3>
+              <p className="text-muted-foreground">
+                The AI is prompting your groupmates to share their perspectives
+              </p>
+            </div>
+
+            <div className="grid gap-4 max-w-2xl mx-auto">
+              {peerPrompts.map((prompt, idx) => (
+                <Card key={idx} className="p-6">
+                  <div className="flex items-start gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                      <User className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold mb-2">{prompt.peerName}</h4>
+                      <p className="text-sm italic text-muted-foreground">
+                        "{prompt.prompt}"
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </motion.div>
         )}
