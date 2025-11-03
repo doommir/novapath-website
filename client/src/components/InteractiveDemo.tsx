@@ -3,69 +3,162 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { User, Sparkles, UserCheck, ArrowRight, CheckCircle2, AlertTriangle, Users } from "lucide-react";
+import { 
+  User, 
+  Sparkles, 
+  UserCheck, 
+  ArrowRight, 
+  CheckCircle2, 
+  AlertTriangle, 
+  Users,
+  Mic,
+  MicOff,
+  Volume2,
+  Clock
+} from "lucide-react";
+import { TTS } from "@/lib/tts";
 
-type DemoStep = "welcome" | "checkin" | "processing" | "results" | "review" | "complete";
+type DemoStep = "welcome" | "listening" | "processing" | "results" | "review" | "complete";
 
-// Sample data for the demo
-const sampleObservations = `Morning Check-In - Ms. Rodriguez's Class
-
-- Emma Chen: Seemed withdrawn today, didn't engage during morning greeting. Usually very talkative.
-- Marcus Johnson: Excited about science fair, mentioned working with Emma's group
-- Sarah Kim: Asked if Emma was okay, noticed she was quiet
-- Jordan Lee: Normal energy, working on solo project`;
+const sampleStudentResponse = `I'm feeling kinda stressed about the science fair. Marcus and I are working together but I'm worried we're falling behind. We have so much to do and I don't know if we'll finish in time.`;
 
 const aiResults = {
-  attendance: [
-    { name: "Emma Chen", status: "Present", mood: "Withdrawn" },
-    { name: "Marcus Johnson", status: "Present", mood: "Engaged" },
-    { name: "Sarah Kim", status: "Present", mood: "Concerned" },
-    { name: "Jordan Lee", status: "Present", mood: "Normal" }
-  ],
-  peerMapping: {
-    description: "Science fair collaboration detected",
-    connections: [
-      { student: "Emma Chen", connectedTo: ["Marcus Johnson"], context: "Science fair group" },
-      { student: "Marcus Johnson", connectedTo: ["Emma Chen"], context: "Science fair group" },
-      { student: "Sarah Kim", connectedTo: ["Emma Chen"], context: "Showing concern" }
-    ]
+  attendance: {
+    student: "Maya Chen",
+    status: "Present",
+    timestamp: "8:15 AM",
+    mood: "Stressed/Concerned",
+    engagement: "Vocal about concerns"
   },
-  counselorAlerts: [
-    {
-      student: "Emma Chen",
-      priority: "Medium",
-      reason: "Behavioral change: Usually talkative, withdrawn today. Peer noticed and expressed concern.",
-      suggestedAction: "Brief check-in to ensure student is okay"
-    }
-  ]
+  counselorAlert: {
+    student: "Maya Chen",
+    priority: "Medium",
+    category: "Academic Stress",
+    details: "Student expressing project-related stress and time pressure around science fair deadline",
+    suggestedAction: "Brief check-in to assess stress levels and offer time management support",
+    autoApproved: false
+  },
+  peerSupport: {
+    detected: "Collaboration with Marcus on science fair project",
+    concern: "Partnership experiencing deadline pressure",
+    suggestions: [
+      {
+        type: "Partner Check-In",
+        description: "Facilitate conversation between Maya and Marcus to align on timeline and divide tasks"
+      },
+      {
+        type: "Peer Mentorship",
+        description: "Connect Maya with Jordan Lee (completed science fair early) for advice and encouragement"
+      }
+    ],
+    autoApproved: false
+  }
 };
 
 export function InteractiveDemo() {
   const [step, setStep] = useState<DemoStep>("welcome");
-  const [observations, setObservations] = useState(sampleObservations);
+  const [transcript, setTranscript] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [usedVoice, setUsedVoice] = useState(false);
   const processingTimeoutRef = useRef<number | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
+    // Warmup TTS
+    TTS.warmup(() => {
+      console.log("TTS ready");
+    });
+
+    // Setup speech recognition
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event: any) => {
+        let interimTranscript = '';
+        let finalTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        setTranscript((finalTranscript + interimTranscript).trim());
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+
     return () => {
       if (processingTimeoutRef.current) {
         clearTimeout(processingTimeoutRef.current);
       }
+      TTS.stop();
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     };
   }, []);
 
-  const handleStart = () => {
-    setStep("checkin");
+  const handleStart = async () => {
+    setStep("listening");
+    await TTS.speakGreeting("Maya");
   };
 
-  const handleSubmitCheckIn = () => {
+  const startListening = () => {
+    if (recognitionRef.current) {
+      setTranscript("");
+      setIsListening(true);
+      setUsedVoice(true);
+      recognitionRef.current.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  const useSample = () => {
+    setTranscript(sampleStudentResponse);
+    setUsedVoice(false);
+  };
+
+  const handleSubmitCheckIn = async () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+    }
+    
     setStep("processing");
-    processingTimeoutRef.current = window.setTimeout(() => {
+    await TTS.speakProcessing();
+    
+    processingTimeoutRef.current = window.setTimeout(async () => {
       setStep("results");
-    }, 2500);
+      await TTS.speakResults();
+    }, 3000);
   };
 
-  const handleReview = () => {
+  const handleReview = async () => {
     setStep("review");
+    await TTS.speakReview();
   };
 
   const handleApprove = () => {
@@ -74,8 +167,13 @@ export function InteractiveDemo() {
 
   const handleRestart = () => {
     setStep("welcome");
-    setObservations(sampleObservations);
+    setTranscript("");
+    setIsListening(false);
+    setUsedVoice(false);
+    TTS.stop();
   };
+
+  const hasTranscript = transcript.length > 10;
 
   return (
     <div className="w-full max-w-4xl mx-auto" data-testid="container-interactive-demo">
@@ -98,10 +196,10 @@ export function InteractiveDemo() {
                 <User className="w-10 h-10 text-primary" />
               </motion.div>
               <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-welcome-title">
-                Welcome, Principal Rodriguez
+                Experience NovaPath as a Student
               </h3>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-welcome-subtitle">
-                Watch how NovaPath turns a 60-second morning check-in into attendance logs, peer mapping, and counselor alerts — automatically.
+                Click below to start a voice check-in. You'll speak naturally, and see how NovaPath processes your words with complete transparency.
               </p>
             </div>
             <Button 
@@ -110,15 +208,15 @@ export function InteractiveDemo() {
               className="text-lg px-8 shadow-lg"
               data-testid="button-start-checkin"
             >
-              Start Check-In
-              <ArrowRight className="ml-2 h-5 w-5" />
+              Start Voice Check-In
+              <Volume2 className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
         )}
 
-        {step === "checkin" && (
+        {step === "listening" && (
           <motion.div
-            key="checkin"
+            key="listening"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -129,31 +227,76 @@ export function InteractiveDemo() {
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20">
                   <User className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold" data-testid="text-checkin-title">
-                  Morning Observations
+                <h3 className="text-xl md:text-2xl font-bold" data-testid="text-listening-title">
+                  Morning Check-In
                 </h3>
               </div>
-              <p className="text-muted-foreground" data-testid="text-checkin-subtitle">
-                Share your quick observations from this morning. NovaPath will handle the rest.
+              <p className="text-muted-foreground" data-testid="text-listening-subtitle">
+                The AI just asked: "Good morning, Maya. How are you feeling today? What's on your mind?"
               </p>
             </div>
-            <Card className="p-6">
+
+            <Card className="p-6 space-y-4">
+              {!hasTranscript && (
+                <div className="text-center space-y-4">
+                  <p className="text-sm text-muted-foreground">Choose how to respond:</p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button
+                      size="lg"
+                      variant={isListening ? "default" : "outline"}
+                      onClick={isListening ? stopListening : startListening}
+                      disabled={!recognitionRef.current}
+                      data-testid="button-voice-input"
+                    >
+                      {isListening ? <Mic className="mr-2 h-5 w-5 animate-pulse" /> : <MicOff className="mr-2 h-5 w-5" />}
+                      {isListening ? "Listening..." : "Speak Your Response"}
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={useSample}
+                      data-testid="button-use-sample"
+                    >
+                      Use Sample Response
+                    </Button>
+                  </div>
+                  {!recognitionRef.current && (
+                    <p className="text-xs text-muted-foreground">
+                      Voice input not available in this browser. Use sample response or type below.
+                    </p>
+                  )}
+                </div>
+              )}
+
               <Textarea
-                value={observations}
-                onChange={(e) => setObservations(e.target.value)}
-                className="min-h-[200px] text-base"
-                placeholder="Enter your observations..."
-                data-testid="input-observations"
+                value={transcript}
+                onChange={(e) => setTranscript(e.target.value)}
+                className="min-h-[150px] text-base"
+                placeholder="Or type your response here..."
+                data-testid="input-transcript"
               />
+
+              {isListening && (
+                <div className="flex items-center gap-2 text-sm text-primary">
+                  <div className="flex gap-1">
+                    <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                  <span>Listening to your voice...</span>
+                </div>
+              )}
             </Card>
+
             <div className="flex justify-end">
               <Button 
                 size="lg" 
                 onClick={handleSubmitCheckIn}
+                disabled={!hasTranscript}
                 data-testid="button-submit-checkin"
               >
-                Process with AI
-                <Sparkles className="ml-2 h-5 w-5" />
+                Submit Check-In
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </motion.div>
@@ -176,7 +319,7 @@ export function InteractiveDemo() {
             </motion.div>
             <div className="space-y-4">
               <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-processing-title">
-                AI Processing Your Observations
+                AI Processing Your Check-In
               </h3>
               <div className="space-y-2 max-w-md mx-auto">
                 <motion.p
@@ -185,7 +328,7 @@ export function InteractiveDemo() {
                   transition={{ delay: 0.5 }}
                   className="text-muted-foreground"
                 >
-                  ✓ Extracting attendance data...
+                  ✓ Logging attendance automatically...
                 </motion.p>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -193,7 +336,7 @@ export function InteractiveDemo() {
                   transition={{ delay: 1 }}
                   className="text-muted-foreground"
                 >
-                  ✓ Mapping peer relationships...
+                  ✓ Analyzing mood and support needs...
                 </motion.p>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -201,7 +344,7 @@ export function InteractiveDemo() {
                   transition={{ delay: 1.5 }}
                   className="text-muted-foreground"
                 >
-                  ✓ Identifying support opportunities...
+                  ✓ Identifying peer connections...
                 </motion.p>
               </div>
             </div>
@@ -222,75 +365,105 @@ export function InteractiveDemo() {
                   <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold" data-testid="text-results-title">
-                  AI-Generated Insights
+                  What the AI Created
                 </h3>
               </div>
               <p className="text-muted-foreground" data-testid="text-results-subtitle">
-                Review what NovaPath extracted from your 60-second check-in
+                Your check-in triggered three automated workflows. Here's complete transparency on what happens next:
               </p>
             </div>
 
             <div className="grid gap-4">
               {/* Attendance Log */}
-              <Card className="p-6">
-                <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  Attendance Log
-                </h4>
-                <div className="space-y-2">
-                  {aiResults.attendance.map((student, idx) => (
-                    <div key={idx} className="flex items-center justify-between py-2 border-b last:border-0">
-                      <span className="font-medium">{student.name}</span>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm text-muted-foreground">{student.mood}</span>
-                        <span className="text-sm text-green-600">{student.status}</span>
-                      </div>
-                    </div>
-                  ))}
+              <Card className="p-6 border-green-200 dark:border-green-900 bg-green-50/50 dark:bg-green-950/20">
+                <div className="flex items-start justify-between mb-4">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    Attendance Logged
+                  </h4>
+                  <span className="text-xs px-2 py-1 rounded bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                    Auto-Approved
+                  </span>
                 </div>
-              </Card>
-
-              {/* Peer Mapping */}
-              <Card className="p-6">
-                <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-600" />
-                  Peer Mapping
-                </h4>
-                <p className="text-sm text-muted-foreground mb-3">{aiResults.peerMapping.description}</p>
-                <div className="space-y-2">
-                  {aiResults.peerMapping.connections.map((conn, idx) => (
-                    <div key={idx} className="py-2 border-b last:border-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{conn.student}</span>
-                        <ArrowRight className="w-4 h-4 text-muted-foreground" />
-                        <span>{conn.connectedTo.join(", ")}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">{conn.context}</p>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-
-              {/* Counselor Alerts */}
-              <Card className="p-6 border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/20">
-                <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-amber-600" />
-                  Counselor Alert
-                </h4>
-                {aiResults.counselorAlerts.map((alert, idx) => (
-                  <div key={idx} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{alert.student}</span>
-                      <span className="text-sm px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
-                        {alert.priority} Priority
-                      </span>
-                    </div>
-                    <p className="text-sm">{alert.reason}</p>
-                    <p className="text-sm text-muted-foreground italic">
-                      Suggested: {alert.suggestedAction}
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Student:</span>
+                    <p className="font-medium">{aiResults.attendance.student}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Status:</span>
+                    <p className="font-medium text-green-600">{aiResults.attendance.status}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Time:</span>
+                    <p className="font-medium flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {aiResults.attendance.timestamp}
                     </p>
                   </div>
-                ))}
+                  <div>
+                    <span className="text-muted-foreground">Mood:</span>
+                    <p className="font-medium">{aiResults.attendance.mood}</p>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Counselor Alert */}
+              <Card className="p-6 border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/20">
+                <div className="flex items-start justify-between mb-4">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-amber-600" />
+                    Counselor Alert Created
+                  </h4>
+                  <span className="text-xs px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                    Needs Review
+                  </span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Priority:</span>
+                    <p className="font-medium">{aiResults.counselorAlert.priority} - {aiResults.counselorAlert.category}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">AI Detected:</span>
+                    <p>{aiResults.counselorAlert.details}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Suggested Action:</span>
+                    <p className="italic">{aiResults.counselorAlert.suggestedAction}</p>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Peer Support */}
+              <Card className="p-6 border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/20">
+                <div className="flex items-start justify-between mb-4">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    <Users className="w-5 h-5 text-blue-600" />
+                    Peer Support Opportunities
+                  </h4>
+                  <span className="text-xs px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                    Needs Review
+                  </span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Detected:</span>
+                    <p className="font-medium">{aiResults.peerSupport.detected}</p>
+                    <p className="text-xs mt-1">{aiResults.peerSupport.concern}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">AI Suggestions:</span>
+                    <div className="space-y-2 mt-2">
+                      {aiResults.peerSupport.suggestions.map((suggestion, idx) => (
+                        <div key={idx} className="pl-3 border-l-2 border-blue-300 dark:border-blue-700">
+                          <p className="font-medium">{suggestion.type}</p>
+                          <p className="text-xs">{suggestion.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </Card>
             </div>
 
@@ -300,7 +473,7 @@ export function InteractiveDemo() {
                 onClick={handleReview}
                 data-testid="button-review-results"
               >
-                Review & Approve
+                See Teacher Review
                 <UserCheck className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -321,30 +494,69 @@ export function InteractiveDemo() {
                   <UserCheck className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold" data-testid="text-review-title">
-                  Human Review
+                  Human Oversight in Action
                 </h3>
               </div>
               <p className="text-muted-foreground" data-testid="text-review-subtitle">
-                You always have the final say. AI suggests, humans decide.
+                Ms. Rodriguez reviews everything before action. AI suggests, humans decide.
               </p>
             </div>
 
             <Card className="p-6 bg-primary/5 border-primary/20">
               <div className="space-y-4">
-                <p className="text-base">
-                  The AI has identified that <strong>Emma Chen</strong> may benefit from a brief check-in based on observed behavioral changes and peer concern.
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  This suggestion is based on:
-                </p>
-                <ul className="text-sm text-muted-foreground space-y-1 ml-4 list-disc">
-                  <li>Behavioral shift from normal pattern</li>
-                  <li>Peer awareness and concern</li>
-                  <li>No immediate crisis indicators</li>
-                </ul>
                 <p className="text-base font-medium">
-                  Do you approve this alert being sent to the counselor?
+                  Ms. Rodriguez's Dashboard:
                 </p>
+                
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start gap-3 p-3 bg-green-50/50 dark:bg-green-950/20 rounded border border-green-200 dark:border-green-900">
+                    <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium">Attendance: Already logged</p>
+                      <p className="text-xs text-muted-foreground">This happens automatically—no review needed</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-card rounded border">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium">Counselor Alert: Awaiting approval</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Should the counselor be notified about Maya's stress?
+                      </p>
+                      <div className="flex gap-2 mt-2">
+                        <Button size="sm" variant="outline" className="text-xs">Decline</Button>
+                        <Button size="sm" className="text-xs">Approve & Send</Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-card rounded border">
+                    <Users className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium">Peer Support: Awaiting approval</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Which peer support actions should be taken?
+                      </p>
+                      <div className="space-y-1 mt-2">
+                        <label className="flex items-center gap-2 text-xs">
+                          <input type="checkbox" className="rounded" />
+                          <span>Facilitate Maya-Marcus check-in</span>
+                        </label>
+                        <label className="flex items-center gap-2 text-xs">
+                          <input type="checkbox" className="rounded" />
+                          <span>Connect Maya with Jordan (mentor)</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-muted-foreground italic">
+                    Nothing happens until a human reviews and approves. The AI processes and suggests—the teacher decides.
+                  </p>
+                </div>
               </div>
             </Card>
 
@@ -353,17 +565,17 @@ export function InteractiveDemo() {
                 variant="outline" 
                 size="lg"
                 onClick={handleRestart}
-                data-testid="button-decline"
+                data-testid="button-restart"
               >
-                Decline
+                Try Again
               </Button>
               <Button 
                 size="lg" 
                 onClick={handleApprove}
-                data-testid="button-approve"
+                data-testid="button-complete-demo"
               >
-                Approve & Send
-                <CheckCircle2 className="ml-2 h-5 w-5" />
+                Complete Demo
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </motion.div>
@@ -387,11 +599,24 @@ export function InteractiveDemo() {
             </motion.div>
             <div className="space-y-4">
               <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-complete-title">
-                Workflow Complete
+                That's NovaPath
               </h3>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                That's how NovaPath works: <strong>Human moments</strong> drive the input, <strong>AI handles</strong> the processing, and <strong>humans make</strong> the final call.
-              </p>
+              <div className="text-lg text-muted-foreground max-w-2xl mx-auto space-y-3">
+                <p>
+                  <strong>One student check-in</strong> (30 seconds of voice)
+                </p>
+                <p>
+                  Generated <strong>three automated workflows</strong>:
+                </p>
+                <ul className="text-base space-y-1">
+                  <li>✓ Attendance logged instantly</li>
+                  <li>✓ Counselor alert created (pending review)</li>
+                  <li>✓ Peer support suggestions queued (pending review)</li>
+                </ul>
+                <p className="pt-2">
+                  <strong>Humans stay in control.</strong> The AI processes and suggests—educators decide.
+                </p>
+              </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
@@ -409,7 +634,7 @@ export function InteractiveDemo() {
                 }}
                 data-testid="button-get-template"
               >
-                Get Your Free Check-In Template
+                Join the Waitlist
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
