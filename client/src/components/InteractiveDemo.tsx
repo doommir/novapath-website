@@ -525,8 +525,8 @@ export function InteractiveDemo() {
                         Should the counselor be notified about Maya's stress?
                       </p>
                       <div className="flex gap-2 mt-2">
-                        <Button size="sm" variant="outline" className="text-xs">Decline</Button>
-                        <Button size="sm" className="text-xs">Approve & Send</Button>
+                        <Button size="sm" variant="outline" className="text-xs" data-testid="button-decline-counselor">Decline</Button>
+                        <Button size="sm" className="text-xs" data-testid="button-approve-counselor">Approve & Send</Button>
                       </div>
                     </div>
                   </div>
@@ -540,11 +540,11 @@ export function InteractiveDemo() {
                       </p>
                       <div className="space-y-1 mt-2">
                         <label className="flex items-center gap-2 text-xs">
-                          <input type="checkbox" className="rounded" />
+                          <input type="checkbox" className="rounded" data-testid="checkbox-peer-support-checkin" />
                           <span>Facilitate Maya-Marcus check-in</span>
                         </label>
                         <label className="flex items-center gap-2 text-xs">
-                          <input type="checkbox" className="rounded" />
+                          <input type="checkbox" className="rounded" data-testid="checkbox-peer-support-mentor" />
                           <span>Connect Maya with Jordan (mentor)</span>
                         </label>
                       </div>
