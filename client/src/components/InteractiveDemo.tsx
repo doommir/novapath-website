@@ -536,8 +536,13 @@ export function InteractiveDemo() {
                   What the AI Created
                 </h3>
               </div>
-              <p className="text-muted-foreground" data-testid="text-results-subtitle">
-                Your check-in triggered three automated workflows. Here's complete transparency on what happens next:
+              {resultsIntro && (
+                <p className="text-base mb-2" data-testid="text-results-intro">
+                  {resultsIntro}
+                </p>
+              )}
+              <p className="text-muted-foreground text-sm" data-testid="text-results-subtitle">
+                Here's complete transparency on what happens next:
               </p>
             </div>
 
@@ -665,7 +670,12 @@ export function InteractiveDemo() {
                   Human Oversight in Action
                 </h3>
               </div>
-              <p className="text-muted-foreground" data-testid="text-review-subtitle">
+              {reviewMessage && (
+                <p className="text-base mb-2" data-testid="text-review-message">
+                  {reviewMessage}
+                </p>
+              )}
+              <p className="text-muted-foreground text-sm" data-testid="text-review-subtitle">
                 Ms. Rodriguez reviews everything before action. AI suggests, humans decide.
               </p>
             </div>
