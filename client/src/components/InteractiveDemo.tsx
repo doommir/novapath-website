@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -43,6 +43,15 @@ const aiResults = {
 export function InteractiveDemo() {
   const [step, setStep] = useState<DemoStep>("welcome");
   const [observations, setObservations] = useState(sampleObservations);
+  const processingTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (processingTimeoutRef.current) {
+        clearTimeout(processingTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleStart = () => {
     setStep("checkin");
@@ -50,8 +59,7 @@ export function InteractiveDemo() {
 
   const handleSubmitCheckIn = () => {
     setStep("processing");
-    // Simulate AI processing time
-    setTimeout(() => {
+    processingTimeoutRef.current = window.setTimeout(() => {
       setStep("results");
     }, 2500);
   };
