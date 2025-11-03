@@ -162,11 +162,19 @@ export function InteractiveDemo() {
           studentName: 'Maya' 
         })
       });
+      
+      if (!validationResponse.ok) {
+        throw new Error('Failed to get validation response');
+      }
+      
       const validationData = await validationResponse.json();
       setValidationText(validationData.validation);
       
       // Speak the validation
       await TTS.speakValidation(validationData.validation);
+      
+      // Wait to ensure validation screen is visible
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Step 2: Facilitate peer support
       setStep("facilitating");
@@ -180,6 +188,11 @@ export function InteractiveDemo() {
           peerNames: ['Marcus', 'Jordan'] 
         })
       });
+      
+      if (!promptsResponse.ok) {
+        throw new Error('Failed to get peer prompts');
+      }
+      
       const promptsData = await promptsResponse.json();
       setPeerPrompts(promptsData.prompts || []);
       
@@ -188,11 +201,14 @@ export function InteractiveDemo() {
         await TTS.speakPeerPrompt(prompt.prompt);
       }
       
+      // Wait to ensure facilitation screen is visible
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       // Step 3: Process workflows
       setStep("processing");
       
-      // Wait a bit to show processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Wait to show processing animation
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       setStep("results");
       await TTS.speakResults();
