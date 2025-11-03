@@ -147,3 +147,105 @@ Return JSON with this format:
     return `I hear you, ${studentName}. Thank you for sharing.`;
   }
 }
+
+/**
+ * Generate a natural results introduction
+ * @param studentCheckIn - The student's check-in message
+ * @returns A conversational intro to the results
+ */
+export async function generateResultsIntro(
+  studentCheckIn: string
+): Promise<string> {
+  const client = getOpenAIClient();
+  
+  // Fallback if OpenAI not configured
+  if (!client) {
+    return "I've created a few things that might be helpful for you.";
+  }
+  
+  try {
+    const response = await client.chat.completions.create({
+      model: "gpt-5",
+      messages: [
+        {
+          role: "system",
+          content: `You are a compassionate AI assistant introducing what you've created for the student.
+Your response should:
+- Be brief (1 sentence)
+- Sound natural and conversational
+- Reference what you noticed in their check-in
+- Be warm and supportive
+- Vary your wording each time
+
+Return JSON with this format:
+{
+  "intro": "Based on what you shared, I've logged your attendance and created a couple of notes for your teacher."
+}`
+        },
+        {
+          role: "user",
+          content: `Student check-in: "${studentCheckIn}"\n\nGenerate a brief intro to the results.`
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_completion_tokens: 300,
+    });
+
+    const result = JSON.parse(response.choices[0]?.message?.content || "{}");
+    return result.intro || "I've created a few things that might be helpful.";
+  } catch (error) {
+    console.error("Error generating results intro:", error);
+    return "I've created a few things that might be helpful.";
+  }
+}
+
+/**
+ * Generate a natural review screen message
+ * @param studentName - The student's name
+ * @returns A reassuring message about teacher review
+ */
+export async function generateReviewMessage(
+  studentName: string
+): Promise<string> {
+  const client = getOpenAIClient();
+  
+  // Fallback if OpenAI not configured
+  if (!client) {
+    return "Your teacher will review this before anything happens. You're supported.";
+  }
+  
+  try {
+    const response = await client.chat.completions.create({
+      model: "gpt-5",
+      messages: [
+        {
+          role: "system",
+          content: `You are a compassionate AI assistant explaining that a teacher will review everything.
+Your response should:
+- Be brief (1-2 sentences)
+- Emphasize human oversight and approval
+- Be reassuring and supportive
+- Vary your wording each time
+- Sound natural and conversational
+
+Return JSON with this format:
+{
+  "message": "Ms. Rodriguez will review everything before any action is taken. You're not alone in this."
+}`
+        },
+        {
+          role: "user",
+          content: `Student: ${studentName}\n\nGenerate a reassuring message about teacher review.`
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_completion_tokens: 300,
+    });
+
+    const result = JSON.parse(response.choices[0]?.message?.content || "{}");
+    return result.message || "Your teacher will review this before anything happens.";
+  } catch (error) {
+    console.error("Error generating review message:", error);
+    return "Your teacher will review this before anything happens.";
+  }
+}

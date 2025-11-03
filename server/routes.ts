@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
-import { generatePeerPrompts, generateEmotionalValidation } from "./lib/openai";
+import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage } from "./lib/openai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/leads - Create a new lead (waitlist signup)
@@ -66,6 +66,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error generating peer prompts:", error);
       res.status(500).json({ error: "Failed to generate prompts" });
+    }
+  });
+
+  // POST /api/demo/results-intro - Generate natural results introduction
+  app.post("/api/demo/results-intro", async (req, res) => {
+    try {
+      const { checkIn } = req.body;
+      
+      if (!checkIn) {
+        return res.status(400).json({ error: "Missing checkIn" });
+      }
+      
+      const intro = await generateResultsIntro(checkIn);
+      res.json({ intro });
+    } catch (error) {
+      console.error("Error generating results intro:", error);
+      res.status(500).json({ error: "Failed to generate intro" });
+    }
+  });
+
+  // POST /api/demo/review-message - Generate review message
+  app.post("/api/demo/review-message", async (req, res) => {
+    try {
+      const { studentName } = req.body;
+      
+      if (!studentName) {
+        return res.status(400).json({ error: "Missing studentName" });
+      }
+      
+      const message = await generateReviewMessage(studentName);
+      res.json({ message });
+    } catch (error) {
+      console.error("Error generating review message:", error);
+      res.status(500).json({ error: "Failed to generate message" });
     }
   });
 

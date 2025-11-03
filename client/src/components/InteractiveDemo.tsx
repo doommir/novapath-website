@@ -62,6 +62,8 @@ export function InteractiveDemo() {
   const [usedVoice, setUsedVoice] = useState(false);
   const [validationText, setValidationText] = useState("");
   const [peerPrompts, setPeerPrompts] = useState<Array<{peerName: string; prompt: string}>>([]);
+  const [resultsIntro, setResultsIntro] = useState("");
+  const [reviewMessage, setReviewMessage] = useState("");
   const processingTimeoutRef = useRef<number | null>(null);
   const recognitionRef = useRef<any>(null);
 
