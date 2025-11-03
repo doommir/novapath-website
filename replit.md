@@ -121,6 +121,7 @@ Preferred communication style: Simple, everyday language.
 - **Neon Database**: Serverless PostgreSQL provider (configured via @neondatabase/serverless)
 - **Drizzle ORM**: Type-safe database toolkit with PostgreSQL support
 - **Connect PG Simple**: PostgreSQL session store (for future session management)
+- **OpenAI**: AI model integration via Replit AI Integrations for emotional validation and peer prompt generation (no API key required, charges billed to credits)
 
 ### Build Tools & Developer Experience
 - **Vite**: Frontend build tool and dev server
@@ -142,6 +143,8 @@ Preferred communication style: Simple, everyday language.
 - Database URL configuration via environment variable (DATABASE_URL)
 - Form submission currently uses in-memory storage but architected for easy migration to PostgreSQL
 - Referral tracking supports `?ref=` URL parameter for marketing attribution
+- OpenAI integration uses Replit AI Integrations with graceful fallback when not configured
+- Demo API endpoints: POST /api/demo/validate-emotion, POST /api/demo/peer-prompts
 
 ## Recent Changes
 
@@ -164,6 +167,32 @@ Preferred communication style: Simple, everyday language.
 - All interactive elements include data-testid attributes for testing
 - Comprehensive end-to-end testing completed
 
+### November 3, 2025 - Emotional Validation & Group Facilitation Enhancement
+- **OpenAI Integration**: Added OpenAI SDK with Replit AI Integrations for intelligent response generation
+  - Lazy initialization with graceful fallback when credentials not configured
+  - Two helper functions: generateEmotionalValidation() and generatePeerPrompts()
+  - Uses gpt-5 model for contextual, empathetic responses
+  - Fallback responses ensure demo always works
+- **Emotional Validation**: AI voice now validates Maya's emotion instead of generic processing message
+  - Generates personalized, empathetic validation based on check-in content
+  - Example: "I hear you're feeling stressed, Maya. That's completely valid when you're working on big projects."
+- **Group Facilitation**: AI prompts peers (Marcus, Jordan) to share their perspectives
+  - Generates intelligent, context-aware prompts for each peer
+  - Example: "Marcus, Maya mentioned you're working together. How are you feeling about the project?"
+  - Simulates group check-in experience
+- **Enhanced Demo Flow**:
+  1. Welcome → Voice greeting
+  2. Listening → User input (voice, sample, or typed)
+  3. **Validating** (new) → AI validates emotion via voice
+  4. **Facilitating** (new) → AI prompts peers to share
+  5. Processing → Shows three workflows being created
+  6. Results → Complete transparency on automated actions
+  7. Review → Teacher oversight dashboard
+- **Error Handling**: Added response.ok checks for network failures with graceful error recovery
+- **Timing Optimization**: Added delays between steps (1.5s validation, 1.5s facilitation, 3s processing) for visibility
+- **API Endpoints**: Created POST /api/demo/validate-emotion and POST /api/demo/peer-prompts for demo functionality
+- Updated TTS library with speakValidation() and speakPeerPrompt() functions
+
 ### Design Philosophy
 - Human-centered AI messaging throughout all sections
 - Voice-interactive demo reinforces "AI suggests, humans decide" principle
@@ -171,3 +200,4 @@ Preferred communication style: Simple, everyday language.
 - Every automation shows human oversight and final approval required
 - Trust-building through visibility: nothing happens without teacher review
 - Ethical workflow design built with educators for educators
+- **AI validates emotions and facilitates peer connections** - demonstrates supportive, not controlling, technology
