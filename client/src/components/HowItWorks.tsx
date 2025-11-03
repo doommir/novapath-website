@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { User, Sparkles, UserCheck } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { InteractiveDemo } from "@/components/InteractiveDemo";
 
 const steps = [
   {
@@ -55,10 +56,26 @@ export default function HowItWorks() {
           <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-4" data-testid="text-section-label">
             How It Works
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground" data-testid="text-how-it-works-title">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" data-testid="text-how-it-works-title">
             How Human Moments Become Intelligent Workflows
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto" data-testid="text-how-it-works-subtitle">
+            Experience how NovaPath works. Click below to run an interactive demo.
+          </p>
         </motion.div>
+
+        {/* Interactive Demo */}
+        <motion.div
+          className="mb-16"
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 }}
+        >
+          <InteractiveDemo />
+        </motion.div>
+
+        {/* Process Steps */}
         <motion.div 
           className="grid gap-8 md:grid-cols-3"
           variants={container}
