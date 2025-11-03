@@ -145,19 +145,29 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-### November 3, 2025 - Interactive Demo Implementation
-- Created InteractiveDemo component with multi-step workflow experience
-- Replaced static video with interactive demo in "How It Works" section
-- Demo flow: Welcome → Check-In Form → AI Processing → Results Display → Human Review → Complete
-- Features realistic sample data (student observations, attendance logs, peer mapping, counselor alerts)
-- Demonstrates Human → AI → Human loop with smooth animations using framer-motion
-- Includes timeout cleanup on unmount to prevent edge-case state updates
-- All steps tested end-to-end with automated testing
+### November 3, 2025 - Voice-Interactive Student Demo Implementation
+- **Perspective Shift**: Redesigned demo from administrator view to student perspective (visitor experiences check-in as "Maya Chen")
+- **Voice Interaction**: 
+  - Created TTS helper module (client/src/lib/tts.ts) with optimized browser voice selection and humanized speech patterns
+  - Integrated Web Speech API for voice input with live transcription
+  - Voice output at key transition points (greeting, processing, results, review)
+  - Fallback options: "Use Sample Response" button and manual typing for accessibility
+- **Three Automated Workflows**: One 30-second voice check-in generates:
+  1. **Attendance Logging** (auto-approved): Timestamp, mood indicator, engagement level
+  2. **Counselor Alert** (needs review): Medium priority academic stress flag with context and suggested action
+  3. **Peer Support Facilitation** (needs review): Detected collaboration, partnership concerns, mentor suggestions
+- **Human Oversight Dashboard**: Teacher review screen shows all three workflows with individual approve/decline controls
+- **Complete Transparency**: Students see exactly what AI does with their data before any action is taken
+- **State Management**: Includes cleanup for speech synthesis, recognition, and timeouts to ensure clean demo resets
 - Updated Hero section with "See How It Works" secondary CTA button
 - Changed "Equity & Access" to "Fairness & Access" in Principles section
+- All interactive elements include data-testid attributes for testing
+- Comprehensive end-to-end testing completed
 
 ### Design Philosophy
 - Human-centered AI messaging throughout all sections
-- Interactive demo reinforces "AI suggests, humans decide" principle
-- Every automation example shows human oversight and final approval
-- Transparent, ethical workflow design built with educators for educators
+- Voice-interactive demo reinforces "AI suggests, humans decide" principle
+- Complete transparency: students see exactly what AI processes from their check-in
+- Every automation shows human oversight and final approval required
+- Trust-building through visibility: nothing happens without teacher review
+- Ethical workflow design built with educators for educators
