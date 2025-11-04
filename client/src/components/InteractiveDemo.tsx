@@ -147,86 +147,57 @@ export function InteractiveDemo() {
       recognitionRef.current.stop();
     }
     
-    // Step 1: Validate emotion
-    setStep("validating");
+    setStep("processing");
     
     try {
-      // Call API to get emotional validation
-      const validationResponse = await fetch('/api/demo/validate-emotion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          checkIn: transcript, 
-          studentName: 'Maya' 
+      // Parallelize all API calls for speed
+      const [validationResponse, promptsResponse, resultsResponse] = await Promise.all([
+        fetch('/api/demo/validate-emotion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkIn: transcript, studentName: 'Maya' })
+        }),
+        fetch('/api/demo/peer-prompts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkIn: transcript, peerNames: ['Marcus'] })
+        }),
+        fetch('/api/demo/results-intro', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkIn: transcript })
         })
-      });
+      ]);
       
-      if (!validationResponse.ok) {
-        throw new Error('Failed to get validation response');
+      if (!validationResponse.ok || !promptsResponse.ok || !resultsResponse.ok) {
+        throw new Error('API call failed');
       }
       
-      const validationData = await validationResponse.json();
-      setValidationText(validationData.validation);
+      const [validationData, promptsData, resultsData] = await Promise.all([
+        validationResponse.json(),
+        promptsResponse.json(),
+        resultsResponse.json()
+      ]);
       
-      // Speak the validation
+      setValidationText(validationData.validation);
+      setPeerPrompts(promptsData.prompts || []);
+      setResultsIntro(resultsData.intro);
+      
+      // Show validation briefly while speaking
+      setStep("validating");
       await TTS.speakValidation(validationData.validation);
       
-      // Wait to ensure validation screen is visible
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Step 2: Facilitate peer support
+      // Quick transition to facilitation
       setStep("facilitating");
-      
-      // Call API to get peer prompt (only one peer)
-      const promptsResponse = await fetch('/api/demo/peer-prompts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          checkIn: transcript, 
-          peerNames: ['Marcus'] // Only prompt one peer
-        })
-      });
-      
-      if (!promptsResponse.ok) {
-        throw new Error('Failed to get peer prompts');
-      }
-      
-      const promptsData = await promptsResponse.json();
-      setPeerPrompts(promptsData.prompts || []);
-      
-      // Speak the peer prompt (only one)
       if (promptsData.prompts && promptsData.prompts.length > 0) {
         await TTS.speakPeerPrompt(promptsData.prompts[0].prompt);
       }
       
-      // Wait to ensure facilitation screen is visible
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Step 3: Process workflows
-      setStep("processing");
-      
-      // Wait to show processing animation
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Step 4: Get results intro
-      const resultsResponse = await fetch('/api/demo/results-intro', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ checkIn: transcript })
-      });
-      
-      if (!resultsResponse.ok) {
-        throw new Error('Failed to get results intro');
-      }
-      
-      const resultsData = await resultsResponse.json();
-      setResultsIntro(resultsData.intro);
-      
+      // Jump to results - no artificial processing delay
       setStep("results");
       await TTS.speakResults(resultsData.intro);
     } catch (error) {
       console.error('Error in check-in flow:', error);
-      // Fallback to results on error
       setStep("results");
     }
   };
@@ -402,25 +373,26 @@ export function InteractiveDemo() {
         {step === "validating" && (
           <motion.div
             key="validating"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="text-center space-y-8 py-12"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="text-center space-y-6 py-8"
           >
             <motion.div
-              initial={{ scale: 0.9 }}
+              initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border border-primary/20"
+              transition={{ duration: 0.15 }}
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20"
             >
-              <Volume2 className="w-10 h-10 text-primary" />
+              <Volume2 className="w-8 h-8 text-primary" />
             </motion.div>
-            <div className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-validating-title">
-                AI Validating Your Emotion
+            <div className="space-y-3">
+              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-validating-title">
+                Validating
               </h3>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto italic" data-testid="text-validation">
-                "{validationText || 'I hear you\'re feeling stressed, Maya. That\'s completely valid when you\'re working on big projects.'}"
+              <p className="text-base text-muted-foreground max-w-2xl mx-auto italic" data-testid="text-validation">
+                "{validationText || 'I hear you\'re feeling stressed, Maya.'}"
               </p>
             </div>
           </motion.div>
@@ -429,32 +401,33 @@ export function InteractiveDemo() {
         {step === "facilitating" && (
           <motion.div
             key="facilitating"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="space-y-6"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-5"
           >
             <div className="space-y-2 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20 mb-4">
-                <Users className="w-8 h-8 text-primary" />
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 border border-primary/20 mb-3">
+                <Users className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-facilitating-title">
-                AI Facilitating Peer Support
+              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-facilitating-title">
+                Facilitating
               </h3>
-              <p className="text-muted-foreground">
-                The AI is prompting a peer to offer support
+              <p className="text-sm text-muted-foreground">
+                Prompting peer support
               </p>
             </div>
 
-            <div className="grid gap-4 max-w-2xl mx-auto">
+            <div className="grid gap-3 max-w-2xl mx-auto">
               {peerPrompts.map((prompt, idx) => (
-                <Card key={idx} className="p-6">
+                <Card key={idx} className="p-5">
                   <div className="flex items-start gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
-                      <User className="w-5 h-5 text-primary" />
+                    <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                      <User className="w-4 h-4 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold mb-2">{prompt.peerName}</h4>
+                      <h4 className="font-semibold mb-1.5 text-sm">{prompt.peerName}</h4>
                       <p className="text-sm italic text-muted-foreground">
                         "{prompt.prompt}"
                       </p>
@@ -472,43 +445,44 @@ export function InteractiveDemo() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="text-center space-y-8 py-12"
+            transition={{ duration: 0.2 }}
+            className="text-center space-y-6 py-8"
           >
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/20"
+              transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/20"
             >
-              <Sparkles className="w-12 h-12 text-primary" />
+              <Sparkles className="w-10 h-10 text-primary" />
             </motion.div>
-            <div className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-processing-title">
-                AI Processing Your Check-In
+            <div className="space-y-3">
+              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-processing-title">
+                Processing...
               </h3>
-              <div className="space-y-2 max-w-md mx-auto">
+              <div className="space-y-1.5 max-w-md mx-auto text-sm">
                 <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
                   className="text-muted-foreground"
                 >
-                  ✓ Logging attendance automatically...
+                  ✓ Attendance logged
                 </motion.p>
                 <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
                   className="text-muted-foreground"
                 >
-                  ✓ Analyzing mood and support needs...
+                  ✓ Analyzing mood
                 </motion.p>
                 <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.5 }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
                   className="text-muted-foreground"
                 >
-                  ✓ Identifying peer connections...
+                  ✓ Connecting with peers
                 </motion.p>
               </div>
             </div>

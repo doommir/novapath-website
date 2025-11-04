@@ -43,7 +43,7 @@ export const TTS = (() => {
 
   function say(
     text: string, 
-    { rate = 0.95, pitch = 0.95, volume = 1, lang = "en-US" } = {}
+    { rate = 1.15, pitch = 1.0, volume = 1, lang = "en-US" } = {}
   ): Promise<void> {
     return new Promise((resolve) => {
       const u = new SpeechSynthesisUtterance(text);
@@ -61,19 +61,14 @@ export const TTS = (() => {
     });
   }
 
-  // Insert breathable pauses + human-ish pacing
+  // Light text normalization for natural speech
   function humanize(s: string): string {
-    // Micro-pauses
-    s = s
-      .replace(/, /g, ", … ")
-      .replace(/: /g, " — ")
-      .replace(/\.\s/g, ".  ")
-      .replace(/\? /g, "?  ");
-    
-    // Mild contraction normalization (reads friendlier)
+    // Use contractions for friendlier tone
     s = s.replace(/\bI am\b/g, "I'm");
     s = s.replace(/\byou are\b/g, "you're");
     s = s.replace(/\bwe are\b/g, "we're");
+    s = s.replace(/\bcannot\b/g, "can't");
+    s = s.replace(/\bdo not\b/g, "don't");
     
     return s;
   }
@@ -85,24 +80,24 @@ export const TTS = (() => {
       `Hi ${name}.`
     ];
     const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-    const prompt = "How are you feeling today? What's on your mind?";
-    await say(humanize(`${greeting} ${prompt}`), { rate: 0.92, pitch: 0.93 });
+    const prompt = "How are you feeling today?";
+    await say(humanize(`${greeting} ${prompt}`), { rate: 1.2, pitch: 1.0 });
   }
 
   async function speakValidation(validationText: string) {
-    await say(humanize(validationText), { rate: 0.91, pitch: 0.92 });
+    await say(humanize(validationText), { rate: 1.15, pitch: 1.0 });
   }
   
   async function speakPeerPrompt(promptText: string) {
-    await say(humanize(promptText), { rate: 0.92, pitch: 0.93 });
+    await say(humanize(promptText), { rate: 1.2, pitch: 1.0 });
   }
 
   async function speakResults(introText: string) {
-    await say(humanize(introText), { rate: 0.93, pitch: 0.93 });
+    await say(humanize(introText), { rate: 1.15, pitch: 1.0 });
   }
 
   async function speakReview(reviewText: string) {
-    await say(humanize(reviewText), { rate: 0.91, pitch: 0.92 });
+    await say(humanize(reviewText), { rate: 1.1, pitch: 1.0 });
   }
 
   function stop() {
