@@ -64,11 +64,31 @@ export const TTS = (() => {
   // Light text normalization for natural speech
   function humanize(s: string): string {
     // Use contractions for friendlier tone
-    s = s.replace(/\bI am\b/g, "I'm");
-    s = s.replace(/\byou are\b/g, "you're");
-    s = s.replace(/\bwe are\b/g, "we're");
-    s = s.replace(/\bcannot\b/g, "can't");
-    s = s.replace(/\bdo not\b/g, "don't");
+    s = s.replace(/\bI am\b/gi, "I'm");
+    s = s.replace(/\byou are\b/gi, "you're");
+    s = s.replace(/\bwe are\b/gi, "we're");
+    s = s.replace(/\bthey are\b/gi, "they're");
+    s = s.replace(/\bhe is\b/gi, "he's");
+    s = s.replace(/\bshe is\b/gi, "she's");
+    s = s.replace(/\bit is\b/gi, "it's");
+    s = s.replace(/\bthat is\b/gi, "that's");
+    s = s.replace(/\bwhat is\b/gi, "what's");
+    s = s.replace(/\bwhere is\b/gi, "where's");
+    s = s.replace(/\bcannot\b/gi, "can't");
+    s = s.replace(/\bdo not\b/gi, "don't");
+    s = s.replace(/\bdoes not\b/gi, "doesn't");
+    s = s.replace(/\bdid not\b/gi, "didn't");
+    s = s.replace(/\bwill not\b/gi, "won't");
+    s = s.replace(/\bwould not\b/gi, "wouldn't");
+    s = s.replace(/\bshould not\b/gi, "shouldn't");
+    s = s.replace(/\bcould not\b/gi, "couldn't");
+    s = s.replace(/\bhas not\b/gi, "hasn't");
+    s = s.replace(/\bhave not\b/gi, "haven't");
+    s = s.replace(/\bhad not\b/gi, "hadn't");
+    s = s.replace(/\bis not\b/gi, "isn't");
+    s = s.replace(/\bwas not\b/gi, "wasn't");
+    s = s.replace(/\bwere not\b/gi, "weren't");
+    s = s.replace(/\blet us\b/gi, "let's");
     
     return s;
   }

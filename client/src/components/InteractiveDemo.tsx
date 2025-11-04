@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { TTS } from "@/lib/tts";
 
-type DemoStep = "welcome" | "initial_checkin" | "peer_checkins" | "ask_more" | "listening_more" | "validating" | "facilitating" | "processing" | "results" | "review" | "complete";
+type DemoStep = "welcome" | "initial_checkin" | "peer_checkins" | "ask_more" | "listening_more" | "results" | "review" | "complete";
 
 const sampleInitialResponse = `I'm Alex and I'm feeling stressed`;
 const sampleDetailedResponse = `I'm worried about the science fair project. My partner and I are working together but we're falling behind and I don't know if we'll finish in time.`;
@@ -165,19 +165,30 @@ export function InteractiveDemo() {
     setUserName(extractedName);
     setInitialCheckIn(transcript);
     
+    // Quick acknowledgment
+    const acknowledgments = ["Got it", "Thanks", "Okay", "I hear you"];
+    const ack = acknowledgments[Math.floor(Math.random() * acknowledgments.length)];
+    await TTS.say(ack, { rate: 1.2, pitch: 1.0 });
+    
     // Show peer check-ins
     setStep("peer_checkins");
     
-    // Speak each peer's check-in
+    // Speak each peer's check-in with minimal pause
     for (const peer of mockPeerCheckins) {
-      await TTS.say(peer.detail, { rate: 1.1, pitch: 1.0 });
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await TTS.say(peer.detail, { rate: 1.15, pitch: 1.0 });
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
     
     // Ask user to share more
-    await new Promise(resolve => setTimeout(resolve, 400));
     setStep("ask_more");
-    await TTS.say(`Thanks ${extractedName}. Would you like to share more about how you're feeling?`, { rate: 1.05, pitch: 1.0 });
+    const prompts = [
+      `${extractedName}, wanna share more about that?`,
+      `Tell me more, ${extractedName}`,
+      `What's going on, ${extractedName}?`,
+      `${extractedName}, can you say more about how you're feeling?`
+    ];
+    const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+    await TTS.say(prompt, { rate: 1.1, pitch: 1.0 });
   };
 
   const handleSubmitDetailedCheckIn = async () => {
@@ -186,7 +197,11 @@ export function InteractiveDemo() {
     }
     
     setDetailedCheckIn(transcript);
-    setStep("processing");
+    
+    // Quick verbal acknowledgment while processing
+    const acknowledgments = ["Mm-hmm", "I see", "Okay", "Got it"];
+    const ack = acknowledgments[Math.floor(Math.random() * acknowledgments.length)];
+    TTS.say(ack, { rate: 1.2, pitch: 1.0 }); // Don't await - let it play in background
     
     try {
       // Parallelize all API calls for speed
@@ -229,23 +244,19 @@ export function InteractiveDemo() {
         peerSupport: { ...prev.peerSupport, detected: transcript }
       }));
       
-      // Show validation while speaking
-      setStep("validating");
-      await TTS.speakValidation(validationData.validation);
-      
-      // Natural pause before transition
-      await new Promise(resolve => setTimeout(resolve, 400));
-      
-      // Transition to facilitation
-      setStep("facilitating");
-      if (promptsData.prompts && promptsData.prompts.length > 0) {
-        await TTS.speakPeerPrompt(promptsData.prompts[0].prompt);
-        await new Promise(resolve => setTimeout(resolve, 400));
-      }
-      
-      // Show results
+      // Go straight to results - no intermediate steps!
       setStep("results");
-      await TTS.speakResults(resultsData.intro);
+      
+      // Natural conversational intro
+      const intros = [
+        `Alright, here's what I'm noticing`,
+        `Okay, so here's what stands out`,
+        `Let me share what I'm seeing`,
+        `Here's what caught my attention`
+      ];
+      const intro = intros[Math.floor(Math.random() * intros.length)];
+      await TTS.say(intro, { rate: 1.1, pitch: 1.0 });
+      
     } catch (error) {
       console.error('Error in check-in flow:', error);
       setStep("results");
@@ -589,124 +600,6 @@ export function InteractiveDemo() {
           </motion.div>
         )}
 
-        {step === "validating" && (
-          <motion.div
-            key="validating"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="text-center space-y-6 py-8"
-          >
-            <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.15 }}
-              className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20"
-            >
-              <Volume2 className="w-8 h-8 text-primary" />
-            </motion.div>
-            <div className="space-y-3">
-              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-validating-title">
-                Validating
-              </h3>
-              <p className="text-base text-muted-foreground max-w-2xl mx-auto italic" data-testid="text-validation">
-                "{validationText || `I hear you. Thank you for sharing.`}"
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {step === "facilitating" && (
-          <motion.div
-            key="facilitating"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="space-y-5"
-          >
-            <div className="space-y-2 text-center">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 border border-primary/20 mb-3">
-                <Users className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-facilitating-title">
-                Facilitating
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Prompting peer support
-              </p>
-            </div>
-
-            <div className="grid gap-3 max-w-2xl mx-auto">
-              {peerPrompts.map((prompt, idx) => (
-                <Card key={idx} className="p-5">
-                  <div className="flex items-start gap-3">
-                    <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
-                      <User className="w-4 h-4 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold mb-1.5 text-sm">{prompt.peerName}</h4>
-                      <p className="text-sm italic text-muted-foreground">
-                        "{prompt.prompt}"
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {step === "processing" && (
-          <motion.div
-            key="processing"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="text-center space-y-6 py-8"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-              className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/20"
-            >
-              <Sparkles className="w-10 h-10 text-primary" />
-            </motion.div>
-            <div className="space-y-3">
-              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-processing-title">
-                Processing...
-              </h3>
-              <div className="space-y-1.5 max-w-md mx-auto text-sm">
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1, duration: 0.3 }}
-                  className="text-muted-foreground"
-                >
-                  ✓ Attendance logged
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}
-                  className="text-muted-foreground"
-                >
-                  ✓ Analyzing mood
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.3 }}
-                  className="text-muted-foreground"
-                >
-                  ✓ Connecting with peers
-                </motion.p>
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         {step === "results" && (
           <motion.div
@@ -714,6 +607,7 @@ export function InteractiveDemo() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.15 }}
             className="space-y-6"
           >
             <div className="space-y-2">
