@@ -1,8 +1,14 @@
-# NovaPath Landing Page
+# NovaPath Landing Pages
 
 ## Overview
 
-NovaPath is a single-page landing site for an AI-powered education operations toolkit for K-12 schools. Its primary purpose is lead generation, capturing email addresses for an early access waitlist. The site features a modern SaaS design, including a hero section, an interactive voice-driven demo, and a lead capture form. It emphasizes a human-centered AI approach, promoting the idea that "AI supports your school — freeing educators to focus on what matters," with AI serving as a supportive tool built by and for educators. The application is a full-stack TypeScript project with a React frontend and an Express backend, designed with a mobile-first, responsive approach.
+This application hosts two separate product landing pages under the NovaPath brand:
+
+1. **NovaPath (Education Operations)** - A single-page landing site for an AI-powered education operations toolkit for K-12 schools. Its primary purpose is lead generation, capturing email addresses for an early access waitlist. The site features a modern SaaS design, including a hero section, an interactive voice-driven demo, and a lead capture form. It emphasizes a human-centered AI approach, promoting the idea that "AI supports your school — freeing educators to focus on what matters," with AI serving as a supportive tool built by and for educators.
+
+2. **AI-Infused Science Kit** - A product landing page at `/science-kit` for a hands-on science experiment kit with an integrated AI assistant. The page features pre-order functionality, collecting email addresses, names, and quantity preferences. It showcases kit contents, learning outcomes, and testimonials from parents and teachers.
+
+The application is a full-stack TypeScript project with a React frontend and an Express backend, designed with a mobile-first, responsive approach.
 
 ## User Preferences
 
@@ -17,7 +23,12 @@ The frontend uses React 18 with TypeScript, Vite for building, and Wouter for ro
 The backend is built with Express.js and TypeScript, utilizing ESM for modern module management. It integrates Vite middleware for HMR during development and includes custom logging and error handling. Storage is abstracted with an `IStorage` interface, currently using in-memory storage but prepared for PostgreSQL via Drizzle ORM and Neon serverless. The API follows RESTful conventions with JSON for data transfer and uses shared, Drizzle-Zod generated schemas for type safety and validation.
 
 ### Database Schema
-The system uses Drizzle ORM configured for PostgreSQL. Data models include a `Users` table (for authentication) and a `Leads` table (for waitlist signups), both with UUIDs, type-safe schemas, and Zod validation. The `Leads` table tracks email, role, optional school, and referrer, along with submission timestamps. Schema-first development ensures type safety, and separate insert schemas prevent manipulation of auto-generated fields.
+The system uses Drizzle ORM configured for PostgreSQL. Data models include:
+- `Users` table (for authentication)
+- `Leads` table (for NovaPath waitlist signups) - tracks email, role, optional school, and referrer
+- `Preorders` table (for Science Kit pre-orders) - tracks email, name, and quantity
+
+All tables use UUIDs, type-safe schemas, and Zod validation. Schema-first development ensures type safety, and separate insert schemas prevent manipulation of auto-generated fields.
 
 ### UI/UX Decisions
 The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspect ratio scaling to desktop. The color palette is dark-themed with purple/violet and indigo-to-blue gradients. Typography uses the Inter font, and spacing adheres to Tailwind's default scale. Components include hover and active elevation effects for interactivity. The interactive demo shifts perspective to a student experience ("Maya Chen"), using voice interaction (TTS and Web Speech API) to demonstrate AI workflows for attendance, counselor alerts, and peer support, with a teacher review dashboard emphasizing human oversight and transparency.
@@ -67,7 +78,27 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 - OpenAI integration uses Replit AI Integrations with graceful fallback.
 - Demo API endpoints include `/api/demo/validate-emotion`, `/api/demo/peer-prompts`, `/api/demo/results-intro`, and `/api/demo/review-message`.
 
+## Pages and Routes
+
+- `/` - NovaPath Education Operations landing page with interactive demo
+- `/science-kit` - AI-Infused Science Kit product page with pre-order form
+
 ## Recent Changes
+
+### November 4, 2025 - AI-Infused Science Kit Landing Page
+- **New Product Page**: Created separate landing page at `/science-kit`
+  - Hero section with product pricing ($34.95) and CTA
+  - What Makes Different section (AI Assistant, Tactile+Tech, Built for Learning)
+  - What's Inside section (kit contents with icons)
+  - Learning Outcomes section
+  - Testimonials from parents and teachers
+  - Pre-order form collecting email, name, and quantity
+  - Footer with contact links
+- **Database Updates**:
+  - Added `preorders` table to schema
+  - Created storage interface methods for preorder CRUD
+  - Implemented POST `/api/preorders` endpoint with validation
+- **Design**: Follows same dark theme with purple/violet gradients, mobile-first responsive layout
 
 ### November 4, 2025 - Natural Group Check-In Flow & Dynamic Names
 - **Restructured Demo Flow**: More realistic group check-in experience
