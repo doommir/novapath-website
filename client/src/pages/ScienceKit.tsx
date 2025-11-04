@@ -112,7 +112,7 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
                 { label: "Ages 6-12", icon: GraduationCap },
                 { label: "AI Literacy", icon: Sparkles },
                 { label: "Child-Led", icon: Hand },
-                { label: "STEM Aligned", icon: CheckCircle2 }
+                { label: "NGSS Aligned", icon: CheckCircle2 }
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -171,8 +171,8 @@ function WhatMakesDifferent() {
     },
     {
       icon: GraduationCap,
-      title: "Built for Learning (and Fun)",
-      description: "Each activity teaches both science concepts and AI literacy — helping kids understand how to work with AI tools responsibly and effectively."
+      title: "NGSS Standards Aligned",
+      description: "Each experiment is designed to meet Next Generation Science Standards (NGSS) for grades K-5, covering physical science, engineering practices, and crosscutting concepts — while making learning feel like play."
     }
   ];
 
@@ -308,9 +308,12 @@ function LearningOutcomes() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" data-testid="text-outcomes-title">
             What Your Child Will Learn
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8" data-testid="text-outcomes-subtitle">
+            Aligned with NGSS Standards for grades K-5
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
           {outcomes.map((outcome, index) => (
             <motion.div
               key={index}
@@ -326,6 +329,41 @@ function LearningOutcomes() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.4 }}
+        >
+          <Card className="bg-card/50 border-primary/20">
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                NGSS Standards Covered
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4 text-sm text-muted-foreground">
+                <div>
+                  <p className="font-medium text-foreground mb-1">Physical Science (PS1)</p>
+                  <p>Matter and its interactions — observing chemical reactions, properties of materials</p>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground mb-1">Engineering Design (ETS1)</p>
+                  <p>Designing solutions — planning experiments, testing predictions</p>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground mb-1">Science & Engineering Practices</p>
+                  <p>Asking questions, planning investigations, analyzing data</p>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground mb-1">Crosscutting Concepts</p>
+                  <p>Cause and effect, patterns, systems and models</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </section>
   );
