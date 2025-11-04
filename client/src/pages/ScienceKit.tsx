@@ -92,8 +92,7 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             </h1>
 
             <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
-              Bring the magic of chemistry and the power of artificial intelligence into your home or classroom. 
-              NovaPath's AI-Infused Science Kit blends hands-on experiments with an interactive AI guide.
+              Build AI literacy through hands-on science. Your child leads the experiments while our AI assistant guides and explains — teaching critical thinking about how AI can support, not replace, human curiosity.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center md:justify-start">
@@ -111,8 +110,8 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto md:mx-0">
               {[
                 { label: "Ages 6-12", icon: GraduationCap },
-                { label: "Safe Materials", icon: Beaker },
-                { label: "AI Guide", icon: Sparkles },
+                { label: "AI Literacy", icon: Sparkles },
+                { label: "Child-Led", icon: Hand },
                 { label: "STEM Aligned", icon: CheckCircle2 }
               ].map((item, index) => (
                 <motion.div
@@ -162,18 +161,18 @@ function WhatMakesDifferent() {
   const features = [
     {
       icon: Sparkles,
-      title: "AI Assistant Included",
-      description: "Scan the QR code to launch your own friendly AI lab partner. It talks, explains, and guides your child step-by-step."
+      title: "AI Literacy in Action",
+      description: "Kids learn how AI works by interacting with it directly. The assistant explains its reasoning, teaching children to think critically about AI as a tool — not a replacement for their own thinking."
     },
     {
       icon: Hand,
-      title: "Tactile + Tech-Powered",
-      description: "Kids mix, pour, and explore with real materials while the AI helps them observe, question, and understand."
+      title: "Child Leads, AI Supports",
+      description: "Human-in-the-loop design means your child controls the experiment. The AI observes, asks questions, and offers guidance — but never takes over. Kids stay in charge of their discovery."
     },
     {
       icon: GraduationCap,
       title: "Built for Learning (and Fun)",
-      description: "Each activity is aligned to STEM learning goals, but designed to feel like play."
+      description: "Each activity teaches both science concepts and AI literacy — helping kids understand how to work with AI tools responsibly and effectively."
     }
   ];
 
@@ -287,10 +286,10 @@ function LearningOutcomes() {
   const reducedMotion = useReducedMotion();
 
   const outcomes = [
-    "Understand acids, bases, and gas reactions",
-    "Practice observation and inference",
-    "Build early AI literacy through interactive guidance",
-    "Gain confidence in science with a playful approach"
+    "Build foundational AI literacy — understanding how AI can assist without replacing human thinking",
+    "Learn that humans stay in control — practicing the 'human-in-the-loop' approach to AI tools",
+    "Understand acids, bases, and chemical reactions through hands-on experimentation",
+    "Develop critical thinking by questioning both their observations and the AI's suggestions"
   ];
 
   return (
