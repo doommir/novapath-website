@@ -167,10 +167,34 @@ Preferred communication style: Simple, everyday language.
 - All interactive elements include data-testid attributes for testing
 - Comprehensive end-to-end testing completed
 
+### November 4, 2025 - Dynamic Voice Response System Fix
+- **Critical Bug Fix**: Resolved token limit issue preventing dynamic AI responses
+  - Increased `max_completion_tokens` from 300 to 1000 in all OpenAI helper functions
+  - GPT-5 reasoning models use ~300 tokens for internal reasoning, requiring higher limits
+  - Previous configuration resulted in empty responses (all tokens consumed by reasoning)
+- **New Helper Functions**: Extended OpenAI integration with additional voice response generators
+  - `generateResultsIntro()`: Creates contextual intro to results screen based on student's actual check-in
+  - `generateReviewMessage()`: Generates personalized teacher review message
+  - Both functions validate inputs, handle errors gracefully, and provide fallbacks
+- **New API Endpoints**: Added demo endpoints for complete voice interaction coverage
+  - POST /api/demo/results-intro: Returns contextual introduction to automated workflows
+  - POST /api/demo/review-message: Returns personalized message about teacher oversight
+  - Both endpoints validate request bodies and return JSON responses
+- **Enhanced Demo Experience**: All voice interactions now respond to actual student input
+  - Results intro references specific details from check-in (e.g., mentions "stress", "science fair", "Marcus")
+  - Review message is personalized and varies with each interaction
+  - Eliminated all canned/repetitive responses throughout demo flow
+  - Each demo run feels unique and attentive to what Maya actually says
+- **TTS Library Updates**: Modified voice functions to accept dynamic text parameters
+  - `speakResultsIntro(text)`: Speaks custom results introduction
+  - `speakReviewMessage(text)`: Speaks personalized review message
+  - Enables fully dynamic voice conversations throughout demo
+- **Comprehensive Testing**: End-to-end testing confirms contextual responses working as expected
+
 ### November 3, 2025 - Emotional Validation & Group Facilitation Enhancement
 - **OpenAI Integration**: Added OpenAI SDK with Replit AI Integrations for intelligent response generation
   - Lazy initialization with graceful fallback when credentials not configured
-  - Two helper functions: generateEmotionalValidation() and generatePeerPrompts()
+  - Helper functions: generateEmotionalValidation() and generatePeerPrompts()
   - Uses gpt-5 model for contextual, empathetic responses
   - Fallback responses ensure demo always works
 - **Emotional Validation**: AI voice now validates Maya's emotion instead of generic processing message
