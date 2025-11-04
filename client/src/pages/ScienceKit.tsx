@@ -103,14 +103,10 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
                 onClick={onCtaClick}
                 data-testid="button-preorder-hero"
               >
-                Pre-Order Now - $34.95
+                Reserve Your Kit
               </Button>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center md:justify-start mb-8">
-              <Mail className="h-4 w-4" />
-              <span data-testid="text-shipping-info">Free shipping on orders over $50</span>
-            </div>
 
             <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto md:mx-0">
               {[
@@ -460,13 +456,10 @@ function PreOrderSection() {
           transition={reducedMotion ? { duration: 0 } : { duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" data-testid="text-preorder-title">
-            Pre-Order Your Science Kit
+            Reserve Your Science Kit
           </h2>
-          <p className="text-lg text-muted-foreground mb-2" data-testid="text-price">
-            Only $34.95
-          </p>
           <p className="text-sm text-muted-foreground" data-testid="text-shipping">
-            Free shipping on orders over $50 • Ships in eco-friendly packaging
+            Ships in eco-friendly packaging
           </p>
         </motion.div>
 

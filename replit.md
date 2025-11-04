@@ -87,7 +87,7 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 
 ### November 4, 2025 - AI-Infused Science Kit Landing Page
 - **New Product Page**: Created separate landing page at `/science-kit`
-  - Hero section with product pricing ($34.95), CTA, and embedded demo video (autoplay loop)
+  - Hero section with CTA and embedded demo video (autoplay loop)
   - What Makes Different section (AI Assistant, Tactile+Tech, Built for Learning)
   - What's Inside section (kit contents with icons)
   - Learning Outcomes section
