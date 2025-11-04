@@ -85,6 +85,23 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 
 ## Recent Changes
 
+### November 4, 2025 - Demo Flow Optimization for Speed & Naturalness
+- **Streamlined Demo Experience**: Significantly faster and more conversational
+  - Removed intermediate loading states (validating, facilitating, processing)
+  - User input now flows directly to results screen (~15-20 seconds total)
+  - Reduced pauses between peer check-ins from 600ms to 200ms
+  - Eliminated all 400ms pauses between voice segments
+- **Natural Conversation**: Added human-like verbal variety
+  - Randomized acknowledgments ("Got it", "Mm-hmm", "I see", "Okay")
+  - Randomized prompts for follow-up questions
+  - Randomized conversational intros when presenting results
+  - Background acknowledgment plays while API calls execute
+- **Enhanced TTS Humanization**: Comprehensive contraction support
+  - Extended humanize() function with 20+ contractions (it's, you're, can't, won't, etc.)
+  - All contractions use case-insensitive matching
+- **Faster Animations**: Sped up all transitions to 0.15-0.2s for snappy feel
+- **Updated Demo Steps**: Cleaned up type definitions to remove unused intermediate states
+
 ### November 4, 2025 - AI-Infused Science Kit Landing Page
 - **New Product Page**: Created separate landing page at `/science-kit`
   - Hero section with CTA and embedded demo video (autoplay loop)
