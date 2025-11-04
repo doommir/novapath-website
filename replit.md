@@ -185,6 +185,11 @@ Preferred communication style: Simple, everyday language.
   - Review message is personalized and varies with each interaction
   - Eliminated all canned/repetitive responses throughout demo flow
   - Each demo run feels unique and attentive to what Maya actually says
+- **Single Peer Support**: Refined peer facilitation to prompt only ONE peer
+  - Facilitating step: AI voice prompts only Marcus (not multiple peers)
+  - Results workflow: Shows only one peer support suggestion (Partner Check-In with Marcus)
+  - Teacher review: Simplified to approve/decline one suggestion (no Jordan Lee mentorship)
+  - More realistic group facilitation (one peer responds at a time, not everyone simultaneously)
 - **TTS Library Updates**: Modified voice functions to accept dynamic text parameters
   - `speakResultsIntro(text)`: Speaks custom results introduction
   - `speakReviewMessage(text)`: Speaks personalized review message

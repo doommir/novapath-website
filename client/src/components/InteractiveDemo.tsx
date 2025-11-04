@@ -45,10 +45,6 @@ const aiResults = {
       {
         type: "Partner Check-In",
         description: "Facilitate conversation between Maya and Marcus to align on timeline and divide tasks"
-      },
-      {
-        type: "Peer Mentorship",
-        description: "Connect Maya with Jordan Lee (completed science fair early) for advice and encouragement"
       }
     ],
     autoApproved: false
@@ -181,13 +177,13 @@ export function InteractiveDemo() {
       // Step 2: Facilitate peer support
       setStep("facilitating");
       
-      // Call API to get peer prompts
+      // Call API to get peer prompt (only one peer)
       const promptsResponse = await fetch('/api/demo/peer-prompts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           checkIn: transcript, 
-          peerNames: ['Marcus', 'Jordan'] 
+          peerNames: ['Marcus'] // Only prompt one peer
         })
       });
       
@@ -198,9 +194,9 @@ export function InteractiveDemo() {
       const promptsData = await promptsResponse.json();
       setPeerPrompts(promptsData.prompts || []);
       
-      // Speak peer prompts
-      for (const prompt of promptsData.prompts || []) {
-        await TTS.speakPeerPrompt(prompt.prompt);
+      // Speak the peer prompt (only one)
+      if (promptsData.prompts && promptsData.prompts.length > 0) {
+        await TTS.speakPeerPrompt(promptsData.prompts[0].prompt);
       }
       
       // Wait to ensure facilitation screen is visible
@@ -446,7 +442,7 @@ export function InteractiveDemo() {
                 AI Facilitating Peer Support
               </h3>
               <p className="text-muted-foreground">
-                The AI is prompting your groupmates to share their perspectives
+                The AI is prompting a peer to offer support
               </p>
             </div>
 
@@ -714,48 +710,28 @@ export function InteractiveDemo() {
                     <div className="flex-1">
                       <p className="font-medium">Peer Support: Awaiting approval</p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Which peer support actions should be taken?
+                        Should Maya and Marcus have a facilitated check-in?
                       </p>
-                      <div className="space-y-1 mt-2">
-                        <label className="flex items-center gap-2 text-xs">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-peer-support-checkin" />
-                          <span>Facilitate Maya-Marcus check-in</span>
-                        </label>
-                        <label className="flex items-center gap-2 text-xs">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-peer-support-mentor" />
-                          <span>Connect Maya with Jordan (mentor)</span>
-                        </label>
+                      <div className="flex gap-2 mt-2">
+                        <Button size="sm" variant="outline" className="text-xs" data-testid="button-decline-peer">Decline</Button>
+                        <Button size="sm" className="text-xs" data-testid="button-approve-peer">Approve & Schedule</Button>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="pt-4 border-t">
-                  <p className="text-sm text-muted-foreground italic">
-                    Nothing happens until a human reviews and approves. The AI processes and suggests—the teacher decides.
-                  </p>
+                  <div className="flex items-center justify-center pt-2">
+                    <Button 
+                      onClick={handleApprove}
+                      className="w-full"
+                      data-testid="button-complete-review"
+                    >
+                      Complete Review
+                      <CheckCircle2 className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Card>
-
-            <div className="flex gap-4 justify-end">
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={handleRestart}
-                data-testid="button-restart"
-              >
-                Try Again
-              </Button>
-              <Button 
-                size="lg" 
-                onClick={handleApprove}
-                data-testid="button-complete-demo"
-              >
-                Complete Demo
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
           </motion.div>
         )}
 
@@ -764,58 +740,33 @@ export function InteractiveDemo() {
             key="complete"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
             className="text-center space-y-6 py-12"
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: "spring", delay: 0.2 }}
-              className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-100 dark:bg-green-900/20 border-2 border-green-600"
+              transition={{ delay: 0.2, type: "spring" }}
+              className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/20"
             >
-              <CheckCircle2 className="w-12 h-12 text-green-600" />
+              <CheckCircle2 className="w-12 h-12 text-primary" />
             </motion.div>
             <div className="space-y-4">
               <h3 className="text-2xl md:text-3xl font-bold" data-testid="text-complete-title">
-                That's NovaPath
+                That's How NovaPath Works
               </h3>
-              <div className="text-lg text-muted-foreground max-w-2xl mx-auto space-y-3">
-                <p>
-                  <strong>One student check-in</strong> (30 seconds of voice)
-                </p>
-                <p>
-                  Generated <strong>three automated workflows</strong>:
-                </p>
-                <ul className="text-base space-y-1">
-                  <li>✓ Attendance logged instantly</li>
-                  <li>✓ Counselor alert created (pending review)</li>
-                  <li>✓ Peer support suggestions queued (pending review)</li>
-                </ul>
-                <p className="pt-2">
-                  <strong>Humans stay in control.</strong> The AI processes and suggests—educators decide.
-                </p>
-              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                AI handles the details. Humans stay in control. Every student gets heard.
+              </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={handleRestart}
-                data-testid="button-try-again"
-              >
-                Try Again
-              </Button>
-              <Button 
-                size="lg"
-                onClick={() => {
-                  document.querySelector('[data-testid="button-join-waitlist"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }}
-                data-testid="button-get-template"
-              >
-                Join the Waitlist
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
+            <Button 
+              size="lg" 
+              onClick={handleRestart}
+              variant="outline"
+              data-testid="button-restart-demo"
+            >
+              Try Again
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -53,20 +53,20 @@ export async function generatePeerPrompts(
       messages: [
         {
           role: "system",
-          content: `You are a compassionate AI facilitator helping students in a group check-in. Based on Maya's check-in, generate supportive prompts for her peers to share their perspectives. The prompts should:
+          content: `You are a compassionate AI facilitator helping students in a group check-in. Based on Maya's check-in, generate a supportive prompt for ONE peer to share their perspective. The prompt should:
 - Validate emotions and show empathy
 - Encourage authentic sharing
-- Connect to what Maya shared
+- Connect to what Maya shared (especially if she mentioned working with them)
 - Be warm, age-appropriate for K-12 students
 - Keep responses brief and conversational
+- Sound natural, like a caring teacher facilitating discussion
 
 Return JSON with this format:
 {
   "prompts": [
     {
       "peerName": "Marcus",
-      "prompt": "Marcus, Maya mentioned you're working together. How are you feeling about the project?",
-      "emotion": "stressed"
+      "prompt": "Marcus, Maya mentioned you're working together. How are you feeling about the project?"
     }
   ]
 }`
