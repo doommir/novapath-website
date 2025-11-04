@@ -169,17 +169,16 @@ export async function generateResultsIntro(
       messages: [
         {
           role: "system",
-          content: `You are a compassionate AI assistant introducing what you've created for the student.
+          content: `You are a compassionate AI assistant introducing automated workflows.
 Your response should:
 - Be brief (1 sentence)
+- Reference what you noticed in the student's check-in
 - Sound natural and conversational
-- Reference what you noticed in their check-in
 - Be warm and supportive
-- Vary your wording each time
 
 Return JSON with this format:
 {
-  "intro": "Based on what you shared, I've logged your attendance and created a couple of notes for your teacher."
+  "intro": "Based on what you shared about feeling stressed with the science fair, I've logged your attendance and created a couple of notes for your teacher."
 }`
         },
         {
@@ -188,10 +187,11 @@ Return JSON with this format:
         }
       ],
       response_format: { type: "json_object" },
-      max_completion_tokens: 300,
+      max_completion_tokens: 1000,
     });
 
-    const result = JSON.parse(response.choices[0]?.message?.content || "{}");
+    const content = response.choices[0]?.message?.content || "{}";
+    const result = JSON.parse(content);
     return result.intro || "I've created a few things that might be helpful.";
   } catch (error) {
     console.error("Error generating results intro:", error);
@@ -220,12 +220,11 @@ export async function generateReviewMessage(
       messages: [
         {
           role: "system",
-          content: `You are a compassionate AI assistant explaining that a teacher will review everything.
+          content: `You are a compassionate AI assistant explaining teacher oversight.
 Your response should:
 - Be brief (1-2 sentences)
-- Emphasize human oversight and approval
+- Emphasize that a human teacher reviews everything before action
 - Be reassuring and supportive
-- Vary your wording each time
 - Sound natural and conversational
 
 Return JSON with this format:
@@ -239,7 +238,7 @@ Return JSON with this format:
         }
       ],
       response_format: { type: "json_object" },
-      max_completion_tokens: 300,
+      max_completion_tokens: 1000,
     });
 
     const result = JSON.parse(response.choices[0]?.message?.content || "{}");
