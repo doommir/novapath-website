@@ -18,41 +18,21 @@ import {
 } from "lucide-react";
 import { TTS } from "@/lib/tts";
 
-type DemoStep = "welcome" | "listening" | "validating" | "facilitating" | "processing" | "results" | "review" | "complete";
+type DemoStep = "welcome" | "initial_checkin" | "peer_checkins" | "ask_more" | "listening_more" | "validating" | "facilitating" | "processing" | "results" | "review" | "complete";
 
-const sampleStudentResponse = `I'm feeling kinda stressed about the science fair. Marcus and I are working together but I'm worried we're falling behind. We have so much to do and I don't know if we'll finish in time.`;
+const sampleInitialResponse = `I'm Maya and I'm feeling stressed`;
+const sampleDetailedResponse = `I'm worried about the science fair project. Marcus and I are working together but we're falling behind and I don't know if we'll finish in time.`;
 
-const aiResults = {
-  attendance: {
-    student: "Maya Chen",
-    status: "Present",
-    timestamp: "8:15 AM",
-    mood: "Stressed/Concerned",
-    engagement: "Vocal about concerns"
-  },
-  counselorAlert: {
-    student: "Maya Chen",
-    priority: "Medium",
-    category: "Academic Stress",
-    details: "Student expressing project-related stress and time pressure around science fair deadline",
-    suggestedAction: "Brief check-in to assess stress levels and offer time management support",
-    autoApproved: false
-  },
-  peerSupport: {
-    detected: "Collaboration with Marcus on science fair project",
-    concern: "Partnership experiencing deadline pressure",
-    suggestions: [
-      {
-        type: "Partner Check-In",
-        description: "Facilitate conversation between Maya and Marcus to align on timeline and divide tasks"
-      }
-    ],
-    autoApproved: false
-  }
-};
+const mockPeerCheckins = [
+  { name: "Marcus", feeling: "overwhelmed", detail: "I'm Marcus and I'm feeling overwhelmed with all the assignments this week" },
+  { name: "Jordan", feeling: "excited", detail: "I'm Jordan and I'm feeling excited about the basketball game tomorrow" }
+];
 
 export function InteractiveDemo() {
   const [step, setStep] = useState<DemoStep>("welcome");
+  const [userName, setUserName] = useState("");
+  const [initialCheckIn, setInitialCheckIn] = useState("");
+  const [detailedCheckIn, setDetailedCheckIn] = useState("");
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [usedVoice, setUsedVoice] = useState(false);
@@ -60,6 +40,34 @@ export function InteractiveDemo() {
   const [peerPrompts, setPeerPrompts] = useState<Array<{peerName: string; prompt: string}>>([]);
   const [resultsIntro, setResultsIntro] = useState("");
   const [reviewMessage, setReviewMessage] = useState("");
+  const [aiResults, setAiResults] = useState({
+    attendance: {
+      student: "",
+      status: "Present",
+      timestamp: "8:15 AM",
+      mood: "",
+      engagement: "Vocal about concerns"
+    },
+    counselorAlert: {
+      student: "",
+      priority: "Medium",
+      category: "Academic Stress",
+      details: "",
+      suggestedAction: "Brief check-in to assess stress levels and offer support",
+      autoApproved: false
+    },
+    peerSupport: {
+      detected: "",
+      concern: "",
+      suggestions: [
+        {
+          type: "Partner Check-In",
+          description: ""
+        }
+      ],
+      autoApproved: false
+    }
+  });
   const processingTimeoutRef = useRef<number | null>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -117,8 +125,8 @@ export function InteractiveDemo() {
   }, []);
 
   const handleStart = async () => {
-    setStep("listening");
-    await TTS.speakGreeting("Maya");
+    setStep("initial_checkin");
+    await TTS.say("Welcome to group check-in. Please share your name and how you're feeling today in one word.", { rate: 1.1, pitch: 1.0 });
   };
 
   const startListening = () => {
@@ -138,15 +146,46 @@ export function InteractiveDemo() {
   };
 
   const useSample = () => {
-    setTranscript(sampleStudentResponse);
+    if (step === "initial_checkin") {
+      setTranscript(sampleInitialResponse);
+    } else if (step === "listening_more") {
+      setTranscript(sampleDetailedResponse);
+    }
     setUsedVoice(false);
   };
 
-  const handleSubmitCheckIn = async () => {
+  const handleSubmitInitialCheckIn = async () => {
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
     }
     
+    // Extract name from initial check-in
+    const nameMatch = transcript.match(/I'?m\s+([A-Z][a-z]+)/i);
+    const extractedName = nameMatch ? nameMatch[1] : "Student";
+    setUserName(extractedName);
+    setInitialCheckIn(transcript);
+    
+    // Show peer check-ins
+    setStep("peer_checkins");
+    
+    // Speak each peer's check-in
+    for (const peer of mockPeerCheckins) {
+      await TTS.say(peer.detail, { rate: 1.1, pitch: 1.0 });
+      await new Promise(resolve => setTimeout(resolve, 600));
+    }
+    
+    // Ask user to share more
+    await new Promise(resolve => setTimeout(resolve, 400));
+    setStep("ask_more");
+    await TTS.say(`Thanks ${extractedName}. Would you like to share more about how you're feeling?`, { rate: 1.05, pitch: 1.0 });
+  };
+
+  const handleSubmitDetailedCheckIn = async () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+    }
+    
+    setDetailedCheckIn(transcript);
     setStep("processing");
     
     try {
@@ -155,7 +194,7 @@ export function InteractiveDemo() {
         fetch('/api/demo/validate-emotion', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ checkIn: transcript, studentName: 'Maya' })
+          body: JSON.stringify({ checkIn: transcript, studentName: userName })
         }),
         fetch('/api/demo/peer-prompts', {
           method: 'POST',
@@ -182,6 +221,13 @@ export function InteractiveDemo() {
       setValidationText(validationData.validation);
       setPeerPrompts(promptsData.prompts || []);
       setResultsIntro(resultsData.intro);
+      
+      // Update AI results with user's name
+      setAiResults(prev => ({
+        attendance: { ...prev.attendance, student: userName, mood: initialCheckIn },
+        counselorAlert: { ...prev.counselorAlert, student: userName, details: transcript },
+        peerSupport: { ...prev.peerSupport, detected: transcript }
+      }));
       
       // Show validation while speaking
       setStep("validating");
@@ -212,7 +258,7 @@ export function InteractiveDemo() {
       const reviewResponse = await fetch('/api/demo/review-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentName: 'Maya' })
+        body: JSON.stringify({ studentName: userName })
       });
       
       if (!reviewResponse.ok) {
@@ -237,11 +283,23 @@ export function InteractiveDemo() {
     setStep("complete");
   };
 
+  const handleAskMore = () => {
+    setStep("listening_more");
+    setTranscript("");
+  };
+
   const handleRestart = () => {
     setStep("welcome");
+    setUserName("");
+    setInitialCheckIn("");
+    setDetailedCheckIn("");
     setTranscript("");
     setIsListening(false);
     setUsedVoice(false);
+    setValidationText("");
+    setPeerPrompts([]);
+    setResultsIntro("");
+    setReviewMessage("");
     TTS.stop();
   };
 
@@ -286,9 +344,9 @@ export function InteractiveDemo() {
           </motion.div>
         )}
 
-        {step === "listening" && (
+        {step === "initial_checkin" && (
           <motion.div
-            key="listening"
+            key="initial_checkin"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -299,12 +357,12 @@ export function InteractiveDemo() {
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20">
                   <User className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold" data-testid="text-listening-title">
-                  Morning Check-In
+                <h3 className="text-xl md:text-2xl font-bold" data-testid="text-initial-title">
+                  Group Check-In
                 </h3>
               </div>
-              <p className="text-muted-foreground" data-testid="text-listening-subtitle">
-                The AI just asked: "Good morning, Maya. How are you feeling today? What's on your mind?"
+              <p className="text-muted-foreground" data-testid="text-initial-subtitle">
+                The AI just asked: "Welcome to group check-in. Please share your name and how you're feeling today in one word."
               </p>
             </div>
 
@@ -343,8 +401,8 @@ export function InteractiveDemo() {
               <Textarea
                 value={transcript}
                 onChange={(e) => setTranscript(e.target.value)}
-                className="min-h-[150px] text-base"
-                placeholder="Or type your response here..."
+                className="min-h-[100px] text-base"
+                placeholder="Example: I'm Maya and I'm feeling stressed"
                 data-testid="input-transcript"
               />
 
@@ -363,9 +421,166 @@ export function InteractiveDemo() {
             <div className="flex justify-end">
               <Button 
                 size="lg" 
-                onClick={handleSubmitCheckIn}
+                onClick={handleSubmitInitialCheckIn}
                 disabled={!hasTranscript}
-                data-testid="button-submit-checkin"
+                data-testid="button-submit-initial"
+              >
+                Share
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
+
+        {step === "peer_checkins" && (
+          <motion.div
+            key="peer_checkins"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-5"
+          >
+            <div className="space-y-2 text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 border border-primary/20 mb-3">
+                <Users className="w-7 h-7 text-primary" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-peers-title">
+                Other Students Checking In
+              </h3>
+            </div>
+
+            <div className="grid gap-3 max-w-2xl mx-auto">
+              {mockPeerCheckins.map((peer, idx) => (
+                <Card key={idx} className="p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                      <User className="w-4 h-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold mb-1.5 text-sm">{peer.name}</h4>
+                      <p className="text-sm italic text-muted-foreground">
+                        "{peer.detail}"
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {step === "ask_more" && (
+          <motion.div
+            key="ask_more"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="text-center space-y-6 py-8"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.15 }}
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20"
+            >
+              <Volume2 className="w-8 h-8 text-primary" />
+            </motion.div>
+            <div className="space-y-3">
+              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-askmore-title">
+                Your Turn Again
+              </h3>
+              <p className="text-base text-muted-foreground max-w-2xl mx-auto" data-testid="text-askmore-prompt">
+                "Thanks {userName}. Would you like to share more about how you're feeling?"
+              </p>
+            </div>
+            <Button 
+              size="lg" 
+              onClick={handleAskMore}
+              data-testid="button-share-more"
+            >
+              Share More
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </motion.div>
+        )}
+
+        {step === "listening_more" && (
+          <motion.div
+            key="listening_more"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-6"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20">
+                  <User className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold" data-testid="text-listeningmore-title">
+                  Share More Details
+                </h3>
+              </div>
+              <p className="text-muted-foreground" data-testid="text-listeningmore-subtitle">
+                Tell us more about what's going on
+              </p>
+            </div>
+
+            <Card className="p-6 space-y-4">
+              {!hasTranscript && (
+                <div className="text-center space-y-4">
+                  <p className="text-sm text-muted-foreground">Choose how to respond:</p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button
+                      size="lg"
+                      variant={isListening ? "default" : "outline"}
+                      onClick={isListening ? stopListening : startListening}
+                      disabled={!recognitionRef.current}
+                      data-testid="button-voice-input-more"
+                    >
+                      {isListening ? <Mic className="mr-2 h-5 w-5 animate-pulse" /> : <MicOff className="mr-2 h-5 w-5" />}
+                      {isListening ? "Listening..." : "Speak Your Response"}
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={useSample}
+                      data-testid="button-use-sample-more"
+                    >
+                      Use Sample Response
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              <Textarea
+                value={transcript}
+                onChange={(e) => setTranscript(e.target.value)}
+                className="min-h-[120px] text-base"
+                placeholder="Share what's on your mind..."
+                data-testid="input-transcript-more"
+              />
+
+              {isListening && (
+                <div className="flex items-center gap-2 text-sm text-primary">
+                  <div className="flex gap-1">
+                    <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                  <span>Listening to your voice...</span>
+                </div>
+              )}
+            </Card>
+
+            <div className="flex justify-end">
+              <Button 
+                size="lg" 
+                onClick={handleSubmitDetailedCheckIn}
+                disabled={!hasTranscript}
+                data-testid="button-submit-detailed"
               >
                 Submit Check-In
                 <ArrowRight className="ml-2 h-5 w-5" />
