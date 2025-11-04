@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema, insertPreorderSchema } from "@shared/schema";
-import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage } from "./lib/openai";
+import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage, generateSpeech } from "./lib/openai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/leads - Create a new lead (waitlist signup)
@@ -67,8 +67,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Missing checkIn or studentName" });
       }
       
-      const validation = await generateEmotionalValidation(checkIn, studentName);
-      res.json({ validation });
+      const result = await generateEmotionalValidation(checkIn, studentName);
+      res.json({ 
+        validation: result.validation,
+        sentiment: result.sentiment 
+      });
     } catch (error) {
       console.error("Error validating emotion:", error);
       res.status(500).json({ error: "Failed to generate validation" });
@@ -123,6 +126,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error generating review message:", error);
       res.status(500).json({ error: "Failed to generate message" });
+    }
+  });
+
+  // POST /api/demo/tts - Generate text-to-speech audio
+  app.post("/api/demo/tts", async (req, res) => {
+    try {
+      const { text, voice } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ error: "Missing text" });
+      }
+      
+      const audioBase64 = await generateSpeech(text, voice);
+      
+      if (!audioBase64) {
+        // Fallback to browser TTS if OpenAI not available
+        return res.json({ audio: null, useBrowserTTS: true });
+      }
+      
+      res.json({ audio: audioBase64, useBrowserTTS: false });
+    } catch (error) {
+      console.error("Error generating speech:", error);
+      res.status(500).json({ error: "Failed to generate speech" });
     }
   });
 

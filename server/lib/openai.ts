@@ -111,21 +111,29 @@ Remember: Return one prompt for each name listed above.`
   }
 }
 
+export interface ValidationResult {
+  validation: string;
+  sentiment: "positive" | "negative" | "neutral";
+}
+
 /**
- * Generate an emotional validation response for a student
+ * Generate an emotional validation response with sentiment analysis for a student
  * @param studentCheckIn - The student's check-in message
  * @param studentName - The student's name
- * @returns A validating, empathetic response
+ * @returns A validating, empathetic response with detected sentiment
  */
 export async function generateEmotionalValidation(
   studentCheckIn: string,
   studentName: string
-): Promise<string> {
+): Promise<ValidationResult> {
   const client = getOpenAIClient();
   
   // Fallback if OpenAI not configured
   if (!client) {
-    return `I hear you're feeling stressed, ${studentName}. That's completely valid when you're working on big projects.`;
+    return {
+      validation: `I hear you're feeling stressed, ${studentName}. That's completely valid when you're working on big projects.`,
+      sentiment: "negative"
+    };
   }
   
   try {
@@ -135,7 +143,18 @@ export async function generateEmotionalValidation(
         {
           role: "system",
           content: `You are a compassionate AI facilitator validating a student's emotions during check-in. 
-Your response should:
+
+Analyze the sentiment of their check-in and provide an appropriate validation:
+- POSITIVE: excited, happy, energetic, proud, grateful
+- NEGATIVE: stressed, worried, sad, angry, anxious, frustrated
+- NEUTRAL: calm, okay, fine, neither positive nor negative
+
+Your validation should match the sentiment:
+- For NEGATIVE: Be warm, empathetic, normalize their feelings
+- For POSITIVE: Be celebratory, enthusiastic, share their joy
+- For NEUTRAL: Be supportive, engaged
+
+Response format:
 - Acknowledge their feelings with empathy
 - Validate their emotions as completely normal
 - Be brief (1-2 sentences)
@@ -144,14 +163,15 @@ Your response should:
 
 Do NOT give advice or solutions. Just validate and acknowledge.
 
-Return JSON with this format:
+Return JSON with this exact format:
 {
-  "validation": "I hear you're feeling stressed, Maya. That's completely valid when you're working on big projects."
+  "validation": "I hear you're feeling stressed, Alex. That's completely valid when you're working on big projects.",
+  "sentiment": "negative"
 }`
         },
         {
           role: "user",
-          content: `Student: ${studentName}\nCheck-in: "${studentCheckIn}"\n\nGenerate an emotional validation response.`
+          content: `Student: ${studentName}\nCheck-in: "${studentCheckIn}"\n\nAnalyze the sentiment and generate an emotional validation response.`
         }
       ],
       response_format: { type: "json_object" },
@@ -159,10 +179,16 @@ Return JSON with this format:
     });
 
     const result = JSON.parse(response.choices[0]?.message?.content || "{}");
-    return result.validation || `I hear you, ${studentName}. Thank you for sharing.`;
+    return {
+      validation: result.validation || `I hear you, ${studentName}. Thank you for sharing.`,
+      sentiment: result.sentiment || "neutral"
+    };
   } catch (error) {
     console.error("Error generating emotional validation:", error);
-    return `I hear you, ${studentName}. Thank you for sharing.`;
+    return {
+      validation: `I hear you, ${studentName}. Thank you for sharing.`,
+      sentiment: "neutral"
+    };
   }
 }
 
@@ -264,5 +290,39 @@ Return JSON with this format:
   } catch (error) {
     console.error("Error generating review message:", error);
     return "Your teacher will review this before anything happens.";
+  }
+}
+
+/**
+ * Generate natural speech audio using OpenAI TTS
+ * @param text - The text to convert to speech
+ * @param voice - The voice to use (alloy, echo, fable, onyx, nova, shimmer)
+ * @returns Audio buffer as base64 string
+ */
+export async function generateSpeech(
+  text: string,
+  voice: "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer" = "nova"
+): Promise<string | null> {
+  const client = getOpenAIClient();
+  
+  if (!client) {
+    console.warn("OpenAI TTS not available. Returning null.");
+    return null;
+  }
+  
+  try {
+    const response = await client.audio.speech.create({
+      model: "tts-1",
+      voice: voice,
+      input: text,
+      speed: 1.0,
+    });
+
+    // Convert response to buffer then to base64
+    const buffer = Buffer.from(await response.arrayBuffer());
+    return buffer.toString('base64');
+  } catch (error) {
+    console.error("Error generating speech:", error);
+    return null;
   }
 }

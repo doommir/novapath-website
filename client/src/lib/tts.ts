@@ -1,6 +1,8 @@
-// Optimized browser TTS with natural voice selection and humanized speech
+// TTS with OpenAI audio and browser fallback
 export const TTS = (() => {
   let voices: SpeechSynthesisVoice[] = [];
+  let useOpenAI = true; // Try OpenAI first
+  
   const preferred = [
     // Edge/Windows - best quality
     "Microsoft Aria Online (Natural) - English (United States)",
@@ -41,7 +43,8 @@ export const TTS = (() => {
     };
   }
 
-  function say(
+  // Browser TTS as fallback
+  function sayBrowser(
     text: string, 
     { rate = 1.15, pitch = 1.0, volume = 1, lang = "en-US" } = {}
   ): Promise<void> {
@@ -59,6 +62,71 @@ export const TTS = (() => {
       speechSynthesis.cancel(); // Avoid queue buildup
       speechSynthesis.speak(u);
     });
+  }
+
+  // OpenAI TTS
+  async function sayOpenAI(text: string): Promise<void> {
+    try {
+      const response = await fetch('/api/demo/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice: 'nova' })
+      });
+
+      if (!response.ok) {
+        throw new Error('TTS API failed');
+      }
+
+      const data = await response.json();
+      
+      if (data.useBrowserTTS || !data.audio) {
+        // Fallback to browser if OpenAI not available
+        useOpenAI = false;
+        return sayBrowser(text);
+      }
+
+      // Decode base64 and play audio
+      const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      
+      return new Promise((resolve) => {
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl);
+          resolve();
+        };
+        audio.onerror = () => {
+          URL.revokeObjectURL(audioUrl);
+          useOpenAI = false;
+          resolve();
+        };
+        audio.play();
+      });
+    } catch (error) {
+      console.error('OpenAI TTS error, falling back to browser:', error);
+      useOpenAI = false;
+      return sayBrowser(text);
+    }
+  }
+
+  function base64ToBlob(base64: string, contentType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
+  }
+
+  async function say(
+    text: string, 
+    { rate = 1.15, pitch = 1.0, volume = 1, lang = "en-US" } = {}
+  ): Promise<void> {
+    if (useOpenAI) {
+      return sayOpenAI(text);
+    }
+    return sayBrowser(text, { rate, pitch, volume, lang });
   }
 
   // Light text normalization for natural speech
