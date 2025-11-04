@@ -85,6 +85,25 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 
 ## Recent Changes
 
+### November 4, 2025 - Sentiment Analysis & OpenAI Natural Voice
+- **Sentiment Analysis Integration**: AI now detects emotional sentiment in check-ins
+  - OpenAI analyzes student input for positive, negative, or neutral sentiment
+  - Validation responses adapt to sentiment:
+    - NEGATIVE (stressed, worried, sad) → warm, empathetic tone
+    - POSITIVE (excited, happy, proud) → celebratory, enthusiastic tone
+    - NEUTRAL → supportive, engaged tone
+  - `/api/demo/validate-emotion` endpoint now returns both validation text and sentiment
+- **OpenAI Text-to-Speech**: Replaced browser TTS with natural human-sounding voice
+  - Uses OpenAI's TTS API with "nova" voice for realistic speech
+  - New `/api/demo/tts` endpoint generates audio from text
+  - Audio returned as base64, decoded to Blob, played via HTML5 Audio
+  - Graceful fallback to browser Speech Synthesis if OpenAI unavailable
+  - Significantly more natural and human-like compared to robotic browser voices
+- **Technical Implementation**:
+  - Leverages existing Replit AI Integrations for OpenAI access
+  - Robust error handling with automatic fallbacks
+  - No breaking changes to existing demo flow
+
 ### November 4, 2025 - Demo Flow Optimization for Speed & Naturalness
 - **Streamlined Demo Experience**: Significantly faster and more conversational
   - Removed intermediate loading states (validating, facilitating, processing)
