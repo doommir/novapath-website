@@ -38,3 +38,23 @@ export const insertLeadSchema = createInsertSchema(leads).omit({
 
 export type InsertLead = z.infer<typeof insertLeadSchema>;
 export type Lead = typeof leads.$inferSelect;
+
+export const preorders = pgTable("preorders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull(),
+  name: text("name").notNull(),
+  quantity: text("quantity").notNull(),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+});
+
+export const insertPreorderSchema = createInsertSchema(preorders).omit({
+  id: true,
+  submittedAt: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(1, "Please enter your name"),
+  quantity: z.string().min(1, "Please select a quantity"),
+});
+
+export type InsertPreorder = z.infer<typeof insertPreorderSchema>;
+export type Preorder = typeof preorders.$inferSelect;

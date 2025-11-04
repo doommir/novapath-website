@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Lead, type InsertLead, users, leads } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, users, leads, preorders } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -11,15 +11,18 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   createLead(lead: InsertLead): Promise<Lead>;
+  createPreorder(preorder: InsertPreorder): Promise<Preorder>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private leads: Map<string, Lead>;
+  private preorders: Map<string, Preorder>;
 
   constructor() {
     this.users = new Map();
     this.leads = new Map();
+    this.preorders = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -52,6 +55,19 @@ export class MemStorage implements IStorage {
     this.leads.set(id, lead);
     return lead;
   }
+
+  async createPreorder(insertPreorder: InsertPreorder): Promise<Preorder> {
+    const id = randomUUID();
+    const preorder: Preorder = {
+      id,
+      email: insertPreorder.email,
+      name: insertPreorder.name,
+      quantity: insertPreorder.quantity,
+      submittedAt: new Date()
+    };
+    this.preorders.set(id, preorder);
+    return preorder;
+  }
 }
 
 export class DbStorage implements IStorage {
@@ -78,6 +94,15 @@ export class DbStorage implements IStorage {
       referrer: insertLead.referrer ?? null,
     }).returning();
     return lead;
+  }
+
+  async createPreorder(insertPreorder: InsertPreorder): Promise<Preorder> {
+    const [preorder] = await db.insert(preorders).values({
+      email: insertPreorder.email,
+      name: insertPreorder.name,
+      quantity: insertPreorder.quantity,
+    }).returning();
+    return preorder;
   }
 }
 

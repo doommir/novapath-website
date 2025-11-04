@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertLeadSchema } from "@shared/schema";
+import { insertLeadSchema, insertPreorderSchema } from "@shared/schema";
 import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage } from "./lib/openai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -31,6 +31,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         success: false, 
         error: "Failed to save lead"
+      });
+    }
+  });
+
+  // POST /api/preorders - Create a new preorder (Science Kit)
+  app.post("/api/preorders", async (req, res) => {
+    try {
+      const validatedData = insertPreorderSchema.parse(req.body);
+      const preorder = await storage.createPreorder(validatedData);
+      res.json({ success: true, preorder });
+    } catch (error) {
+      console.error("Error creating preorder:", error instanceof Error ? error.message : "Unknown error");
+      
+      if (error instanceof Error && error.name === "ZodError") {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Invalid form data" 
+        });
+      }
+      
+      res.status(500).json({ 
+        success: false, 
+        error: "Failed to save preorder"
       });
     }
   });
