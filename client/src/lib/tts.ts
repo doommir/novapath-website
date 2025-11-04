@@ -85,19 +85,23 @@ export const TTS = (() => {
   }
 
   async function speakValidation(validationText: string) {
-    await say(humanize(validationText), { rate: 1.15, pitch: 1.0 });
+    // Warm, empathetic tone
+    await say(humanize(validationText), { rate: 1.05, pitch: 1.05 });
   }
   
   async function speakPeerPrompt(promptText: string) {
-    await say(humanize(promptText), { rate: 1.2, pitch: 1.0 });
+    // Encouraging, slightly upbeat
+    await say(humanize(promptText), { rate: 1.1, pitch: 1.08 });
   }
 
   async function speakResults(introText: string) {
-    await say(humanize(introText), { rate: 1.15, pitch: 1.0 });
+    // Informative, neutral
+    await say(humanize(introText), { rate: 1.08, pitch: 1.02 });
   }
 
   async function speakReview(reviewText: string) {
-    await say(humanize(reviewText), { rate: 1.1, pitch: 1.0 });
+    // Reassuring, calm
+    await say(humanize(reviewText), { rate: 1.0, pitch: 1.03 });
   }
 
   function stop() {

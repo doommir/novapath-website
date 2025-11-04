@@ -66,3 +66,24 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 - Referral tracking supports `?ref=` URL parameter.
 - OpenAI integration uses Replit AI Integrations with graceful fallback.
 - Demo API endpoints include `/api/demo/validate-emotion`, `/api/demo/peer-prompts`, `/api/demo/results-intro`, and `/api/demo/review-message`.
+
+## Recent Changes
+
+### November 4, 2025 - Voice Naturalness & Peer Support Fix
+- **Fixed Peer Facilitation**: Resolved empty prompts array issue
+  - Clarified OpenAI system prompt with explicit "CRITICAL" instruction to return one prompt per peer
+  - Added validation to ensure non-empty prompts before returning
+  - Enhanced error handling with contextual fallback messages
+  - Peer support now working: Marcus gets contextual prompt based on Maya's check-in
+- **More Human Voice**: Varied speech characteristics for different message types
+  - Validation: Slower, warmer (rate: 1.05, pitch: 1.05) - empathetic tone
+  - Peer prompts: Upbeat (rate: 1.1, pitch: 1.08) - encouraging
+  - Results: Neutral (rate: 1.08, pitch: 1.02) - informative
+  - Review: Calm (rate: 1.0, pitch: 1.03) - reassuring
+  - Added 400ms natural pauses between voice segments for breathing room
+  - Variation in pitch and rate makes each segment feel distinct, less robotic
+- **Performance Optimizations**: 
+  - Parallelized all API calls (validation, peer prompts, results intro run simultaneously)
+  - Reduced animations: 0.2s transitions, 1.2s spinner, quick fade-ins
+  - Streamlined visuals: concise titles, compact layouts, smaller icons
+  - Total demo time: ~3-4 seconds from check-in to results

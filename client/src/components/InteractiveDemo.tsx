@@ -183,17 +183,21 @@ export function InteractiveDemo() {
       setPeerPrompts(promptsData.prompts || []);
       setResultsIntro(resultsData.intro);
       
-      // Show validation briefly while speaking
+      // Show validation while speaking
       setStep("validating");
       await TTS.speakValidation(validationData.validation);
       
-      // Quick transition to facilitation
+      // Natural pause before transition
+      await new Promise(resolve => setTimeout(resolve, 400));
+      
+      // Transition to facilitation
       setStep("facilitating");
       if (promptsData.prompts && promptsData.prompts.length > 0) {
         await TTS.speakPeerPrompt(promptsData.prompts[0].prompt);
+        await new Promise(resolve => setTimeout(resolve, 400));
       }
       
-      // Jump to results - no artificial processing delay
+      // Show results
       setStep("results");
       await TTS.speakResults(resultsData.intro);
     } catch (error) {

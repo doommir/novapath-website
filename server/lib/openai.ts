@@ -53,41 +53,57 @@ export async function generatePeerPrompts(
       messages: [
         {
           role: "system",
-          content: `You are a compassionate AI facilitator helping students in a group check-in. Based on Maya's check-in, generate a supportive prompt for ONE peer to share their perspective. The prompt should:
-- Validate emotions and show empathy
-- Encourage authentic sharing
-- Connect to what Maya shared (especially if she mentioned working with them)
-- Be warm, age-appropriate for K-12 students
-- Keep responses brief and conversational
-- Sound natural, like a caring teacher facilitating discussion
+          content: `You are a compassionate AI facilitator in a student group check-in. Generate a supportive prompt for each peer listed.
 
-Return JSON with this format:
+Guidelines:
+- Be warm and empathetic, like a caring teacher
+- Keep each prompt brief (1-2 sentences)
+- Connect to what Maya shared if relevant
+- Encourage authentic sharing
+- Age-appropriate for K-12 students
+
+CRITICAL: You MUST return exactly one prompt object for each peer name provided.
+
+Return JSON with this exact structure:
 {
   "prompts": [
-    {
-      "peerName": "Marcus",
-      "prompt": "Marcus, Maya mentioned you're working together. How are you feeling about the project?"
-    }
+    {"peerName": "Marcus", "prompt": "Marcus, Maya mentioned you're working together on the science fair. How are you feeling about it?"}
   ]
 }`
         },
         {
           role: "user",
-          content: `Maya's check-in: "${studentCheckIn}"\n\nPeers to prompt: ${peerNames.join(", ")}\n\nGenerate supportive prompts for each peer.`
+          content: `Maya said: "${studentCheckIn}"
+
+Generate a supportive prompt for: ${peerNames.join(", ")}
+
+Remember: Return one prompt for each name listed above.`
         }
       ],
       response_format: { type: "json_object" },
       max_completion_tokens: 1000,
     });
 
-    const result = JSON.parse(response.choices[0]?.message?.content || "{}");
-    return result.prompts || [];
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error("No response from OpenAI");
+    }
+    
+    const result = JSON.parse(content);
+    
+    // Validate we got prompts
+    if (!result.prompts || !Array.isArray(result.prompts) || result.prompts.length === 0) {
+      console.error("OpenAI returned empty prompts array. Response:", content);
+      throw new Error("Empty prompts array");
+    }
+    
+    return result.prompts;
   } catch (error) {
     console.error("Error generating peer prompts:", error);
     // Return default prompts if API fails
     return peerNames.map(name => ({
       peerName: name,
-      prompt: `${name}, would you like to share how you're feeling today?`,
+      prompt: `${name}, Maya mentioned feeling stressed about the science fair. How are you feeling about working together?`,
       emotion: "neutral"
     }));
   }
