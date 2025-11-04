@@ -20,8 +20,8 @@ import { TTS } from "@/lib/tts";
 
 type DemoStep = "welcome" | "initial_checkin" | "peer_checkins" | "ask_more" | "listening_more" | "validating" | "facilitating" | "processing" | "results" | "review" | "complete";
 
-const sampleInitialResponse = `I'm Maya and I'm feeling stressed`;
-const sampleDetailedResponse = `I'm worried about the science fair project. Marcus and I are working together but we're falling behind and I don't know if we'll finish in time.`;
+const sampleInitialResponse = `I'm Alex and I'm feeling stressed`;
+const sampleDetailedResponse = `I'm worried about the science fair project. My partner and I are working together but we're falling behind and I don't know if we'll finish in time.`;
 
 const mockPeerCheckins = [
   { name: "Marcus", feeling: "overwhelmed", detail: "I'm Marcus and I'm feeling overwhelmed with all the assignments this week" },
@@ -199,7 +199,7 @@ export function InteractiveDemo() {
         fetch('/api/demo/peer-prompts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ checkIn: transcript, peerNames: ['Marcus'] })
+          body: JSON.stringify({ checkIn: transcript, studentName: userName, peerNames: ['Marcus'] })
         }),
         fetch('/api/demo/results-intro', {
           method: 'POST',
@@ -402,7 +402,7 @@ export function InteractiveDemo() {
                 value={transcript}
                 onChange={(e) => setTranscript(e.target.value)}
                 className="min-h-[100px] text-base"
-                placeholder="Example: I'm Maya and I'm feeling stressed"
+                placeholder="Example: I'm Alex and I'm feeling stressed"
                 data-testid="input-transcript"
               />
 
@@ -611,7 +611,7 @@ export function InteractiveDemo() {
                 Validating
               </h3>
               <p className="text-base text-muted-foreground max-w-2xl mx-auto italic" data-testid="text-validation">
-                "{validationText || 'I hear you\'re feeling stressed, Maya.'}"
+                "{validationText || `I hear you. Thank you for sharing.`}"
               </p>
             </div>
           </motion.div>
@@ -889,7 +889,7 @@ export function InteractiveDemo() {
                     <div className="flex-1">
                       <p className="font-medium">Counselor Alert: Awaiting approval</p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Should the counselor be notified about Maya's stress?
+                        Should the counselor be notified about {userName}'s concerns?
                       </p>
                       <div className="flex gap-2 mt-2">
                         <Button size="sm" variant="outline" className="text-xs" data-testid="button-decline-counselor">Decline</Button>
@@ -903,7 +903,7 @@ export function InteractiveDemo() {
                     <div className="flex-1">
                       <p className="font-medium">Peer Support: Awaiting approval</p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Should Maya and Marcus have a facilitated check-in?
+                        Should {userName} and their partner have a facilitated check-in?
                       </p>
                       <div className="flex gap-2 mt-2">
                         <Button size="sm" variant="outline" className="text-xs" data-testid="button-decline-peer">Decline</Button>

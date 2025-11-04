@@ -69,12 +69,36 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 
 ## Recent Changes
 
+### November 4, 2025 - Natural Group Check-In Flow & Dynamic Names
+- **Restructured Demo Flow**: More realistic group check-in experience
+  - First prompt asks for name + feeling word (e.g., "I'm Alex and I'm feeling stressed")
+  - Shows 2 mock peer check-ins after user's initial share (Marcus, Jordan)
+  - AI then asks user to share more details about their feelings
+  - Detailed response triggers validation, facilitation, and results
+  - Creates natural pacing: introduce → observe peers → share deeper → get support
+- **Dynamic Name Throughout**: Completely removed hardcoded "Maya"
+  - System extracts student name from initial check-in using regex
+  - All API calls now pass dynamic `studentName` parameter
+  - Validation, peer prompts, results, and review all use actual student name
+  - Sample responses use "Alex" instead of "Maya" for clarity
+  - Fallback messages are generic or use extracted name
+- **New Demo Steps**: 
+  - `initial_checkin`: First share (name + feeling word)
+  - `peer_checkins`: Display 2 mock peers checking in
+  - `ask_more`: AI prompts for more details
+  - `listening_more`: User shares detailed concerns
+  - All subsequent steps remain: validating, facilitating, results, review, complete
+- **Backend Updates**:
+  - `generatePeerPrompts()` now accepts `studentName` parameter
+  - `/api/demo/peer-prompts` endpoint requires `studentName` in request body
+  - All fallbacks and OpenAI prompts use dynamic student names
+
 ### November 4, 2025 - Voice Naturalness & Peer Support Fix
 - **Fixed Peer Facilitation**: Resolved empty prompts array issue
   - Clarified OpenAI system prompt with explicit "CRITICAL" instruction to return one prompt per peer
   - Added validation to ensure non-empty prompts before returning
   - Enhanced error handling with contextual fallback messages
-  - Peer support now working: Marcus gets contextual prompt based on Maya's check-in
+  - Peer support now working: Marcus gets contextual prompt based on student's check-in
 - **More Human Voice**: Varied speech characteristics for different message types
   - Validation: Slower, warmer (rate: 1.05, pitch: 1.05) - empathetic tone
   - Peer prompts: Upbeat (rate: 1.1, pitch: 1.08) - encouraging

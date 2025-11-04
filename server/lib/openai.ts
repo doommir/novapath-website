@@ -29,11 +29,13 @@ export interface PeerPrompt {
 /**
  * Generate intelligent peer prompts based on a student's check-in
  * @param studentCheckIn - The student's check-in message
+ * @param studentName - The student's name
  * @param peerNames - Names of the peers to prompt
  * @returns Array of personalized peer prompts
  */
 export async function generatePeerPrompts(
   studentCheckIn: string,
+  studentName: string,
   peerNames: string[]
 ): Promise<PeerPrompt[]> {
   const client = getOpenAIClient();
@@ -42,7 +44,7 @@ export async function generatePeerPrompts(
   if (!client) {
     return peerNames.map(name => ({
       peerName: name,
-      prompt: `${name}, Maya mentioned you're working together. How are you feeling about the project?`,
+      prompt: `${name}, ${studentName} mentioned you're working together. How are you feeling about the project?`,
       emotion: "stressed"
     }));
   }
@@ -58,7 +60,7 @@ export async function generatePeerPrompts(
 Guidelines:
 - Be warm and empathetic, like a caring teacher
 - Keep each prompt brief (1-2 sentences)
-- Connect to what Maya shared if relevant
+- Connect to what the student shared if relevant
 - Encourage authentic sharing
 - Age-appropriate for K-12 students
 
@@ -67,13 +69,13 @@ CRITICAL: You MUST return exactly one prompt object for each peer name provided.
 Return JSON with this exact structure:
 {
   "prompts": [
-    {"peerName": "Marcus", "prompt": "Marcus, Maya mentioned you're working together on the science fair. How are you feeling about it?"}
+    {"peerName": "Marcus", "prompt": "Marcus, the student mentioned you're working together on the science fair. How are you feeling about it?"}
   ]
 }`
         },
         {
           role: "user",
-          content: `Maya said: "${studentCheckIn}"
+          content: `${studentName} said: "${studentCheckIn}"
 
 Generate a supportive prompt for: ${peerNames.join(", ")}
 
@@ -103,7 +105,7 @@ Remember: Return one prompt for each name listed above.`
     // Return default prompts if API fails
     return peerNames.map(name => ({
       peerName: name,
-      prompt: `${name}, Maya mentioned feeling stressed about the science fair. How are you feeling about working together?`,
+      prompt: `${name}, ${studentName} mentioned feeling stressed. How are you feeling about working together?`,
       emotion: "neutral"
     }));
   }

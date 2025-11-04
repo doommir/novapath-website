@@ -55,13 +55,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/demo/peer-prompts - Generate peer prompts for group check-in
   app.post("/api/demo/peer-prompts", async (req, res) => {
     try {
-      const { checkIn, peerNames } = req.body;
+      const { checkIn, studentName, peerNames } = req.body;
       
-      if (!checkIn || !Array.isArray(peerNames)) {
-        return res.status(400).json({ error: "Missing checkIn or peerNames array" });
+      if (!checkIn || !studentName || !Array.isArray(peerNames)) {
+        return res.status(400).json({ error: "Missing checkIn, studentName, or peerNames array" });
       }
       
-      const prompts = await generatePeerPrompts(checkIn, peerNames);
+      const prompts = await generatePeerPrompts(checkIn, studentName, peerNames);
       res.json({ prompts });
     } catch (error) {
       console.error("Error generating peer prompts:", error);
