@@ -39,6 +39,7 @@ import {
   Loader2,
   Mail
 } from "lucide-react";
+import scienceKitVideo from "@assets/20251104_1510_01k98d34e9fsyav1rsyt16ykwc_1762298350183.mov";
 
 export default function ScienceKit() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -72,64 +73,88 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_1000px_at_70%_60%,hsl(340,85%,65%,0.20),transparent_50%)] animate-pulse-slow" />
 
       <div className="relative mx-auto max-w-6xl px-6 py-20 md:py-32">
-        <motion.div
-          className="text-center"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <TestTube2 className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary" data-testid="text-badge">
-              AI-Infused Science Kit
-            </span>
-          </div>
+        <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+          <motion.div
+            className="text-center md:text-left"
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <TestTube2 className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary" data-testid="text-badge">
+                AI-Infused Science Kit
+              </span>
+            </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white" data-testid="text-hero-headline">
-            Hands-On Experiments + AI Assistant = Learning That Sticks
-          </h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white" data-testid="text-hero-headline">
+              Hands-On Experiments + AI Assistant = Learning That Sticks
+            </h1>
 
-          <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed max-w-3xl mx-auto" data-testid="text-hero-subheadline">
-            Bring the magic of chemistry and the power of artificial intelligence into your home or classroom. 
-            NovaPath's AI-Infused Science Kit blends hands-on experiments with an interactive AI guide.
-          </p>
+            <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
+              Bring the magic of chemistry and the power of artificial intelligence into your home or classroom. 
+              NovaPath's AI-Infused Science Kit blends hands-on experiments with an interactive AI guide.
+            </p>
 
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-12">
-            <Button
-              size="lg"
-              className="text-lg px-8 shadow-[0_0_40px_-5px_hsl(280,95%,60%,0.4)] hover:shadow-[0_0_60px_-5px_hsl(280,95%,60%,0.6)] transition-shadow duration-300"
-              onClick={onCtaClick}
-              data-testid="button-preorder-hero"
-            >
-              Pre-Order Now - $34.95
-            </Button>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center md:justify-start">
+              <Button
+                size="lg"
+                className="text-lg px-8 shadow-[0_0_40px_-5px_hsl(280,95%,60%,0.4)] hover:shadow-[0_0_60px_-5px_hsl(280,95%,60%,0.6)] transition-shadow duration-300"
+                onClick={onCtaClick}
+                data-testid="button-preorder-hero"
+              >
+                Pre-Order Now - $34.95
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center md:justify-start mb-8">
               <Mail className="h-4 w-4" />
               <span data-testid="text-shipping-info">Free shipping on orders over $50</span>
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
-            {[
-              { label: "Ages 6-12", icon: GraduationCap },
-              { label: "Safe Materials", icon: Beaker },
-              { label: "AI Guide", icon: Sparkles },
-              { label: "STEM Aligned", icon: CheckCircle2 }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg bg-card/30 border border-border/50"
-                initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 + index * 0.1 }}
-                data-testid={`feature-${index}`}
+            <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto md:mx-0">
+              {[
+                { label: "Ages 6-12", icon: GraduationCap },
+                { label: "Safe Materials", icon: Beaker },
+                { label: "AI Guide", icon: Sparkles },
+                { label: "STEM Aligned", icon: CheckCircle2 }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="flex items-center gap-2 p-3 rounded-lg bg-card/30 border border-border/50"
+                  initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 + index * 0.1 }}
+                  data-testid={`feature-${index}`}
+                >
+                  <item.icon className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span className="text-sm font-medium text-foreground">{item.label}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="relative"
+            initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
+          >
+            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl">
+              <video
+                src={scienceKitVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto"
+                data-testid="video-demo"
               >
-                <item.icon className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium text-foreground">{item.label}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -87,7 +87,7 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 
 ### November 4, 2025 - AI-Infused Science Kit Landing Page
 - **New Product Page**: Created separate landing page at `/science-kit`
-  - Hero section with product pricing ($34.95) and CTA
+  - Hero section with product pricing ($34.95), CTA, and embedded demo video (autoplay loop)
   - What Makes Different section (AI Assistant, Tactile+Tech, Built for Learning)
   - What's Inside section (kit contents with icons)
   - Learning Outcomes section
@@ -99,6 +99,7 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
   - Created storage interface methods for preorder CRUD
   - Implemented POST `/api/preorders` endpoint with validation
 - **Design**: Follows same dark theme with purple/violet gradients, mobile-first responsive layout
+- **Video**: Two-column hero layout with text content left, demo video right (responsive)
 
 ### November 4, 2025 - Natural Group Check-In Flow & Dynamic Names
 - **Restructured Demo Flow**: More realistic group check-in experience
