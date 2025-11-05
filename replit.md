@@ -85,6 +85,24 @@ The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspec
 
 ## Recent Changes
 
+### November 5, 2025 - Demo Audio Refinements
+- **Silent Peer Check-ins**: Mock student check-ins (Marcus, Jordan) now display visually without audio
+  - Creates more realistic classroom observation experience
+  - Reduces audio fatigue and focuses attention on AI-to-user interaction
+  - User sees peers checking in but only hears AI speaking to them directly
+- **Spoken Validation**: AI validation response now spoken with sentiment-aware tone
+  - Validation plays before results screen with tone matched to detected sentiment
+  - Negative sentiment: slower rate (1.05), warmer pitch (1.05) for empathy
+  - Positive sentiment: faster rate (1.15), higher pitch (1.08) for enthusiasm
+  - Ensures user receives emotional acknowledgment before seeing analysis
+- **Updated Flow**: Demo progression now feels more natural
+  1. User shares initial check-in → AI acknowledges
+  2. Peer check-ins display silently (3 seconds)
+  3. AI asks user to share more (spoken)
+  4. User shares details → AI validates with sentiment-aware response (spoken)
+  5. Results screen shows analysis cards
+  6. Teacher review and approval flow
+
 ### November 4, 2025 - Sentiment Analysis & OpenAI Natural Voice
 - **Sentiment Analysis Integration**: AI now detects emotional sentiment in check-ins
   - OpenAI analyzes student input for positive, negative, or neutral sentiment
