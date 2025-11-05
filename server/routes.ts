@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema, insertPreorderSchema } from "@shared/schema";
 import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage, generateSpeech } from "./lib/openai";
+import { setupRealtimeWebSocket } from "./lib/realtime";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/leads - Create a new lead (waitlist signup)
@@ -153,6 +154,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   const httpServer = createServer(app);
+
+  // Setup WebSocket server for OpenAI Realtime API
+  setupRealtimeWebSocket(httpServer);
 
   return httpServer;
 }

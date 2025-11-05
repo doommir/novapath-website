@@ -17,8 +17,9 @@ import {
   Clock
 } from "lucide-react";
 import { TTS } from "@/lib/tts";
+import { useRealtimeAPI } from "@/hooks/useRealtimeAPI";
 
-type DemoStep = "welcome" | "initial_checkin" | "peer_checkins" | "ask_more" | "listening_more" | "results" | "review" | "complete";
+type DemoStep = "welcome" | "initial_checkin" | "peer_checkins" | "ask_more" | "listening_more" | "realtime_conversation" | "results" | "review" | "complete";
 
 const sampleInitialResponse = `I'm Alex and I'm feeling stressed`;
 const sampleDetailedResponse = `I'm worried about the science fair project. My partner and I are working together but we're falling behind and I don't know if we'll finish in time.`;
@@ -36,6 +37,8 @@ export function InteractiveDemo() {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [usedVoice, setUsedVoice] = useState(false);
+  const [enableRealtimeMode, setEnableRealtimeMode] = useState(false); // Toggle for Realtime API
+  const [realtimeTranscript, setRealtimeTranscript] = useState("");
   const [validationText, setValidationText] = useState("");
   const [peerPrompts, setPeerPrompts] = useState<Array<{peerName: string; prompt: string}>>([]);
   const [resultsIntro, setResultsIntro] = useState("");
@@ -70,6 +73,28 @@ export function InteractiveDemo() {
   });
   const processingTimeoutRef = useRef<number | null>(null);
   const recognitionRef = useRef<any>(null);
+
+  // Initialize Realtime API hook
+  const realtimeAPI = useRealtimeAPI({
+    onAudioReceived: (audioData: ArrayBuffer) => {
+      console.log('Received audio chunk:', audioData.byteLength, 'bytes');
+    },
+    onTranscriptReceived: (transcript: string) => {
+      setRealtimeTranscript(prev => prev + transcript);
+      console.log('AI transcript:', transcript);
+    },
+    onError: (error: string) => {
+      console.error('Realtime API error:', error);
+      // Fallback to traditional flow
+      setEnableRealtimeMode(false);
+    },
+    onConnected: () => {
+      console.log('Realtime API connected');
+    },
+    onDisconnected: () => {
+      console.log('Realtime API disconnected');
+    }
+  });
 
   useEffect(() => {
     // Warmup TTS
