@@ -170,14 +170,11 @@ export function InteractiveDemo() {
     const ack = acknowledgments[Math.floor(Math.random() * acknowledgments.length)];
     await TTS.say(ack, { rate: 1.2, pitch: 1.0 });
     
-    // Show peer check-ins
+    // Show peer check-ins (displayed but not spoken)
     setStep("peer_checkins");
     
-    // Speak each peer's check-in with minimal pause
-    for (const peer of mockPeerCheckins) {
-      await TTS.say(peer.detail, { rate: 1.15, pitch: 1.0 });
-      await new Promise(resolve => setTimeout(resolve, 200));
-    }
+    // Wait for user to see peer check-ins (no audio)
+    await new Promise(resolve => setTimeout(resolve, 3000));
     
     // Ask user to share more
     setStep("ask_more");
@@ -236,6 +233,20 @@ export function InteractiveDemo() {
       setValidationText(validationData.validation);
       setPeerPrompts(promptsData.prompts || []);
       setResultsIntro(resultsData.intro);
+      
+      // Speak validation with sentiment-aware tone
+      const sentiment = validationData.sentiment || 'neutral';
+      let ttsParams = { rate: 1.1, pitch: 1.0 };
+      
+      if (sentiment === 'negative') {
+        // Warmer, slower for empathy
+        ttsParams = { rate: 1.05, pitch: 1.05 };
+      } else if (sentiment === 'positive') {
+        // More upbeat
+        ttsParams = { rate: 1.15, pitch: 1.08 };
+      }
+      
+      await TTS.say(validationData.validation, ttsParams);
       
       // Update AI results with user's name
       setAiResults(prev => ({
