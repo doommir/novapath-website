@@ -389,13 +389,7 @@ function InquirySection() {
 
   const mutation = useMutation({
     mutationFn: async (data: InsertPdInquiry) => {
-      return await apiRequest("/api/pd-inquiries", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      return apiRequest("POST", "/api/pd-inquiries", data);
     },
     onSuccess: () => {
       setSubmitted(true);
