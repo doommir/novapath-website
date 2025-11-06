@@ -40,6 +40,7 @@ import {
   Wrench,
   Rocket
 } from "lucide-react";
+import Footer from "@/components/Footer";
 
 export default function ProfessionalDevelopment() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -591,26 +592,5 @@ function InquirySection() {
         </Card>
       </div>
     </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-border/50 py-12 px-6 bg-background/80">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold text-white">NovaPath</span>
-          </div>
-          
-          <div className="flex gap-6 text-sm text-foreground/60">
-            <a href="mailto:hello@novapath.ai" className="hover:text-foreground transition-colors" data-testid="link-email">
-              hello@novapath.ai
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 }
