@@ -1,199 +1,63 @@
 # NovaPath Landing Pages
 
 ## Overview
+This application hosts three distinct product landing pages under the NovaPath brand:
+1.  **NovaPath (Education Operations)**: An AI-powered education operations toolkit for K-12 schools, focused on lead generation through an interactive, voice-driven demo and early access waitlist. It emphasizes human-centered AI, freeing educators to focus on core tasks.
+2.  **AI-Infused Science Kit**: A product page for a hands-on science experiment kit with an integrated AI assistant, promoting AI literacy and human-in-the-loop design for K-5 students, aligned with NGSS. It includes pre-order functionality.
+3.  **Professional Development**: A landing page for educator professional development sessions focused on AI literacy through cobuilding solutions to real school challenges (e.g., attendance tracking, parent communication), featuring a 4-step process and an inquiry form for custom sessions.
 
-This application hosts two separate product landing pages under the NovaPath brand:
-
-1. **NovaPath (Education Operations)** - A single-page landing site for an AI-powered education operations toolkit for K-12 schools. Its primary purpose is lead generation, capturing email addresses for an early access waitlist. The site features a modern SaaS design, including a hero section, an interactive voice-driven demo, and a lead capture form. It emphasizes a human-centered AI approach, promoting the idea that "AI supports your school — freeing educators to focus on what matters," with AI serving as a supportive tool built by and for educators.
-
-2. **AI-Infused Science Kit** - A product landing page at `/science-kit` for a hands-on science experiment kit with an integrated AI assistant. Emphasizes AI literacy education and human-in-the-loop design, teaching children to use AI as a supportive tool while maintaining control of their learning. Highlights NGSS (Next Generation Science Standards) alignment for grades K-5, covering physical science, engineering design, science practices, and crosscutting concepts. The page features pre-order functionality, collecting email addresses, names, and quantity preferences.
-
-The application is a full-stack TypeScript project with a React frontend and an Express backend, designed with a mobile-first, responsive approach.
+The project is a full-stack TypeScript application with a React frontend and an Express backend, designed for mobile-first responsiveness.
 
 ## User Preferences
-
 Preferred communication style: Simple, everyday language.
 
 ## System Architecture
 
 ### Frontend Architecture
-The frontend uses React 18 with TypeScript, Vite for building, and Wouter for routing. UI components leverage Shadcn/ui (New York style), Radix UI primitives, and Tailwind CSS for styling with a mobile-first, dark-themed design (purple/violet with indigo-to-blue gradients, Inter font). Form management is handled by React Hook Form with Zod for validation. Key decisions include a single-page application structure, component-based architecture for reusability, and path aliasing for clear imports.
+The frontend is built with React 18, TypeScript, Vite, and Wouter for routing. UI components utilize Shadcn/ui (New York style), Radix UI primitives, and Tailwind CSS, featuring a mobile-first, dark-themed design with purple/violet and indigo-to-blue gradients, and the Inter font. Form management uses React Hook Form with Zod for validation. It employs a single-page application structure and a component-based architecture with path aliasing.
 
 ### Backend Architecture
-The backend is built with Express.js and TypeScript, utilizing ESM for modern module management. It integrates Vite middleware for HMR during development and includes custom logging and error handling. Storage is abstracted with an `IStorage` interface, currently using in-memory storage but prepared for PostgreSQL via Drizzle ORM and Neon serverless. The API follows RESTful conventions with JSON for data transfer and uses shared, Drizzle-Zod generated schemas for type safety and validation.
+The backend uses Express.js and TypeScript with ESM. It integrates Vite middleware for HMR in development and includes custom logging and error handling. Storage is abstracted via an `IStorage` interface, supporting in-memory storage and prepared for PostgreSQL using Drizzle ORM and Neon serverless. The API is RESTful, uses JSON, and leverages shared, Drizzle-Zod generated schemas for type safety and validation.
 
 ### Database Schema
-The system uses Drizzle ORM configured for PostgreSQL. Data models include:
-- `Users` table (for authentication)
-- `Leads` table (for NovaPath waitlist signups) - tracks email, role, optional school, and referrer
-- `Preorders` table (for Science Kit pre-orders) - tracks email, name, and quantity
-
-All tables use UUIDs, type-safe schemas, and Zod validation. Schema-first development ensures type safety, and separate insert schemas prevent manipulation of auto-generated fields.
+The system uses Drizzle ORM for PostgreSQL with the following data models:
+-   `Users`: For authentication.
+-   `Leads`: Stores email, role, optional school, and referrer for waitlist signups.
+-   `Preorders`: Stores email, name, and quantity for Science Kit pre-orders.
+-   `PdInquiries`: Stores email, name, school, role, and pain point for PD inquiries.
+All tables use UUIDs, type-safe schemas, and Zod validation, with schema-first development.
 
 ### UI/UX Decisions
-The design focuses on a mobile-first, responsive layout with a 9:16 mobile aspect ratio scaling to desktop. The color palette is dark-themed with purple/violet and indigo-to-blue gradients. Typography uses the Inter font, and spacing adheres to Tailwind's default scale. Components include hover and active elevation effects for interactivity. The interactive demo shifts perspective to a student experience ("Maya Chen"), using voice interaction (TTS and Web Speech API) to demonstrate AI workflows for attendance, counselor alerts, and peer support, with a teacher review dashboard emphasizing human oversight and transparency.
+The design is mobile-first and responsive, featuring a dark theme with purple/violet and indigo-to-blue gradients. Typography uses the Inter font. Interactive elements include hover/active elevation effects. The interactive demo simulates a student experience (e.g., "Maya Chen") with voice interaction (TTS and Web Speech API) for AI-driven workflows (attendance, counselor alerts, peer support), emphasizing human oversight via a teacher review dashboard. The AI assistant uses sentiment analysis to adapt its tone and provides natural, human-like voice responses via OpenAI's TTS.
 
 ## External Dependencies
 
 ### Frontend Libraries
-- **Radix UI**: Primitive component library (accordion, dialog, dropdown, select, toast, tooltip).
-- **Lucide React**: Icon library.
-- **Class Variance Authority (CVA)**: Component variant management.
-- **CMDK**: Command palette component.
-- **Embla Carousel React**: Carousel/slider functionality.
-- **React Day Picker**: Date picker.
-- **Vaul**: Drawer component primitive.
-- **React Hook Form**: Form state management.
-- **Zod**: Schema validation.
-- **@hookform/resolvers**: Zod integration with React Hook Form.
-- **Wouter**: Lightweight client-side routing.
-- **TanStack Query (React Query)**: Server state management.
+-   **Radix UI**: Primitive component library.
+-   **Lucide React**: Icon library.
+-   **Tailwind CSS**: Utility-first CSS framework.
+-   **React Hook Form & Zod**: Form management and validation.
+-   **Wouter**: Lightweight client-side routing.
+-   **TanStack Query**: Server state management.
+-   **Embla Carousel React**: Carousel functionality.
+-   **React Day Picker**: Date picker.
+-   **Vaul**: Drawer component primitive.
 
 ### Backend Services
-- **Neon Database**: Serverless PostgreSQL provider (`@neondatabase/serverless`).
-- **Drizzle ORM**: Type-safe database toolkit.
-- **Connect PG Simple**: PostgreSQL session store (for future use).
-- **OpenAI**: AI model integration via Replit AI Integrations (for emotional validation and peer prompt generation).
+-   **Neon Database**: Serverless PostgreSQL provider.
+-   **Drizzle ORM**: Type-safe database toolkit.
+-   **OpenAI**: AI model integration for emotional validation and peer prompt generation via Replit AI Integrations.
 
 ### Build Tools & Developer Experience
-- **Vite**: Frontend build tool and dev server.
-- **esbuild**: Production server bundling.
-- **TSX**: TypeScript execution for Node.js.
-- **PostCSS & Autoprefixer**: CSS processing.
-- **Tailwind CSS**: Utility-first CSS framework.
+-   **Vite**: Frontend build tool and dev server.
+-   **esbuild**: Production server bundling.
+-   **TSX**: TypeScript execution for Node.js.
 
 ### Replit-Specific Integrations
-- **@replit/vite-plugin-runtime-error-modal**: Development error overlay.
-- **@replit/vite-plugin-cartographer**: Development tooling.
-- **@replit/vite-plugin-dev-banner**: Development environment banner.
+-   `@replit/vite-plugin-runtime-error-modal`
+-   `@replit/vite-plugin-cartographer`
+-   `@replit/vite-plugin-dev-banner`
 
 ### Fonts & Assets
-- **Google Fonts (Inter)**: Primary typography.
-- **Local Assets**: Hero dashboard mockup image (`attached_assets/generated_images/`).
-
-### Key Integration Notes
-- Database URL configured via `DATABASE_URL` environment variable.
-- Form submission currently uses in-memory storage, designed for PostgreSQL migration.
-- Referral tracking supports `?ref=` URL parameter.
-- OpenAI integration uses Replit AI Integrations with graceful fallback.
-- Demo API endpoints include `/api/demo/validate-emotion`, `/api/demo/peer-prompts`, `/api/demo/results-intro`, and `/api/demo/review-message`.
-
-## Pages and Routes
-
-- `/` - NovaPath Education Operations landing page with interactive demo
-- `/science-kit` - AI-Infused Science Kit product page with pre-order form
-
-## Recent Changes
-
-### November 5, 2025 - Demo Audio Refinements
-- **Silent Peer Check-ins**: Mock student check-ins (Marcus, Jordan) now display visually without audio
-  - Creates more realistic classroom observation experience
-  - Reduces audio fatigue and focuses attention on AI-to-user interaction
-  - User sees peers checking in but only hears AI speaking to them directly
-- **Spoken Validation**: AI validation response now spoken with sentiment-aware tone
-  - Validation plays before results screen with tone matched to detected sentiment
-  - Negative sentiment: slower rate (1.05), warmer pitch (1.05) for empathy
-  - Positive sentiment: faster rate (1.15), higher pitch (1.08) for enthusiasm
-  - Ensures user receives emotional acknowledgment before seeing analysis
-- **Updated Flow**: Demo progression now feels more natural
-  1. User shares initial check-in → AI acknowledges
-  2. Peer check-ins display silently (3 seconds)
-  3. AI asks user to share more (spoken)
-  4. User shares details → AI validates with sentiment-aware response (spoken)
-  5. Results screen shows analysis cards
-  6. Teacher review and approval flow
-
-### November 4, 2025 - Sentiment Analysis & OpenAI Natural Voice
-- **Sentiment Analysis Integration**: AI now detects emotional sentiment in check-ins
-  - OpenAI analyzes student input for positive, negative, or neutral sentiment
-  - Validation responses adapt to sentiment:
-    - NEGATIVE (stressed, worried, sad) → warm, empathetic tone
-    - POSITIVE (excited, happy, proud) → celebratory, enthusiastic tone
-    - NEUTRAL → supportive, engaged tone
-  - `/api/demo/validate-emotion` endpoint now returns both validation text and sentiment
-- **OpenAI Text-to-Speech**: Replaced browser TTS with natural human-sounding voice
-  - Uses OpenAI's TTS API with "nova" voice for realistic speech
-  - New `/api/demo/tts` endpoint generates audio from text
-  - Audio returned as base64, decoded to Blob, played via HTML5 Audio
-  - Graceful fallback to browser Speech Synthesis if OpenAI unavailable
-  - Significantly more natural and human-like compared to robotic browser voices
-- **Technical Implementation**:
-  - Leverages existing Replit AI Integrations for OpenAI access
-  - Robust error handling with automatic fallbacks
-  - No breaking changes to existing demo flow
-
-### November 4, 2025 - Demo Flow Optimization for Speed & Naturalness
-- **Streamlined Demo Experience**: Significantly faster and more conversational
-  - Removed intermediate loading states (validating, facilitating, processing)
-  - User input now flows directly to results screen (~15-20 seconds total)
-  - Reduced pauses between peer check-ins from 600ms to 200ms
-  - Eliminated all 400ms pauses between voice segments
-- **Natural Conversation**: Added human-like verbal variety
-  - Randomized acknowledgments ("Got it", "Mm-hmm", "I see", "Okay")
-  - Randomized prompts for follow-up questions
-  - Randomized conversational intros when presenting results
-  - Background acknowledgment plays while API calls execute
-- **Enhanced TTS Humanization**: Comprehensive contraction support
-  - Extended humanize() function with 20+ contractions (it's, you're, can't, won't, etc.)
-  - All contractions use case-insensitive matching
-- **Faster Animations**: Sped up all transitions to 0.15-0.2s for snappy feel
-- **Updated Demo Steps**: Cleaned up type definitions to remove unused intermediate states
-
-### November 4, 2025 - AI-Infused Science Kit Landing Page
-- **New Product Page**: Created separate landing page at `/science-kit`
-  - Hero section with CTA and embedded demo video (autoplay loop)
-  - What Makes Different section (AI Assistant, Tactile+Tech, Built for Learning)
-  - What's Inside section (kit contents with icons)
-  - Learning Outcomes section
-  - Testimonials from parents and teachers
-  - Pre-order form collecting email, name, and quantity
-  - Footer with contact links
-- **Database Updates**:
-  - Added `preorders` table to schema
-  - Created storage interface methods for preorder CRUD
-  - Implemented POST `/api/preorders` endpoint with validation
-- **Design**: Follows same dark theme with purple/violet gradients, mobile-first responsive layout
-- **Video**: Two-column hero layout with text content left, demo video right (responsive)
-
-### November 4, 2025 - Natural Group Check-In Flow & Dynamic Names
-- **Restructured Demo Flow**: More realistic group check-in experience
-  - First prompt asks for name + feeling word (e.g., "I'm Alex and I'm feeling stressed")
-  - Shows 2 mock peer check-ins after user's initial share (Marcus, Jordan)
-  - AI then asks user to share more details about their feelings
-  - Detailed response triggers validation, facilitation, and results
-  - Creates natural pacing: introduce → observe peers → share deeper → get support
-- **Dynamic Name Throughout**: Completely removed hardcoded "Maya"
-  - System extracts student name from initial check-in using regex
-  - All API calls now pass dynamic `studentName` parameter
-  - Validation, peer prompts, results, and review all use actual student name
-  - Sample responses use "Alex" instead of "Maya" for clarity
-  - Fallback messages are generic or use extracted name
-- **New Demo Steps**: 
-  - `initial_checkin`: First share (name + feeling word)
-  - `peer_checkins`: Display 2 mock peers checking in
-  - `ask_more`: AI prompts for more details
-  - `listening_more`: User shares detailed concerns
-  - All subsequent steps remain: validating, facilitating, results, review, complete
-- **Backend Updates**:
-  - `generatePeerPrompts()` now accepts `studentName` parameter
-  - `/api/demo/peer-prompts` endpoint requires `studentName` in request body
-  - All fallbacks and OpenAI prompts use dynamic student names
-
-### November 4, 2025 - Voice Naturalness & Peer Support Fix
-- **Fixed Peer Facilitation**: Resolved empty prompts array issue
-  - Clarified OpenAI system prompt with explicit "CRITICAL" instruction to return one prompt per peer
-  - Added validation to ensure non-empty prompts before returning
-  - Enhanced error handling with contextual fallback messages
-  - Peer support now working: Marcus gets contextual prompt based on student's check-in
-- **More Human Voice**: Varied speech characteristics for different message types
-  - Validation: Slower, warmer (rate: 1.05, pitch: 1.05) - empathetic tone
-  - Peer prompts: Upbeat (rate: 1.1, pitch: 1.08) - encouraging
-  - Results: Neutral (rate: 1.08, pitch: 1.02) - informative
-  - Review: Calm (rate: 1.0, pitch: 1.03) - reassuring
-  - Added 400ms natural pauses between voice segments for breathing room
-  - Variation in pitch and rate makes each segment feel distinct, less robotic
-- **Performance Optimizations**: 
-  - Parallelized all API calls (validation, peer prompts, results intro run simultaneously)
-  - Reduced animations: 0.2s transitions, 1.2s spinner, quick fade-ins
-  - Streamlined visuals: concise titles, compact layouts, smaller icons
-  - Total demo time: ~3-4 seconds from check-in to results
+-   **Google Fonts (Inter)**: Primary typography.
+-   **Local Assets**: Hero dashboard mockup images.
