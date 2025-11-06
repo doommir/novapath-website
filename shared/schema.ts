@@ -58,3 +58,27 @@ export const insertPreorderSchema = createInsertSchema(preorders).omit({
 
 export type InsertPreorder = z.infer<typeof insertPreorderSchema>;
 export type Preorder = typeof preorders.$inferSelect;
+
+export const pdInquiries = pgTable("pd_inquiries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull(),
+  name: text("name").notNull(),
+  school: text("school").notNull(),
+  role: text("role").notNull(),
+  painPoint: text("pain_point").notNull(),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+});
+
+export const insertPdInquirySchema = createInsertSchema(pdInquiries).omit({
+  id: true,
+  submittedAt: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(1, "Please enter your name"),
+  school: z.string().min(1, "Please enter your school name"),
+  role: z.string().min(1, "Please select your role"),
+  painPoint: z.string().min(10, "Please describe your challenge (at least 10 characters)"),
+});
+
+export type InsertPdInquiry = z.infer<typeof insertPdInquirySchema>;
+export type PdInquiry = typeof pdInquiries.$inferSelect;
