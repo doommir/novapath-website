@@ -41,6 +41,7 @@ import {
   Rocket
 } from "lucide-react";
 import Footer from "@/components/Footer";
+import pdVideoUrl from "@assets/20251107_0910_01k9fabws7f8xbk34th8sctjyy_1762524664952.mp4";
 
 export default function ProfessionalDevelopment() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -93,6 +94,22 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
           <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
             Skip the theory. Bring your biggest pain points — attendance tracking, parent communication, lesson planning — and leave with working AI apps built by your team. AI literacy sticks when you're solving problems you actually face.
           </p>
+
+          <motion.div
+            className="w-full max-w-3xl mx-auto mb-10 rounded-lg overflow-hidden border border-border/50 shadow-2xl"
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
+          >
+            <video
+              src={pdVideoUrl}
+              controls
+              className="w-full"
+              data-testid="video-pd-demo"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </motion.div>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
             <Button
