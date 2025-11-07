@@ -57,6 +57,7 @@ export default function ProfessionalDevelopment() {
     <div className="min-h-screen flex flex-col bg-background">
       <Hero onCtaClick={scrollToForm} />
       <WhyCobuildingWorks />
+      <EducatorExamples />
       <TheProcess />
       <ExampleApps />
       <div ref={formRef}>
@@ -279,6 +280,103 @@ function WhyCobuildingWorks() {
   );
 }
 
+function EducatorExamples() {
+  const reducedMotion = useReducedMotion();
+
+  return (
+    <section className="py-20 md:py-32 px-6 bg-gradient-to-b from-background via-background/80 to-background">
+      <div className="mx-auto max-w-6xl">
+        <motion.div
+          className="text-center mb-16"
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              Real Educator-Built Apps
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white" data-testid="text-educator-examples-headline">
+            See What Educators Build After Cobuilding PD
+          </h2>
+          <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
+            Watch real apps built by educators during Cobuilding Professional Development sessions.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+          >
+            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl bg-card/30">
+              <div 
+                style={{ 
+                  position: 'relative', 
+                  paddingBottom: '62.5%', 
+                  height: 0 
+                }}
+                data-testid="video-educator-example-1"
+              >
+                <iframe 
+                  src="https://www.loom.com/embed/32eb8f8d17bc46a78903c323e1e571cf" 
+                  frameBorder="0" 
+                  allowFullScreen
+                  style={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    width: '100%', 
+                    height: '100%' 
+                  }}
+                  title="Educator-built app example 1"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          >
+            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl bg-card/30">
+              <div 
+                style={{ 
+                  position: 'relative', 
+                  paddingBottom: '58.88767720828789%', 
+                  height: 0 
+                }}
+                data-testid="video-educator-example-2"
+              >
+                <iframe 
+                  src="https://www.loom.com/embed/fd955ef032eb4aea8422000838d254bf" 
+                  frameBorder="0" 
+                  allowFullScreen
+                  style={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    width: '100%', 
+                    height: '100%' 
+                  }}
+                  title="Educator-built app example 2"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TheProcess() {
   const reducedMotion = useReducedMotion();
 
@@ -408,7 +506,7 @@ function ExampleApps() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-8">
           {examples.map((example, index) => (
             <motion.div
               key={index}
@@ -443,54 +541,6 @@ function ExampleApps() {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          className="max-w-4xl mx-auto"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
-                Example: Educator-Built App
-              </span>
-            </div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white" data-testid="text-example-video-headline">
-              See What Educators Build After Cobuilding PD
-            </h3>
-            <p className="text-foreground/80 max-w-2xl mx-auto">
-              Watch a real app built by educators during a Cobuilding Professional Development session.
-            </p>
-          </div>
-
-          <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl bg-card/30">
-            <div 
-              style={{ 
-                position: 'relative', 
-                paddingBottom: '62.5%', 
-                height: 0 
-              }}
-              data-testid="video-educator-example"
-            >
-              <iframe 
-                src="https://www.loom.com/embed/32eb8f8d17bc46a78903c323e1e571cf" 
-                frameBorder="0" 
-                allowFullScreen
-                style={{ 
-                  position: 'absolute', 
-                  top: 0, 
-                  left: 0, 
-                  width: '100%', 
-                  height: '100%' 
-                }}
-                title="Educator-built app example"
-              />
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
