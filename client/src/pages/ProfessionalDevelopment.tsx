@@ -408,7 +408,7 @@ function ExampleApps() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
           {examples.map((example, index) => (
             <motion.div
               key={index}
@@ -443,6 +443,54 @@ function ExampleApps() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+        >
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">
+                Example: Educator-Built App
+              </span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white" data-testid="text-example-video-headline">
+              See What Educators Build After Cobuilding PD
+            </h3>
+            <p className="text-foreground/80 max-w-2xl mx-auto">
+              Watch a real app built by educators during a Cobuilding Professional Development session.
+            </p>
+          </div>
+
+          <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl bg-card/30">
+            <div 
+              style={{ 
+                position: 'relative', 
+                paddingBottom: '62.5%', 
+                height: 0 
+              }}
+              data-testid="video-educator-example"
+            >
+              <iframe 
+                src="https://www.loom.com/embed/32eb8f8d17bc46a78903c323e1e571cf" 
+                frameBorder="0" 
+                allowFullScreen
+                style={{ 
+                  position: 'absolute', 
+                  top: 0, 
+                  left: 0, 
+                  width: '100%', 
+                  height: '100%' 
+                }}
+                title="Educator-built app example"
+              />
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
