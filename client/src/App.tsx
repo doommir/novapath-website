@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import ScienceKit from "@/pages/ScienceKit";
 import ProfessionalDevelopment from "@/pages/ProfessionalDevelopment";
 import AutoGrader from "@/pages/AutoGrader";
+import MathMoves from "@/pages/MathMoves";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/science-kit" component={ScienceKit} />
       <Route path="/professional-development" component={ProfessionalDevelopment} />
       <Route path="/autograder" component={AutoGrader} />
+      <Route path="/math-moves" component={MathMoves} />
       <Route component={NotFound} />
     </Switch>
   );

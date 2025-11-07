@@ -1,11 +1,12 @@
 # NovaPath Landing Pages
 
 ## Overview
-This application hosts four distinct product landing pages under the NovaPath brand:
+This application hosts five distinct product landing pages under the NovaPath brand:
 1.  **NovaPath (Education Operations)**: An AI-powered education operations toolkit for K-12 schools, focused on lead generation through an interactive, voice-driven demo and early access waitlist. It emphasizes human-centered AI, freeing educators to focus on core tasks.
 2.  **AI-Infused Science Kit**: A product page for a hands-on science experiment kit with an integrated AI assistant, promoting AI literacy and human-in-the-loop design for K-5 students, aligned with NGSS. It includes pre-order functionality.
 3.  **Professional Development**: A landing page for educator professional development sessions focused on AI literacy through cobuilding solutions to real school challenges (e.g., attendance tracking, parent communication), featuring a 4-step process and an inquiry form for custom sessions.
 4.  **Navigator Auto-Grader**: A comprehensive landing page showcasing an AI-powered grading system that uses OCR (Google Vision) and speech recognition (Whisper) to provide instant, rubric-based feedback on handwritten student work, featuring an 8-step workflow, rubric framework, sample feedback, tech stack details, and demo inquiry form.
+5.  **Math Moves**: A landing page for a movement-based math learning system that translates assessment data into physical PE lessons using AI analysis, featuring a 4-step workflow (pre-test, AI analysis, movement lesson, post-test), pilot results showing 43% → 93% mastery gains, embodied learning benefits, and pilot signup form.
 
 The project is a full-stack TypeScript application with a React frontend and an Express backend, designed for mobile-first responsiveness.
 
@@ -27,6 +28,7 @@ The system uses Drizzle ORM for PostgreSQL with the following data models:
 -   `Preorders`: Stores email, name, and quantity for Science Kit pre-orders.
 -   `PdInquiries`: Stores email, name, school, role, and pain point for PD inquiries.
 -   `AutograderInquiries`: Stores email, name, school, role, grade level, and optional additional info for Navigator Auto-Grader demo requests.
+-   `MathMovesInquiries`: Stores email, name, school, role, grade level, and optional additional info for Math Moves pilot signups.
 All tables use varchar IDs with gen_random_uuid(), type-safe schemas, and Zod validation, with schema-first development.
 
 ### UI/UX Decisions

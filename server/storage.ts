@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, users, leads, preorders, pdInquiries, autograderInquiries } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -14,6 +14,7 @@ export interface IStorage {
   createPreorder(preorder: InsertPreorder): Promise<Preorder>;
   createPdInquiry(inquiry: InsertPdInquiry): Promise<PdInquiry>;
   createAutograderInquiry(inquiry: InsertAutograderInquiry): Promise<AutograderInquiry>;
+  createMathMovesInquiry(inquiry: InsertMathMovesInquiry): Promise<MathMovesInquiry>;
 }
 
 export class MemStorage implements IStorage {
@@ -22,6 +23,7 @@ export class MemStorage implements IStorage {
   private preorders: Map<string, Preorder>;
   private pdInquiries: Map<string, PdInquiry>;
   private autograderInquiries: Map<string, AutograderInquiry>;
+  private mathMovesInquiries: Map<string, MathMovesInquiry>;
 
   constructor() {
     this.users = new Map();
@@ -29,6 +31,7 @@ export class MemStorage implements IStorage {
     this.preorders = new Map();
     this.pdInquiries = new Map();
     this.autograderInquiries = new Map();
+    this.mathMovesInquiries = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -105,6 +108,22 @@ export class MemStorage implements IStorage {
     this.autograderInquiries.set(id, autograderInquiry);
     return autograderInquiry;
   }
+
+  async createMathMovesInquiry(insertMathMovesInquiry: InsertMathMovesInquiry): Promise<MathMovesInquiry> {
+    const id = randomUUID();
+    const mathMovesInquiry: MathMovesInquiry = {
+      id,
+      email: insertMathMovesInquiry.email,
+      name: insertMathMovesInquiry.name,
+      school: insertMathMovesInquiry.school,
+      role: insertMathMovesInquiry.role,
+      gradeLevel: insertMathMovesInquiry.gradeLevel,
+      additionalInfo: insertMathMovesInquiry.additionalInfo ?? null,
+      submittedAt: new Date()
+    };
+    this.mathMovesInquiries.set(id, mathMovesInquiry);
+    return mathMovesInquiry;
+  }
 }
 
 export class DbStorage implements IStorage {
@@ -163,6 +182,18 @@ export class DbStorage implements IStorage {
       additionalInfo: insertAutograderInquiry.additionalInfo ?? null,
     }).returning();
     return autograderInquiry;
+  }
+
+  async createMathMovesInquiry(insertMathMovesInquiry: InsertMathMovesInquiry): Promise<MathMovesInquiry> {
+    const [mathMovesInquiry] = await db.insert(mathMovesInquiries).values({
+      email: insertMathMovesInquiry.email,
+      name: insertMathMovesInquiry.name,
+      school: insertMathMovesInquiry.school,
+      role: insertMathMovesInquiry.role,
+      gradeLevel: insertMathMovesInquiry.gradeLevel,
+      additionalInfo: insertMathMovesInquiry.additionalInfo ?? null,
+    }).returning();
+    return mathMovesInquiry;
   }
 }
 

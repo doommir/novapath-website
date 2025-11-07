@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertLeadSchema, insertPreorderSchema, insertPdInquirySchema, insertAutograderInquirySchema } from "@shared/schema";
+import { insertLeadSchema, insertPreorderSchema, insertPdInquirySchema, insertAutograderInquirySchema, insertMathMovesInquirySchema } from "@shared/schema";
 import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage, generateSpeech } from "./lib/openai";
 import { setupRealtimeWebSocket } from "./lib/realtime";
 
@@ -90,6 +90,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, autograderInquiry });
     } catch (error) {
       console.error("Error creating autograder inquiry:", error instanceof Error ? error.message : "Unknown error");
+      
+      if (error instanceof Error && error.name === "ZodError") {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Invalid form data" 
+        });
+      }
+      
+      res.status(500).json({ 
+        success: false, 
+        error: "Failed to save inquiry"
+      });
+    }
+  });
+
+  // POST /api/math-moves-inquiries - Create a new Math Moves inquiry
+  app.post("/api/math-moves-inquiries", async (req, res) => {
+    try {
+      const validatedData = insertMathMovesInquirySchema.parse(req.body);
+      const mathMovesInquiry = await storage.createMathMovesInquiry(validatedData);
+      res.json({ success: true, mathMovesInquiry });
+    } catch (error) {
+      console.error("Error creating Math Moves inquiry:", error instanceof Error ? error.message : "Unknown error");
       
       if (error instanceof Error && error.name === "ZodError") {
         return res.status(400).json({ 

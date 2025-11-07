@@ -37,6 +37,14 @@ export default function Footer() {
             Auto-Grader
           </Link>
           <span className="hidden md:inline text-border">•</span>
+          <Link 
+            href="/math-moves" 
+            className="hover:text-foreground transition-colors"
+            data-testid="link-math-moves"
+          >
+            Math Moves
+          </Link>
+          <span className="hidden md:inline text-border">•</span>
           <a 
             href="mailto:hello@novapath.ai" 
             className="hover:text-foreground transition-colors"
