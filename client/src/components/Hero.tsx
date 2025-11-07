@@ -1,6 +1,8 @@
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Zap, Volume2, VolumeX } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 import demoVideo from "@assets/202510291134 (1)_1761779868970.mp4";
 
 interface HeroProps {
@@ -9,6 +11,35 @@ interface HeroProps {
 
 export default function Hero({ onCtaClick }: HeroProps) {
   const reducedMotion = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const { toast } = useToast();
+
+  const toggleAudio = async () => {
+    if (!videoRef.current) return;
+
+    const newMutedState = !isMuted;
+    
+    if (newMutedState) {
+      videoRef.current.muted = true;
+      setIsMuted(true);
+    } else {
+      videoRef.current.muted = false;
+      try {
+        await videoRef.current.play();
+        setIsMuted(false);
+      } catch (err) {
+        console.error("Error playing video with sound:", err);
+        videoRef.current.muted = true;
+        setIsMuted(true);
+        toast({
+          variant: "destructive",
+          title: "Audio Playback Error",
+          description: "Unable to play video with sound. Please try again.",
+        });
+      }
+    }
+  };
   
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
@@ -58,26 +89,48 @@ export default function Hero({ onCtaClick }: HeroProps) {
           </motion.div>
           <div className="order-first md:order-last">
             <motion.div 
-              className="group"
+              className="group relative"
               initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
               whileHover={reducedMotion ? {} : { y: -8, scale: 1.02 }}
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border-4 border-border">
                 <video 
+                  ref={videoRef}
                   src={demoVideo}
-                  controls
+                  autoPlay
                   loop
+                  muted
                   playsInline
-                  preload="auto"
-                  className="relative rounded-xl shadow-2xl w-full border-4 border-border"
+                  className="relative w-full"
                   data-testid="video-hero-demo"
                 >
                   Your browser does not support the video tag.
                 </video>
               </div>
+              <Button
+                onClick={toggleAudio}
+                variant="default"
+                size="default"
+                className="absolute bottom-4 right-4 shadow-lg"
+                aria-label={isMuted ? "Play with sound" : "Mute video"}
+                aria-pressed={!isMuted}
+                data-testid="button-toggle-audio"
+              >
+                {isMuted ? (
+                  <>
+                    <VolumeX className="h-5 w-5 mr-2" />
+                    <span className="text-sm font-medium">Play with Sound</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="h-5 w-5 mr-2" />
+                    <span className="text-sm font-medium">Mute</span>
+                  </>
+                )}
+              </Button>
             </motion.div>
           </div>
         </div>
