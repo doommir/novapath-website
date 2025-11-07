@@ -1,0 +1,79 @@
+Navigator Auto-Grading + Speaking & Listening Practice
+Instant AI Scoring for Paper-Based Exit Tickets
+The Problem
+Teachers spend hours grading short written responses and have limited time to give personalized feedback or support oral fluency practice. Students complete work on paper, but insights stay locked there.
+The Solution
+Navigator’s custom web app transforms paper responses into real-time feedback using OCR, Whisper, and LLM-powered rubric scoring.
+
+
+Students write, snap a photo, read their response aloud, and receive instant, scaffolded feedback aligned to standards
+How It Works
+Student completes exit ticket 
+Student takes a photo 
+OCR extracts text from handwriting.
+Student reads response aloud 
+Whisper transcribes and evaluates 
+LLM applies rubric, scoring written 
+AI provides targeted feedback 
+Score Pushed to Google Sheets 
+
+
+
+
+Rubric Scoring Framework
+Category
+4 – Exceeding
+3 – Demonstrating
+2 – Progressing
+1 – Developing
+Restate the Question
+Clearly & fluidly restates question, citing title/section
+Accurately restates in full sentence
+Attempts but may omit/reorder
+Partially or inaccurately restates
+Answer the Question
+Correct, complete, insightful
+Correct and complete
+Partially correct
+Incorrect or missing
+Cite Evidence
+Smoothly integrates accurate quotes
+Refers explicitly with accurate quotes
+Some explicit but unclear
+No or unrelated evidence
+Elaborate
+Thorough, deep explanation
+Logical, relevant explanation
+Weak or minimal reasoning
+Missing or unclear reasoning
+
+Final Score: Average of category levels → Exceeding / Demonstrating / Progressing / Developing
+Whisper Modifier: Speaking & listening clarity and fluency adjust final score ±0.25
+
+Feedback Layer
+“You restated accurately and chose good evidence. Next: explain why that quote proves your point — start with ‘This shows that …’.”
+AI feedback follows rubric-aligned stems and guides next-step revisions instantly.
+
+Tech Stack
+OCR: Google Vision (handwriting extraction)
+
+
+Speaking & Listening: OpenAI Whisper (fluency + pronunciation)
+
+
+LLM: GPT-4o-mini (rubric scoring + feedback)
+
+
+App Backend: Supabase
+
+
+Frontend: React web app optimized for iPads
+
+
+
+Potential Impact
+ ⏱ Reduces grading time
+ 🎙 Builds writing and speaking mastery simultaneously
+ 💬 Delivers growth-focused feedback instantly
+ 📈 Syncs rubric data directly to Navigator dashboards.
+
