@@ -44,6 +44,7 @@ import {
   GraduationCap
 } from "lucide-react";
 import Footer from "@/components/Footer";
+import mathMovesVideoUrl from "@assets/Math Moves Promo (1)_1762531305441.mp4";
 
 export default function MathMoves() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -98,6 +99,22 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
           <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
             What if students could learn fractions by moving? Math Moves pairs AI analysis with physical learning to help students internalize math concepts through body-based lessons.
           </p>
+
+          <motion.div
+            className="w-full max-w-3xl mx-auto mb-10 rounded-lg overflow-hidden border border-border/50 shadow-2xl"
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
+          >
+            <video
+              src={mathMovesVideoUrl}
+              controls
+              className="w-full"
+              data-testid="video-math-moves-demo"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </motion.div>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
             <Button
