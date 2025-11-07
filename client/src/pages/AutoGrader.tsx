@@ -41,6 +41,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import Footer from "@/components/Footer";
+import autograderVideoUrl from "@assets/20251104_1223_01k9882tqpffjasc0prw5y1h7t_1762528907436.mp4";
 
 export default function AutoGrader() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -96,6 +97,22 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
           <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
             Students write, snap a photo, read aloud — and receive instant, scaffolded feedback aligned to standards. OCR + AI transforms handwritten work into actionable insights while building writing and speaking mastery simultaneously.
           </p>
+
+          <motion.div
+            className="w-full max-w-3xl mx-auto mb-10 rounded-lg overflow-hidden border border-border/50 shadow-2xl"
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
+          >
+            <video
+              src={autograderVideoUrl}
+              controls
+              className="w-full"
+              data-testid="video-autograder-demo"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </motion.div>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
             <Button
