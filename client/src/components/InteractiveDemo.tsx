@@ -568,47 +568,35 @@ export function InteractiveDemo() {
                   <User className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold" data-testid="text-listeningmore-title">
-                  Share More Details
+                  Listening...
                 </h3>
               </div>
-              <p className="text-muted-foreground" data-testid="text-listeningmore-subtitle">
-                Tell us more about what's going on
-              </p>
             </div>
 
             <Card className="p-6 space-y-4">
-              {!hasTranscript && (
-                <div className="text-center space-y-4">
-                  <p className="text-sm text-muted-foreground">Choose how to respond:</p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Button
-                      size="lg"
-                      variant={isListening ? "default" : "outline"}
-                      onClick={isListening ? stopListening : startListening}
-                      disabled={!recognitionRef.current}
-                      data-testid="button-voice-input-more"
-                    >
-                      {isListening ? <Mic className="mr-2 h-5 w-5 animate-pulse" /> : <MicOff className="mr-2 h-5 w-5" />}
-                      {isListening ? "Listening..." : "Speak Your Response"}
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      onClick={useSample}
-                      data-testid="button-use-sample-more"
-                    >
-                      Use Sample Response
-                    </Button>
-                  </div>
-                </div>
-              )}
+              <div className="text-center space-y-4">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={useSample}
+                  data-testid="button-use-sample-more"
+                >
+                  Use Sample Response
+                </Button>
+                {!recognitionRef.current && (
+                  <p className="text-xs text-muted-foreground">
+                    Voice input not available in this browser. Use sample response or type below.
+                  </p>
+                )}
+              </div>
 
               <Textarea
                 value={transcript}
                 onChange={(e) => setTranscript(e.target.value)}
                 className="min-h-[120px] text-base"
-                placeholder="Share what's on your mind..."
+                placeholder="Listening... (or type your response)"
                 data-testid="input-transcript-more"
+                readOnly={isListening}
               />
 
               {isListening && (
@@ -618,22 +606,10 @@ export function InteractiveDemo() {
                     <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '150ms' }}></div>
                     <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '300ms' }}></div>
                   </div>
-                  <span>Listening to your voice...</span>
+                  <span>Listening... (will auto-submit after 2 seconds of silence)</span>
                 </div>
               )}
             </Card>
-
-            <div className="flex justify-end">
-              <Button 
-                size="lg" 
-                onClick={handleSubmitDetailedCheckIn}
-                disabled={!hasTranscript}
-                data-testid="button-submit-detailed"
-              >
-                Submit Check-In
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
           </motion.div>
         )}
 
