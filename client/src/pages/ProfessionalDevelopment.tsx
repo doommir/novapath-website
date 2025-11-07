@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertPdInquirySchema, type InsertPdInquiry } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { 
   Sparkles, 
@@ -38,8 +37,11 @@ import {
   Mail,
   MessageSquare,
   Wrench,
-  Rocket
+  Rocket,
+  Volume2,
+  VolumeX
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import Footer from "@/components/Footer";
 import pdVideoUrl from "@assets/20251107_0910_01k9fabws7f8xbk34th8sctjyy_1762524664952.mp4";
 
@@ -67,6 +69,35 @@ export default function ProfessionalDevelopment() {
 
 function Hero({ onCtaClick }: { onCtaClick: () => void }) {
   const reducedMotion = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const { toast } = useToast();
+
+  const toggleAudio = async () => {
+    if (!videoRef.current) return;
+
+    const newMutedState = !isMuted;
+    
+    if (newMutedState) {
+      videoRef.current.muted = true;
+      setIsMuted(true);
+    } else {
+      videoRef.current.muted = false;
+      try {
+        await videoRef.current.play();
+        setIsMuted(false);
+      } catch (err) {
+        console.error("Error playing video with sound:", err);
+        videoRef.current.muted = true;
+        setIsMuted(true);
+        toast({
+          variant: "destructive",
+          title: "Audio Playback Error",
+          description: "Unable to play video with sound. Please try again.",
+        });
+      }
+    }
+  };
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
@@ -96,21 +127,46 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
           </p>
 
           <motion.div
-            className="w-full max-w-3xl mx-auto mb-10 rounded-lg overflow-hidden border border-border/50 shadow-2xl"
+            className="relative w-full max-w-3xl mx-auto mb-10"
             initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
           >
-            <video
-              src={pdVideoUrl}
-              controls
-              playsInline
-              preload="metadata"
-              className="w-full"
-              data-testid="video-pd-demo"
+            <div className="rounded-lg overflow-hidden border border-border/50 shadow-2xl">
+              <video
+                ref={videoRef}
+                src={pdVideoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full"
+                data-testid="video-pd-demo"
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <Button
+              onClick={toggleAudio}
+              variant="default"
+              size="default"
+              className="absolute bottom-4 right-4 shadow-lg"
+              aria-label={isMuted ? "Play with sound" : "Mute video"}
+              aria-pressed={!isMuted}
+              data-testid="button-toggle-audio"
             >
-              Your browser does not support the video tag.
-            </video>
+              {isMuted ? (
+                <>
+                  <VolumeX className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Play with Sound</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Mute</span>
+                </>
+              )}
+            </Button>
           </motion.div>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">

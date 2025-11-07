@@ -167,7 +167,7 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
           >
-            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl">
+            <div className="rounded-lg overflow-hidden border border-border/50 shadow-2xl">
               <video
                 ref={videoRef}
                 src={scienceKitVideo}
@@ -180,28 +180,28 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
               >
                 Your browser does not support the video tag.
               </video>
-              <Button
-                onClick={toggleAudio}
-                variant="default"
-                size="default"
-                className="absolute bottom-4 right-4 shadow-lg"
-                aria-label={isMuted ? "Play with sound" : "Mute video"}
-                aria-pressed={!isMuted}
-                data-testid="button-toggle-audio"
-              >
-                {isMuted ? (
-                  <>
-                    <VolumeX className="h-5 w-5 mr-2" />
-                    <span className="text-sm font-medium">Play with Sound</span>
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="h-5 w-5 mr-2" />
-                    <span className="text-sm font-medium">Mute</span>
-                  </>
-                )}
-              </Button>
             </div>
+            <Button
+              onClick={toggleAudio}
+              variant="default"
+              size="default"
+              className="absolute bottom-4 right-4 shadow-lg"
+              aria-label={isMuted ? "Play with sound" : "Mute video"}
+              aria-pressed={!isMuted}
+              data-testid="button-toggle-audio"
+            >
+              {isMuted ? (
+                <>
+                  <VolumeX className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Play with Sound</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Mute</span>
+                </>
+              )}
+            </Button>
           </motion.div>
         </div>
       </div>

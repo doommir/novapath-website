@@ -38,8 +38,11 @@ import {
   Loader2,
   BookOpen,
   Award,
-  TrendingUp
+  TrendingUp,
+  Volume2,
+  VolumeX
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import Footer from "@/components/Footer";
 import autograderVideoUrl from "@assets/20251104_1223_01k9882tqpffjasc0prw5y1h7t_1762528907436.mp4";
 
@@ -70,6 +73,35 @@ export default function AutoGrader() {
 
 function Hero({ onCtaClick }: { onCtaClick: () => void }) {
   const reducedMotion = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const { toast } = useToast();
+
+  const toggleAudio = async () => {
+    if (!videoRef.current) return;
+
+    const newMutedState = !isMuted;
+    
+    if (newMutedState) {
+      videoRef.current.muted = true;
+      setIsMuted(true);
+    } else {
+      videoRef.current.muted = false;
+      try {
+        await videoRef.current.play();
+        setIsMuted(false);
+      } catch (err) {
+        console.error("Error playing video with sound:", err);
+        videoRef.current.muted = true;
+        setIsMuted(true);
+        toast({
+          variant: "destructive",
+          title: "Audio Playback Error",
+          description: "Unable to play video with sound. Please try again.",
+        });
+      }
+    }
+  };
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
@@ -99,21 +131,46 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
           </p>
 
           <motion.div
-            className="w-full max-w-3xl mx-auto mb-10 rounded-lg overflow-hidden border border-border/50 shadow-2xl"
+            className="relative w-full max-w-3xl mx-auto mb-10"
             initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
           >
-            <video
-              src={autograderVideoUrl}
-              controls
-              playsInline
-              preload="metadata"
-              className="w-full"
-              data-testid="video-autograder-demo"
+            <div className="rounded-lg overflow-hidden border border-border/50 shadow-2xl">
+              <video
+                ref={videoRef}
+                src={autograderVideoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full"
+                data-testid="video-autograder-demo"
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <Button
+              onClick={toggleAudio}
+              variant="default"
+              size="default"
+              className="absolute bottom-4 right-4 shadow-lg"
+              aria-label={isMuted ? "Play with sound" : "Mute video"}
+              aria-pressed={!isMuted}
+              data-testid="button-toggle-audio"
             >
-              Your browser does not support the video tag.
-            </video>
+              {isMuted ? (
+                <>
+                  <VolumeX className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Play with Sound</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Mute</span>
+                </>
+              )}
+            </Button>
           </motion.div>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
