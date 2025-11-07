@@ -113,18 +113,18 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Code2 className="h-4 w-4 text-primary" />
+            <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-sm font-medium text-primary" data-testid="text-badge">
-              Professional Development
+              AI Literacy Through Cobuilding
             </span>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white" data-testid="text-hero-headline">
-            Learn AI by Building Solutions to Your School's Real Challenges
+            Build AI Literacy by Cobuilding Solutions to Your School's Real Challenges
           </h1>
 
           <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed" data-testid="text-hero-subheadline">
-            Skip the theory. Bring your biggest pain points — attendance tracking, parent communication, lesson planning — and leave with working AI apps built by your team. AI literacy sticks when you're solving problems you actually face.
+            Skip the theory presentations. Develop genuine AI literacy by cobuilding working apps with AI coding agents. Bring your biggest pain points — attendance tracking, parent communication, lesson planning — and leave with both functional solutions and the skills to build more.
           </p>
 
           <motion.div
@@ -213,18 +213,18 @@ function WhyCobuildingWorks() {
   const features = [
     {
       icon: Lightbulb,
-      title: "AI Literacy Through Practice",
-      description: "You don't learn AI by watching presentations. You learn by using AI coding agents to solve real problems. When you build the app that fixes your attendance workflow, you understand how AI works — and what it can't do."
+      title: "Genuine AI Literacy Through Doing",
+      description: "You don't develop AI literacy by watching presentations about ChatGPT. You build it by cobuilding real solutions with AI coding agents. When you guide an AI to fix your attendance workflow, you understand how AI works — and what it can't do."
     },
     {
       icon: Target,
-      title: "Solve Real Pain Points",
-      description: "Your team identifies the problems that waste time every week. We guide you through building the solution together. Leave with a working app that improves your daily work — not a slide deck gathering dust."
+      title: "Real Solutions, Real Learning",
+      description: "Your team identifies the workflows that waste time every week. We guide you through cobuilding the solution with AI. Leave with both a working app that improves your daily work and the AI literacy to build more."
     },
     {
       icon: Users,
-      title: "Educators Building for Educators",
-      description: "No one understands school challenges better than educators. Cobuilding means your solutions are designed by the people who use them, with AI as a supportive tool — not a replacement for human expertise and judgment."
+      title: "Educators Building With AI, Not Replaced By It",
+      description: "No one understands school challenges better than educators. Cobuilding teaches AI literacy by positioning AI as a supportive coding tool — not a replacement for educator expertise, judgment, and understanding of student needs."
     }
   ];
 
@@ -238,11 +238,17 @@ function WhyCobuildingWorks() {
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
         >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Lightbulb className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              The Cobuilding Approach
+            </span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white" data-testid="text-section-headline">
-            Why Cobuilding Works
+            Why Cobuilding Builds AI Literacy That Lasts
           </h2>
           <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
-            Traditional PD teaches concepts. We build solutions. Together.
+            Traditional PD teaches concepts. Cobuilding develops AI literacy through hands-on problem solving.
           </p>
         </motion.div>
 
@@ -393,13 +399,13 @@ function TheProcess() {
     },
     {
       icon: Code2,
-      title: "Build with AI Coding Agents",
-      description: "Using AI coding agents, we build the app together. You see how prompts become code, how to debug, how to iterate. You're learning AI literacy by doing, not watching."
+      title: "Cobuild with AI — Develop Real AI Literacy",
+      description: "Using AI coding agents, we build the app together. You see how prompts become code, how to debug, how to iterate. This hands-on cobuilding develops AI literacy through practice — learning what AI can and can't do by actually using it."
     },
     {
       icon: Rocket,
-      title: "Deploy and Use Immediately",
-      description: "By the end of the session, your app is live. Your team can use it that afternoon. You also walk away with the skills to build more tools for future challenges."
+      title: "Deploy and Continue Building",
+      description: "By the end of the session, your app is live. Your team can use it that afternoon. More importantly, you've developed AI literacy through cobuilding and can now tackle future challenges with AI coding agents."
     }
   ];
 
