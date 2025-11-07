@@ -427,7 +427,7 @@ function TheProcess() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -459,6 +459,54 @@ function TheProcess() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+        >
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
+              <Code2 className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">
+                See It In Action
+              </span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white" data-testid="text-cobuilding-video-headline">
+              What It's Like to Cobuild with AI Coding Agents
+            </h3>
+            <p className="text-foreground/80 max-w-2xl mx-auto">
+              Watch an actual cobuilding session to see how prompts become code, how to iterate with AI, and what developing AI literacy through practice really looks like.
+            </p>
+          </div>
+
+          <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-2xl bg-card/30">
+            <div 
+              style={{ 
+                position: 'relative', 
+                paddingBottom: '69.94818652849742%', 
+                height: 0 
+              }}
+              data-testid="video-cobuilding-demo"
+            >
+              <iframe 
+                src="https://www.loom.com/embed/5755b05239c44dd6a22289e6bbdae1f4" 
+                frameBorder="0" 
+                allowFullScreen
+                style={{ 
+                  position: 'absolute', 
+                  top: 0, 
+                  left: 0, 
+                  width: '100%', 
+                  height: '100%' 
+                }}
+                title="Cobuilding with AI coding agents demonstration"
+              />
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
