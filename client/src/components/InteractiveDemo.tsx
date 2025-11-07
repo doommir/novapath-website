@@ -161,22 +161,25 @@ export function InteractiveDemo() {
     };
   }, []);
 
-  // Silence detection effect - auto-submit after 2 seconds of silence
+  // Silence detection effect - auto-submit after 2 seconds of silence (or when sample used)
   useEffect(() => {
-    if (transcript.length > 10 && isListening) {
+    if (transcript.length > 10) {
       // Clear existing timer
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current);
       }
       
       // Set new silence detection timer
+      // If listening (voice), wait 2 seconds; if sample/typed, submit immediately
+      const delay = isListening ? 2000 : 100;
+      
       silenceTimerRef.current = window.setTimeout(() => {
         if (step === "initial_checkin") {
           handleSubmitInitialCheckIn();
         } else if (step === "listening_more") {
           handleSubmitDetailedCheckIn();
         }
-      }, 2000);
+      }, delay);
     }
     
     return () => {
@@ -393,11 +396,6 @@ export function InteractiveDemo() {
 
   const handleApprove = () => {
     setStep("complete");
-  };
-
-  const handleAskMore = () => {
-    setStep("listening_more");
-    setTranscript("");
   };
 
   const handleRestart = () => {
