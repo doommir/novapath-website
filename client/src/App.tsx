@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/Home";
 import ScienceKit from "@/pages/ScienceKit";
 import ProfessionalDevelopment from "@/pages/ProfessionalDevelopment";
+import AutoGrader from "@/pages/AutoGrader";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/science-kit" component={ScienceKit} />
       <Route path="/professional-development" component={ProfessionalDevelopment} />
+      <Route path="/autograder" component={AutoGrader} />
       <Route component={NotFound} />
     </Switch>
   );
