@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,65 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import Footer from "@/components/Footer";
 import pdVideoUrl from "@assets/20251107_0910_01k9fabws7f8xbk34th8sctjyy_1762524664952.mp4";
+
+declare global {
+  interface Window {
+    calendar?: {
+      schedulingButton: {
+        load: (config: {
+          url: string;
+          color: string;
+          label: string;
+          target: HTMLElement | null;
+        }) => void;
+      };
+    };
+  }
+}
+
+function GoogleCalendarButton() {
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cssLink: HTMLLinkElement | null = null;
+    let script: HTMLScriptElement | null = null;
+
+    const loadGoogleCalendar = () => {
+      cssLink = document.createElement('link');
+      cssLink.href = 'https://calendar.google.com/calendar/scheduling-button-script.css';
+      cssLink.rel = 'stylesheet';
+      document.head.appendChild(cssLink);
+
+      script = document.createElement('script');
+      script.src = 'https://calendar.google.com/calendar/scheduling-button-script.js';
+      script.async = true;
+      script.onload = () => {
+        if (window.calendar?.schedulingButton && buttonRef.current) {
+          window.calendar.schedulingButton.load({
+            url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2u9knvHmUQnXMbGIWWoGH-25Xoerj_cEC39i1ysgC8jCRcX8VLBESjUlgyEAhaaLxpPBTadL3Z?gv=true',
+            color: '#3F51B5',
+            label: 'Schedule a Free Session',
+            target: buttonRef.current,
+          });
+        }
+      };
+      document.body.appendChild(script);
+    };
+
+    loadGoogleCalendar();
+
+    return () => {
+      if (cssLink && cssLink.parentNode) {
+        cssLink.parentNode.removeChild(cssLink);
+      }
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  return <div ref={buttonRef} data-testid="google-calendar-button" />;
+}
 
 export default function ProfessionalDevelopment() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -170,14 +229,16 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             </Button>
           </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center items-center">
+            <GoogleCalendarButton />
             <Button
+              variant="outline"
               size="lg"
-              className="text-lg px-8 shadow-[0_0_40px_-5px_hsl(280,95%,60%,0.4)] hover:shadow-[0_0_60px_-5px_hsl(280,95%,60%,0.6)] transition-shadow duration-300"
+              className="text-lg px-8 bg-background/20 backdrop-blur-sm border-border/50"
               onClick={onCtaClick}
-              data-testid="button-schedule-pd"
+              data-testid="button-inquiry-form"
             >
-              Schedule a Session
+              Or Send an Inquiry
             </Button>
           </div>
 
@@ -642,10 +703,21 @@ function InquirySection() {
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white" data-testid="text-inquiry-headline">
             Ready to Build?
           </h2>
-          <p className="text-lg text-foreground/80">
-            Tell us about your biggest challenge. We'll schedule a cobuilding session and help your team create the solution.
+          <p className="text-lg text-foreground/80 mb-8">
+            Schedule a free cobuilding session directly or tell us about your biggest challenge below.
           </p>
+          <div className="flex justify-center">
+            <GoogleCalendarButton />
+          </div>
         </motion.div>
+
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-4">
+            <div className="h-px w-24 bg-border/50"></div>
+            <span className="text-sm text-foreground/60 font-medium">Or send us an inquiry</span>
+            <div className="h-px w-24 bg-border/50"></div>
+          </div>
+        </div>
 
         <Card className="bg-card/50 border-border/50">
           <CardContent className="p-8">
