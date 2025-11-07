@@ -444,11 +444,11 @@ export function InteractiveDemo() {
             </div>
             <Button 
               size="lg" 
-              onClick={handleStart}
+              disabled
               className="text-lg px-8 shadow-lg"
               data-testid="button-start-checkin"
             >
-              Start Voice Check-In
+              Coming Soon
               <Volume2 className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
