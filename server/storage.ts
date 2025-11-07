@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, users, leads, preorders, pdInquiries } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, users, leads, preorders, pdInquiries, autograderInquiries } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -13,6 +13,7 @@ export interface IStorage {
   createLead(lead: InsertLead): Promise<Lead>;
   createPreorder(preorder: InsertPreorder): Promise<Preorder>;
   createPdInquiry(inquiry: InsertPdInquiry): Promise<PdInquiry>;
+  createAutograderInquiry(inquiry: InsertAutograderInquiry): Promise<AutograderInquiry>;
 }
 
 export class MemStorage implements IStorage {
@@ -20,12 +21,14 @@ export class MemStorage implements IStorage {
   private leads: Map<string, Lead>;
   private preorders: Map<string, Preorder>;
   private pdInquiries: Map<string, PdInquiry>;
+  private autograderInquiries: Map<string, AutograderInquiry>;
 
   constructor() {
     this.users = new Map();
     this.leads = new Map();
     this.preorders = new Map();
     this.pdInquiries = new Map();
+    this.autograderInquiries = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -86,6 +89,22 @@ export class MemStorage implements IStorage {
     this.pdInquiries.set(id, pdInquiry);
     return pdInquiry;
   }
+
+  async createAutograderInquiry(insertAutograderInquiry: InsertAutograderInquiry): Promise<AutograderInquiry> {
+    const id = randomUUID();
+    const autograderInquiry: AutograderInquiry = {
+      id,
+      email: insertAutograderInquiry.email,
+      name: insertAutograderInquiry.name,
+      school: insertAutograderInquiry.school,
+      role: insertAutograderInquiry.role,
+      gradeLevel: insertAutograderInquiry.gradeLevel,
+      additionalInfo: insertAutograderInquiry.additionalInfo ?? null,
+      submittedAt: new Date()
+    };
+    this.autograderInquiries.set(id, autograderInquiry);
+    return autograderInquiry;
+  }
 }
 
 export class DbStorage implements IStorage {
@@ -132,6 +151,18 @@ export class DbStorage implements IStorage {
       painPoint: insertPdInquiry.painPoint,
     }).returning();
     return pdInquiry;
+  }
+
+  async createAutograderInquiry(insertAutograderInquiry: InsertAutograderInquiry): Promise<AutograderInquiry> {
+    const [autograderInquiry] = await db.insert(autograderInquiries).values({
+      email: insertAutograderInquiry.email,
+      name: insertAutograderInquiry.name,
+      school: insertAutograderInquiry.school,
+      role: insertAutograderInquiry.role,
+      gradeLevel: insertAutograderInquiry.gradeLevel,
+      additionalInfo: insertAutograderInquiry.additionalInfo ?? null,
+    }).returning();
+    return autograderInquiry;
   }
 }
 
