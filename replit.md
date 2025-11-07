@@ -1,10 +1,11 @@
 # NovaPath Landing Pages
 
 ## Overview
-This application hosts three distinct product landing pages under the NovaPath brand:
+This application hosts four distinct product landing pages under the NovaPath brand:
 1.  **NovaPath (Education Operations)**: An AI-powered education operations toolkit for K-12 schools, focused on lead generation through an interactive, voice-driven demo and early access waitlist. It emphasizes human-centered AI, freeing educators to focus on core tasks.
 2.  **AI-Infused Science Kit**: A product page for a hands-on science experiment kit with an integrated AI assistant, promoting AI literacy and human-in-the-loop design for K-5 students, aligned with NGSS. It includes pre-order functionality.
 3.  **Professional Development**: A landing page for educator professional development sessions focused on AI literacy through cobuilding solutions to real school challenges (e.g., attendance tracking, parent communication), featuring a 4-step process and an inquiry form for custom sessions.
+4.  **Navigator Auto-Grader**: A comprehensive landing page showcasing an AI-powered grading system that uses OCR (Google Vision) and speech recognition (Whisper) to provide instant, rubric-based feedback on handwritten student work, featuring an 8-step workflow, rubric framework, sample feedback, tech stack details, and demo inquiry form.
 
 The project is a full-stack TypeScript application with a React frontend and an Express backend, designed for mobile-first responsiveness.
 
@@ -25,7 +26,8 @@ The system uses Drizzle ORM for PostgreSQL with the following data models:
 -   `Leads`: Stores email, role, optional school, and referrer for waitlist signups.
 -   `Preorders`: Stores email, name, and quantity for Science Kit pre-orders.
 -   `PdInquiries`: Stores email, name, school, role, and pain point for PD inquiries.
-All tables use UUIDs, type-safe schemas, and Zod validation, with schema-first development.
+-   `AutograderInquiries`: Stores email, name, school, role, grade level, and optional additional info for Navigator Auto-Grader demo requests.
+All tables use varchar IDs with gen_random_uuid(), type-safe schemas, and Zod validation, with schema-first development.
 
 ### UI/UX Decisions
 The design is mobile-first and responsive, featuring a dark theme with purple/violet and indigo-to-blue gradients. Typography uses the Inter font. Interactive elements include hover/active elevation effects. The interactive demo simulates a student experience (e.g., "Maya Chen") with voice interaction (TTS and Web Speech API) for AI-driven workflows (attendance, counselor alerts, peer support), emphasizing human oversight via a teacher review dashboard. The AI assistant uses sentiment analysis to adapt its tone and provides natural, human-like voice responses via OpenAI's TTS.
