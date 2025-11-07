@@ -73,6 +73,8 @@ export function InteractiveDemo() {
   });
   const processingTimeoutRef = useRef<number | null>(null);
   const recognitionRef = useRef<any>(null);
+  const silenceTimerRef = useRef<number | null>(null);
+  const lastTranscriptRef = useRef<string>("");
 
   // Initialize Realtime API hook
   const realtimeAPI = useRealtimeAPI({
@@ -123,7 +125,14 @@ export function InteractiveDemo() {
           }
         }
 
-        setTranscript((finalTranscript + interimTranscript).trim());
+        const newTranscript = (finalTranscript + interimTranscript).trim();
+        setTranscript(newTranscript);
+        lastTranscriptRef.current = newTranscript;
+        
+        // Clear existing silence timer
+        if (silenceTimerRef.current) {
+          clearTimeout(silenceTimerRef.current);
+        }
       };
 
       recognition.onerror = (event: any) => {
@@ -142,6 +151,9 @@ export function InteractiveDemo() {
       if (processingTimeoutRef.current) {
         clearTimeout(processingTimeoutRef.current);
       }
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+      }
       TTS.stop();
       if (recognitionRef.current) {
         recognitionRef.current.stop();
@@ -149,9 +161,42 @@ export function InteractiveDemo() {
     };
   }, []);
 
+  // Silence detection effect - auto-submit after 2 seconds of silence
+  useEffect(() => {
+    if (transcript.length > 10 && isListening) {
+      // Clear existing timer
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+      }
+      
+      // Set new silence detection timer
+      silenceTimerRef.current = window.setTimeout(() => {
+        if (step === "initial_checkin") {
+          handleSubmitInitialCheckIn();
+        } else if (step === "listening_more") {
+          handleSubmitDetailedCheckIn();
+        }
+      }, 2000);
+    }
+    
+    return () => {
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+      }
+    };
+  }, [transcript, isListening, step]);
+
   const handleStart = async () => {
     setStep("initial_checkin");
     await TTS.say("Welcome to group check-in. Please share your name and how you're feeling today in one word.", { rate: 1.1, pitch: 1.0 });
+    
+    // Auto-start listening after AI speaks
+    if (recognitionRef.current) {
+      setTranscript("");
+      setIsListening(true);
+      setUsedVoice(true);
+      recognitionRef.current.start();
+    }
   };
 
   const startListening = () => {
@@ -184,6 +229,11 @@ export function InteractiveDemo() {
       recognitionRef.current.stop();
     }
     
+    // Clear silence timer
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+    }
+    
     // Extract name from initial check-in
     const nameMatch = transcript.match(/I'?m\s+([A-Z][a-z]+)/i);
     const extractedName = nameMatch ? nameMatch[1] : "Student";
@@ -201,8 +251,11 @@ export function InteractiveDemo() {
     // Wait for user to see peer check-ins (no audio)
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Ask user to share more
-    setStep("ask_more");
+    // Skip "ask_more" step - go directly to listening_more
+    setStep("listening_more");
+    setTranscript("");
+    
+    // Ask user to share more and auto-start listening
     const prompts = [
       `${extractedName}, wanna share more about that?`,
       `Tell me more, ${extractedName}`,
@@ -211,11 +264,23 @@ export function InteractiveDemo() {
     ];
     const prompt = prompts[Math.floor(Math.random() * prompts.length)];
     await TTS.say(prompt, { rate: 1.1, pitch: 1.0 });
+    
+    // Auto-start listening after AI speaks
+    if (recognitionRef.current) {
+      setIsListening(true);
+      setUsedVoice(true);
+      recognitionRef.current.start();
+    }
   };
 
   const handleSubmitDetailedCheckIn = async () => {
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
+    }
+    
+    // Clear silence timer
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
     }
     
     setDetailedCheckIn(transcript);
@@ -408,49 +473,32 @@ export function InteractiveDemo() {
                   Group Check-In
                 </h3>
               </div>
-              <p className="text-muted-foreground" data-testid="text-initial-subtitle">
-                The AI just asked: "Welcome to group check-in. Please share your name and how you're feeling today in one word."
-              </p>
             </div>
 
             <Card className="p-6 space-y-4">
-              {!hasTranscript && (
-                <div className="text-center space-y-4">
-                  <p className="text-sm text-muted-foreground">Choose how to respond:</p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Button
-                      size="lg"
-                      variant={isListening ? "default" : "outline"}
-                      onClick={isListening ? stopListening : startListening}
-                      disabled={!recognitionRef.current}
-                      data-testid="button-voice-input"
-                    >
-                      {isListening ? <Mic className="mr-2 h-5 w-5 animate-pulse" /> : <MicOff className="mr-2 h-5 w-5" />}
-                      {isListening ? "Listening..." : "Speak Your Response"}
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      onClick={useSample}
-                      data-testid="button-use-sample"
-                    >
-                      Use Sample Response
-                    </Button>
-                  </div>
-                  {!recognitionRef.current && (
-                    <p className="text-xs text-muted-foreground">
-                      Voice input not available in this browser. Use sample response or type below.
-                    </p>
-                  )}
-                </div>
-              )}
+              <div className="text-center space-y-4">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={useSample}
+                  data-testid="button-use-sample"
+                >
+                  Use Sample Response
+                </Button>
+                {!recognitionRef.current && (
+                  <p className="text-xs text-muted-foreground">
+                    Voice input not available in this browser. Use sample response or type below.
+                  </p>
+                )}
+              </div>
 
               <Textarea
                 value={transcript}
                 onChange={(e) => setTranscript(e.target.value)}
                 className="min-h-[100px] text-base"
-                placeholder="Example: I'm Alex and I'm feeling stressed"
+                placeholder="Listening... (or type your response)"
                 data-testid="input-transcript"
+                readOnly={isListening}
               />
 
               {isListening && (
@@ -460,22 +508,10 @@ export function InteractiveDemo() {
                     <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '150ms' }}></div>
                     <div className="w-1 h-4 bg-primary animate-pulse" style={{ animationDelay: '300ms' }}></div>
                   </div>
-                  <span>Listening to your voice...</span>
+                  <span>Listening... (will auto-submit after 2 seconds of silence)</span>
                 </div>
               )}
             </Card>
-
-            <div className="flex justify-end">
-              <Button 
-                size="lg" 
-                onClick={handleSubmitInitialCheckIn}
-                disabled={!hasTranscript}
-                data-testid="button-submit-initial"
-              >
-                Share
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
           </motion.div>
         )}
 
@@ -517,41 +553,6 @@ export function InteractiveDemo() {
           </motion.div>
         )}
 
-        {step === "ask_more" && (
-          <motion.div
-            key="ask_more"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="text-center space-y-6 py-8"
-          >
-            <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.15 }}
-              className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20"
-            >
-              <Volume2 className="w-8 h-8 text-primary" />
-            </motion.div>
-            <div className="space-y-3">
-              <h3 className="text-xl md:text-2xl font-bold" data-testid="text-askmore-title">
-                Your Turn Again
-              </h3>
-              <p className="text-base text-muted-foreground max-w-2xl mx-auto" data-testid="text-askmore-prompt">
-                "Thanks {userName}. Would you like to share more about how you're feeling?"
-              </p>
-            </div>
-            <Button 
-              size="lg" 
-              onClick={handleAskMore}
-              data-testid="button-share-more"
-            >
-              Share More
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </motion.div>
-        )}
 
         {step === "listening_more" && (
           <motion.div
