@@ -104,6 +104,8 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             <video
               src={pdVideoUrl}
               controls
+              playsInline
+              preload="metadata"
               className="w-full"
               data-testid="video-pd-demo"
             >

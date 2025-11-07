@@ -109,6 +109,8 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             <video
               src={mathMovesVideoUrl}
               controls
+              playsInline
+              preload="metadata"
               className="w-full"
               data-testid="video-math-moves-demo"
             >

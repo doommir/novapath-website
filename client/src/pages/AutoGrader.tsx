@@ -107,6 +107,8 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
             <video
               src={autograderVideoUrl}
               controls
+              playsInline
+              preload="metadata"
               className="w-full"
               data-testid="video-autograder-demo"
             >
