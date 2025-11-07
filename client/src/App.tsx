@@ -26,7 +26,8 @@ function Router() {
     <>
       <ScrollToTop />
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={ProfessionalDevelopment} />
+        <Route path="/novapath" component={Home} />
         <Route path="/science-kit" component={ScienceKit} />
         <Route path="/professional-development" component={ProfessionalDevelopment} />
         <Route path="/autograder" component={AutoGrader} />
