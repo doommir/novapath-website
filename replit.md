@@ -1,13 +1,15 @@
 # NovaPath Landing Pages
 
 ## Overview
-This application hosts five distinct product landing pages under the NovaPath brand, with the Professional Development page as the homepage:
+This application hosts five distinct product landing pages under the NovaPath brand, with the Professional Development page as the homepage, plus Blog and About Us pages:
 
 1.  **Professional Development** (Homepage at `/`): A landing page for educator professional development sessions focused on AI literacy through cobuilding solutions to real school challenges (e.g., attendance tracking, parent communication). Features include: hero video demo, "Why Cobuilding Builds AI Literacy That Lasts" section, two educator-built app examples (Loom embeds), 4-step cobuilding process with demonstration video showing actual AI coding agent usage, real solution examples, Google Calendar scheduling button for direct session booking, and inquiry form for custom sessions.
 2.  **NovaPath (Education Operations)** (at `/novapath`): An AI-powered education operations toolkit for K-12 schools, focused on lead generation through an interactive, voice-driven demo and early access waitlist. It emphasizes human-centered AI, freeing educators to focus on core tasks.
 3.  **AI-Infused Science Kit** (at `/science-kit`): A product page for a hands-on science experiment kit with an integrated AI assistant, promoting AI literacy and human-in-the-loop design for K-5 students, aligned with NGSS. It includes pre-order functionality.
 4.  **Navigator Auto-Grader** (at `/autograder`): A comprehensive landing page showcasing an AI-powered grading system that uses OCR (Google Vision) and speech recognition (Whisper) to provide instant, rubric-based feedback on handwritten student work, featuring an 8-step workflow, rubric framework, sample feedback, tech stack details, and demo inquiry form.
 5.  **Math Moves** (at `/math-moves`): A landing page for a movement-based math learning system that translates assessment data into physical PE lessons using AI analysis, featuring a 4-step workflow (pre-test, AI analysis, movement lesson, post-test), pilot results showing 43% → 93% mastery gains, embodied learning benefits, and pilot signup form.
+6.  **Blog** (at `/blog`): A blog page that displays embedded LinkedIn posts with optional metadata (title, description, date). Users can easily add new posts by updating the posts array in Blog.tsx with LinkedIn embed URLs.
+7.  **About Us** (at `/about`): An about page showcasing NovaPath's values (Educators First, Real Solutions, AI Literacy) and featuring embedded LinkedIn posts in a "Recent Updates" section. Users can add new posts by updating the linkedInPosts array in AboutUs.tsx.
 
 The project is a full-stack TypeScript application with a React frontend and an Express backend, designed for mobile-first responsiveness.
 
