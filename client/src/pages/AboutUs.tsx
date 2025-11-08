@@ -100,14 +100,26 @@ export default function AboutUs() {
     date: "August 2025"
   };
 
-  const upcomingEvent = {
-    title: "Designing the Future Before It Designs Us: AI at Navigator Schools",
-    description: "Join Dan Whitlock at the Charter Schools Conference 2026 for an interactive session exploring how Navigator integrates AI to amplify—not replace—the human side of education. Includes demos of tools like coaching dashboards and restorative assignment generators, plus collaborative planning activities for teachers, coaches, and leaders.",
-    date: "February 24, 2026",
-    time: "11:00am – 12:00pm",
-    location: "Seaside Ballroom A, Long Beach Convention Center, Long Beach, CA",
-    url: "https://www.charterconference.org/2026/program/search/detail_session.php?id=68984190"
-  };
+  const upcomingEvents = [
+    {
+      title: "Rapid AI Micro-Pilots: Classroom to District in Ten Weeks",
+      description: "Join Dan Whitlock at FETC 2026 for a Speed Learning Lab session exploring how to scale AI pilots from classroom experimentation to district-wide implementation in just ten weeks. Learn practical strategies for rapid iteration and organizational adoption.",
+      date: "January 13, 2026",
+      time: "2:00 PM",
+      location: "W415 Valencia B&C, Orange County Convention Center, Orlando, FL",
+      url: "https://www.fetc.org/program/agenda?&filters.date=11-Jan-2026%2C14-Jan-2026%2C12-Jan-2026%2C13-Jan-2026%2C10-Jan-2026%2C&searchTerm=whitlock&searchgroup=0F33CAD4-2026-full-agenda",
+      conference: "FETC 2026"
+    },
+    {
+      title: "Designing the Future Before It Designs Us: AI at Navigator Schools",
+      description: "Join Dan Whitlock at the Charter Schools Conference 2026 for an interactive session exploring how Navigator integrates AI to amplify—not replace—the human side of education. Includes demos of tools like coaching dashboards and restorative assignment generators, plus collaborative planning activities for teachers, coaches, and leaders.",
+      date: "February 24, 2026",
+      time: "11:00am – 12:00pm",
+      location: "Seaside Ballroom A, Long Beach Convention Center, Long Beach, CA",
+      url: "https://www.charterconference.org/2026/program/search/detail_session.php?id=68984190",
+      conference: "Charter Schools Conference 2026"
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -213,58 +225,67 @@ export default function AboutUs() {
             </Card>
           </motion.div>
 
-          <motion.div
-            className="mb-20"
-            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-          >
+          <div className="mb-20">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
-              Upcoming Event
+              Upcoming Events
             </h2>
-            <Card className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 border-violet-500/30 hover-elevate">
-              <CardContent className="p-8">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                    <Calendar className="h-6 w-6 text-violet-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-white mb-3">
-                      {upcomingEvent.title}
-                    </h3>
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-start gap-2 text-sm text-foreground/80">
-                        <Calendar className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
-                        <span>{upcomingEvent.date}</span>
+            <div className="space-y-6">
+              {upcomingEvents.map((event, index) => (
+                <motion.div
+                  key={index}
+                  initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: index * 0.1 }}
+                >
+                  <Card className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 border-violet-500/30 hover-elevate">
+                    <CardContent className="p-8">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                          <Calendar className="h-6 w-6 text-violet-400" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-xs font-semibold text-violet-400 mb-2 uppercase tracking-wide">
+                            {event.conference}
+                          </div>
+                          <h3 className="text-xl font-semibold text-white mb-3">
+                            {event.title}
+                          </h3>
+                          <div className="space-y-2 mb-4">
+                            <div className="flex items-start gap-2 text-sm text-foreground/80">
+                              <Calendar className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
+                              <span>{event.date}</span>
+                            </div>
+                            <div className="flex items-start gap-2 text-sm text-foreground/80">
+                              <Clock className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
+                              <span>{event.time}</span>
+                            </div>
+                            <div className="flex items-start gap-2 text-sm text-foreground/80">
+                              <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
+                              <span>{event.location}</span>
+                            </div>
+                          </div>
+                          <p className="text-foreground/90 mb-4 leading-relaxed">
+                            {event.description}
+                          </p>
+                          <a
+                            href={event.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block"
+                          >
+                            <Button variant="outline" data-testid={`button-event-details-${index}`}>
+                              View Event Details
+                            </Button>
+                          </a>
+                        </div>
                       </div>
-                      <div className="flex items-start gap-2 text-sm text-foreground/80">
-                        <Clock className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
-                        <span>{upcomingEvent.time}</span>
-                      </div>
-                      <div className="flex items-start gap-2 text-sm text-foreground/80">
-                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
-                        <span>{upcomingEvent.location}</span>
-                      </div>
-                    </div>
-                    <p className="text-foreground/90 mb-4 leading-relaxed">
-                      {upcomingEvent.description}
-                    </p>
-                    <a
-                      href={upcomingEvent.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block"
-                    >
-                      <Button variant="outline" data-testid="button-event-details">
-                        View Event Details
-                      </Button>
-                    </a>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
 
           <div className="mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
