@@ -111,21 +111,6 @@ export default function Blog() {
               <LinkedInPost key={index} {...post} />
             ))}
           </div>
-
-          <motion.div
-            className="text-center mt-12 p-8 rounded-lg bg-card/30 border border-border/50"
-            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-          >
-            <p className="text-foreground/80 mb-4">
-              Want to add more posts? Simply update the posts array in Blog.tsx with your LinkedIn embed URLs.
-            </p>
-            <code className="text-sm text-primary bg-primary/10 px-3 py-1 rounded">
-              postUrl: "https://www.linkedin.com/embed/feed/update/..."
-            </code>
-          </motion.div>
         </div>
       </section>
 
