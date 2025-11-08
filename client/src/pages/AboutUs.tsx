@@ -93,6 +93,13 @@ export default function AboutUs() {
     },
   ];
 
+  const featuredArticle = {
+    title: "Featured: EdWeek Article on NovaPath's Founder",
+    description: "\"Want Teachers to Learn How to Use AI for Instruction? Let Them Design the Tools\" - Education Week profiles Daniel Whitlock and his work helping educators build AI tools that solve real classroom challenges.",
+    url: "https://www.edweek.org/technology/want-teachers-to-learn-how-to-use-ai-for-instruction-let-them-design-the-tools/2025/08",
+    date: "August 2025"
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
@@ -156,6 +163,46 @@ export default function AboutUs() {
               ))}
             </div>
           </div>
+
+          <motion.div
+            className="mb-20"
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+          >
+            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover-elevate">
+              <CardContent className="p-8">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Lightbulb className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 text-sm text-foreground/60 mb-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>{featuredArticle.date}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-white mb-3">
+                      {featuredArticle.title}
+                    </h3>
+                    <p className="text-foreground/90 mb-4 leading-relaxed">
+                      {featuredArticle.description}
+                    </p>
+                    <a
+                      href={featuredArticle.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block"
+                    >
+                      <Button variant="outline" data-testid="button-read-article">
+                        Read the Full Article
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
           <div className="mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
