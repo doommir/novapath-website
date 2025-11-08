@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Target, Lightbulb, ArrowLeft, Calendar } from "lucide-react";
+import { Users, Target, Lightbulb, ArrowLeft, Calendar, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import Footer from "@/components/Footer";
@@ -100,6 +100,15 @@ export default function AboutUs() {
     date: "August 2025"
   };
 
+  const upcomingEvent = {
+    title: "Designing the Future Before It Designs Us: AI at Navigator Schools",
+    description: "Join Dan Whitlock at the Charter Schools Conference 2026 for an interactive session exploring how Navigator integrates AI to amplify—not replace—the human side of education. Includes demos of tools like coaching dashboards and restorative assignment generators, plus collaborative planning activities for teachers, coaches, and leaders.",
+    date: "February 24, 2026",
+    time: "11:00am – 12:00pm",
+    location: "Seaside Ballroom A, Long Beach Convention Center, Long Beach, CA",
+    url: "https://www.charterconference.org/2026/program/search/detail_session.php?id=68984190"
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
@@ -196,6 +205,59 @@ export default function AboutUs() {
                     >
                       <Button variant="outline" data-testid="button-read-article">
                         Read the Full Article
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            className="mb-20"
+            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+          >
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
+              Upcoming Event
+            </h2>
+            <Card className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 border-violet-500/30 hover-elevate">
+              <CardContent className="p-8">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                    <Calendar className="h-6 w-6 text-violet-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-white mb-3">
+                      {upcomingEvent.title}
+                    </h3>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-start gap-2 text-sm text-foreground/80">
+                        <Calendar className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
+                        <span>{upcomingEvent.date}</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-sm text-foreground/80">
+                        <Clock className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
+                        <span>{upcomingEvent.time}</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-sm text-foreground/80">
+                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-violet-400" />
+                        <span>{upcomingEvent.location}</span>
+                      </div>
+                    </div>
+                    <p className="text-foreground/90 mb-4 leading-relaxed">
+                      {upcomingEvent.description}
+                    </p>
+                    <a
+                      href={upcomingEvent.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block"
+                    >
+                      <Button variant="outline" data-testid="button-event-details">
+                        View Event Details
                       </Button>
                     </a>
                   </div>
