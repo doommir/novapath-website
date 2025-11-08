@@ -9,6 +9,8 @@ import ScienceKit from "@/pages/ScienceKit";
 import ProfessionalDevelopment from "@/pages/ProfessionalDevelopment";
 import AutoGrader from "@/pages/AutoGrader";
 import MathMoves from "@/pages/MathMoves";
+import Blog from "@/pages/Blog";
+import AboutUs from "@/pages/AboutUs";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -32,6 +34,8 @@ function Router() {
         <Route path="/professional-development" component={ProfessionalDevelopment} />
         <Route path="/autograder" component={AutoGrader} />
         <Route path="/math-moves" component={MathMoves} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/about" component={AboutUs} />
         <Route component={NotFound} />
       </Switch>
     </>
