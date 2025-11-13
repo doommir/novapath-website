@@ -86,6 +86,9 @@ export default function AboutUs() {
 
   const linkedInPosts: LinkedInPostProps[] = [
     {
+      postUrl: "https://www.linkedin.com/embed/feed/update/urn:li:share:7394846126228725760?collapsed=1",
+    },
+    {
       postUrl: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7392719772326649856?collapsed=1",
       title: "Our Story",
       description: "Learn about our journey and mission to transform education with AI.",
