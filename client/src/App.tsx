@@ -11,6 +11,7 @@ import AutoGrader from "@/pages/AutoGrader";
 import MathMoves from "@/pages/MathMoves";
 import Blog from "@/pages/Blog";
 import AboutUs from "@/pages/AboutUs";
+import InvestorPortal from "@/pages/InvestorPortal";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -36,6 +37,7 @@ function Router() {
         <Route path="/math-moves" component={MathMoves} />
         <Route path="/blog" component={Blog} />
         <Route path="/about" component={AboutUs} />
+        <Route path="/invest" component={InvestorPortal} />
         <Route component={NotFound} />
       </Switch>
     </>
