@@ -1,0 +1,84 @@
+Build a complete investor portal web app for NovaPath using React, Vite, TypeScript, and TailwindCSS. The app should have a clean, dark, modern UI and function as a Rolling SAFE investor intake site.
+
+Project name: novapath-investor-portal
+
+Requirements:
+
+1. Framework & Setup
+- Use Vite + React + TypeScript.
+- Install and configure TailwindCSS, PostCSS, and Autoprefixer.
+- Set up a dark gradient background theme.
+- Use a minimalist font system and glass-style cards.
+
+2. App Structure
+Create the following files and components:
+
+src/App.tsx  
+src/main.tsx  
+src/index.css  
+src/config.ts  
+src/components/Navbar.tsx  
+src/components/InvestorForm.tsx  
+src/components/TermsSection.tsx  
+src/components/Footer.tsx  
+
+Also generate:
+index.html  
+tailwind.config.cjs  
+postcss.config.cjs  
+
+3. Config
+Define NOVAPATH_CONFIG with:
+- companyName: "NovaPath"
+- valuationCap: 7000000
+- minCheck: 5000
+- maxCheck: 50000
+- raiseWindow: "Now – January 15"
+- contactEmail: "founder@novapath.ai"
+- contactName: "Dan Whitlock"
+- contactPhone: "831-402-1133"
+
+4. Pages & Content
+The main page should include:
+
+(A) A navbar with NovaPath branding and Rolling SAFE details  
+(B) A hero section explaining:
+    "NovaPath Rolling SAFE @ $7M Valuation Cap"
+    "Checks: $5k–$50k"
+    "Rolling raise window: Now – January 15"
+(C) A clean investor interest form collecting:
+    - Name
+    - Email
+    - Intended check size
+    - Accredited investor checkbox
+    - Optional notes
+(D) On submit, log form data to console (MVP behavior)
+(E) A terms section showing SAFE structure, valuation cap, conversion mechanic, check size, rights, and raise window
+(F) A second card titled "Why NovaPath" with 4–6 bullet points explaining traction and value
+(G) A footer with:
+    - "© currentYear NovaPath"
+    - Contact email: founder@novapath.ai
+    - Contact name: Dan Whitlock
+    - Contact phone: 831-402-1133
+
+5. Styling
+- Use Tailwind utility classes for spacing, layout, colors.
+- Dark mode aesthetic: deep navy/black gradients and teal/blue accents.
+- Rounded cards with translucent backgrounds using @apply in CSS.
+
+6. Behavior
+- Form should validate that:
+  - name, email, amount, accredited checkbox are required.
+- Show a success message after submit.
+- Disable the button during submission.
+
+7. Output
+Generate the full directory structure with all files correctly coded, formatted, and ready to run with:
+
+npm install  
+npm run dev
+
+Ensure the app runs on Replit with:
+npm run dev -- --host 0.0.0.0 --port 3000
+
+The final result should be a polished Rolling SAFE investor portal ready for investors to visit.

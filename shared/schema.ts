@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -134,3 +134,27 @@ export const insertMathMovesInquirySchema = createInsertSchema(mathMovesInquirie
 
 export type InsertMathMovesInquiry = z.infer<typeof insertMathMovesInquirySchema>;
 export type MathMovesInquiry = typeof mathMovesInquiries.$inferSelect;
+
+export const investorInquiries = pgTable("investor_inquiries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull(),
+  name: text("name").notNull(),
+  checkSize: text("check_size").notNull(),
+  accredited: boolean("accredited").notNull().default(false),
+  notes: text("notes"),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+});
+
+export const insertInvestorInquirySchema = createInsertSchema(investorInquiries).omit({
+  id: true,
+  submittedAt: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(1, "Please enter your name"),
+  checkSize: z.string().min(1, "Please enter your intended check size"),
+  accredited: z.boolean().refine(val => val === true, "You must confirm you are an accredited investor"),
+  notes: z.string().optional(),
+});
+
+export type InsertInvestorInquiry = z.infer<typeof insertInvestorInquirySchema>;
+export type InvestorInquiry = typeof investorInquiries.$inferSelect;
