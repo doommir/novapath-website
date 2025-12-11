@@ -103,7 +103,6 @@ export default function InvestorPortal() {
         title: "Interest Submitted",
         description: "Thank you for your interest in NovaPath. We'll be in touch shortly.",
       });
-      form.reset();
     },
     onError: () => {
       toast({
