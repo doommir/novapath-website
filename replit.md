@@ -10,6 +10,7 @@ This application hosts five distinct product landing pages under the NovaPath br
 5.  **Math Moves** (at `/math-moves`): A landing page for a movement-based math learning system that translates assessment data into physical PE lessons using AI analysis, featuring a 4-step workflow (pre-test, AI analysis, movement lesson, post-test), pilot results showing 43% → 93% mastery gains, embodied learning benefits, and pilot signup form.
 6.  **Blog** (at `/blog`): A blog page that displays embedded LinkedIn posts with optional metadata (title, description, date). Users can easily add new posts by updating the posts array in Blog.tsx with LinkedIn embed URLs.
 7.  **About Us** (at `/about`): An about page showcasing NovaPath's values (Educators First, Real Solutions, AI Literacy), featuring a highlighted EdWeek article about founder Dan Whitlock (August 2025), upcoming events section showing Dan's conference presentations (FETC 2026 and Charter Conference 2026), and embedded LinkedIn posts in a "Recent Updates" section. The EdWeek article "Want Teachers to Learn How to Use AI for Instruction? Let Them Design the Tools" profiles Dan's work at Navigator Schools. Upcoming events include: (1) FETC 2026 - "Rapid AI Micro-Pilots: Classroom to District in Ten Weeks" (January 13, 2026, Orlando, FL), and (2) Charter Schools Conference 2026 - "Designing the Future Before It Designs Us: AI at Navigator Schools" (February 24, 2026, Long Beach, CA).
+8.  **Investor Portal** (at `/invest`): An investor portal for NovaPath's Rolling SAFE fundraise featuring: $7M valuation cap, check sizes from $5,000-$50,000, raise window through January 15. Includes investor interest form (name, email, check size selection, accredited investor confirmation, optional notes), SAFE terms display, "Why NovaPath" section with 6 investment reasons (Proven Traction, Experienced Leadership, Clear Market Opportunity, Unique Approach, Investor-Friendly Terms, Near-Term Milestones), and direct contact information for founder Dan Whitlock (founder@novapath.ai, 831-402-1133).
 
 The project is a full-stack TypeScript application with a React frontend and an Express backend, designed for mobile-first responsiveness.
 
@@ -32,6 +33,7 @@ The system uses Drizzle ORM for PostgreSQL with the following data models:
 -   `PdInquiries`: Stores email, name, school, role, and pain point for PD inquiries.
 -   `AutograderInquiries`: Stores email, name, school, role, grade level, and optional additional info for Navigator Auto-Grader demo requests.
 -   `MathMovesInquiries`: Stores email, name, school, role, grade level, and optional additional info for Math Moves pilot signups.
+-   `InvestorInquiries`: Stores email, name, check size, accredited investor status (boolean), and optional notes for investor interest form submissions.
 All tables use varchar IDs with gen_random_uuid(), type-safe schemas, and Zod validation, with schema-first development.
 
 ### UI/UX Decisions
