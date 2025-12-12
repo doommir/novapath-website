@@ -12,7 +12,6 @@ import MathMoves from "@/pages/MathMoves";
 import Blog from "@/pages/Blog";
 import AboutUs from "@/pages/AboutUs";
 import InvestorPortal from "@/pages/InvestorPortal";
-import InvestorPortalEmbed from "@/pages/InvestorPortalEmbed";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -31,7 +30,7 @@ function Router() {
       <ScrollToTop />
       <Switch>
         <Route path="/" component={ProfessionalDevelopment} />
-        <Route path="/investorportal" component={InvestorPortalEmbed} />
+        <Route path="/investorportal" component={InvestorPortal} />
         <Route path="/novapath" component={Home} />
         <Route path="/science-kit" component={ScienceKit} />
         <Route path="/professional-development" component={ProfessionalDevelopment} />
