@@ -61,6 +61,14 @@ export default function Footer() {
             About Us
           </Link>
           <span className="hidden md:inline text-border">•</span>
+          <Link 
+            href="/investorportal" 
+            className="hover:text-foreground transition-colors"
+            data-testid="link-early-supporters"
+          >
+            Early Supporters
+          </Link>
+          <span className="hidden md:inline text-border">•</span>
           <a 
             href="mailto:hello@novapath.ai" 
             className="hover:text-foreground transition-colors"
@@ -71,6 +79,9 @@ export default function Footer() {
         </div>
         <p className="text-center text-xs text-muted-foreground mt-4" data-testid="text-copyright">
           © {new Date().getFullYear()} NovaPath. All rights reserved.
+        </p>
+        <p className="text-center text-xs text-muted-foreground/60 mt-2 max-w-3xl mx-auto">
+          This website is for informational purposes only and does not constitute an offer to sell or a solicitation of an offer to buy securities. Any offering, if made, will be conducted pursuant to Rule 506(b) of Regulation D and shared privately through definitive legal documentation.
         </p>
       </div>
     </footer>
