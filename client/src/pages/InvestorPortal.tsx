@@ -123,17 +123,6 @@ export default function InvestorPortal() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_1600px_1200px_at_50%_40%,hsl(180,60%,30%,0.25),transparent_50%)]" />
         
         <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-32">
-          <Link href="/">
-            <Button
-              variant="ghost"
-              className="mb-8 gap-2"
-              data-testid="button-back-home"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
-            </Button>
-          </Link>
-
           <motion.div
             className="text-center mb-16"
             initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}

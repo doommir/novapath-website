@@ -29,7 +29,7 @@ function Router() {
     <>
       <ScrollToTop />
       <Switch>
-        <Route path="/" component={ProfessionalDevelopment} />
+        <Route path="/" component={InvestorPortal} />
         <Route path="/novapath" component={Home} />
         <Route path="/science-kit" component={ScienceKit} />
         <Route path="/professional-development" component={ProfessionalDevelopment} />
