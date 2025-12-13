@@ -1,0 +1,90 @@
+SYSTEM A + SYSTEM B (Human+ Ai Collaborative workflow at scale) 
+Preventative Control Infrastructure for Schools
+System A captures what schools are doing. 
+System B predicts what will break — and tells them what to do next.
+Together, they let schools prevent failure instead of reacting to it.
+
+The Problem
+Schools already have dashboards.
+Dashboards explain the past.
+They do nothing to prevent what’s coming next.
+By the time problems show up in:
+test scores
+state dashboards
+accountability reviews
+leaders are already late, public, and expensive.
+There is no system in education that answers:
+“If nothing changes, what breaks next — and how do we stop it early?”
+
+
+
+The Solution
+A closed-loop control system.
+System A — Measurement & Action (Coaching Operating System and Dashboards)
+Lives inside schools
+Used daily by all instructional staff
+Captures observations, scores, workflows
+Executes human decisions
+Status: Live in 8 schools across 3 organizations.
+
+System B — Intelligence & Prediction
+No teacher UI
+No raw text
+No PII
+No student data
+System B learns from System A’s signals and answers:
+“What happens next — when — and what single move prevents failure?”
+
+How It Works
+Coaches work normally in System A
+Signals are distilled (no raw data leaves)
+System B models trajectory and inaction risk
+System B computes the next-best move
+That recommendation is sent back into System A
+Measure → Predict → Suggest → Act → Learn
+No new tools.
+No extra dashboards.
+
+What Coaches See
+Inside their existing dashboard:
+Suggested Next Move
+Schedule one follow-up within 10 days
+Impact: ~40% reduction in regression risk
+System B suggests.
+Humans decide.
+
+Why This Wins
+Most edtech:
+describes the past
+judges people
+waits for outcomes to fail
+System A + B:
+predict failure before it’s visible
+recommend small, low-friction actions
+route guidance to the point of control
+prevent problems quietly
+This is preventative control, not analytics.
+
+Defensibility
+One intelligence engine
+Many dashboard systems feeding it
+Each treated as a separate measurement instrument
+Clean-room architecture (no raw text, no PII)
+Cross-org learning without data pooling
+The moat is longitudinal, real-world coaching behavior — normalized by design.
+
+What This Is Not
+Teacher evaluation
+Test-score analytics
+State dashboard replication
+AI replacing humans
+No labels.
+No blame.
+No waiting for failure.
+
+One-Line Summary
+System A measures and executes.
+System B predicts and guides.
+Together, they prevent failure instead of explaining it.
+
+
