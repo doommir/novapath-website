@@ -13,6 +13,7 @@ import Blog from "@/pages/Blog";
 import AboutUs from "@/pages/AboutUs";
 import InvestorPortal from "@/pages/InvestorPortal";
 import InvestorPortalEmbed from "@/pages/InvestorPortalEmbed";
+import PreventativeControl from "@/pages/PreventativeControl";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -40,6 +41,7 @@ function Router() {
         <Route path="/blog" component={Blog} />
         <Route path="/about" component={AboutUs} />
         <Route path="/invest" component={InvestorPortal} />
+        <Route path="/preventative-control" component={PreventativeControl} />
         <Route component={NotFound} />
       </Switch>
     </>
