@@ -230,7 +230,7 @@ export default function Home() {
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { name: "TEAM Charter Schools", location: "Newark, NJ" },
+                { name: "TEAM Charter Schools", location: "California" },
                 { name: "Navigator Schools", location: "California" },
                 { name: "Clovis Global Academy", location: "Clovis, CA" }
               ].map((org, index) => (
