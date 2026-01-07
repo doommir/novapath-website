@@ -77,15 +77,11 @@ export default function NavigatorSchools() {
                       <h2 className="text-lg font-semibold text-white">NaviGrade</h2>
                       <p className="text-sm text-muted-foreground">AI-powered grading system</p>
                     </div>
-                    <a 
-                      href="https://NaviGrade.replit.app" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors" 
-                      data-testid="link-navigrade-fullscreen"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
+                    <Link href="/navigrade">
+                      <a className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors" data-testid="link-navigrade-fullscreen">
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Link>
                   </div>
                   <div className="aspect-video w-full">
                     <iframe
