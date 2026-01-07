@@ -30,39 +30,77 @@ export default function NavigatorSchools() {
             </p>
           </motion.div>
 
-          <motion.div
-            initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-          >
-            <Card className="bg-card/50 border-border/50 overflow-hidden" data-testid="card-coaching-os-demo">
-              <CardContent className="p-0">
-                <div className="flex items-center justify-between p-4 border-b border-border/50">
-                  <div>
-                    <h2 className="text-xl font-semibold text-white">Coaching OS Demo</h2>
-                    <p className="text-sm text-muted-foreground">Interactive demonstration of the coaching operating system</p>
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div
+              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+            >
+              <Card className="bg-card/50 border-border/50 overflow-hidden h-full" data-testid="card-coaching-os-demo">
+                <CardContent className="p-0">
+                  <div className="flex items-center justify-between p-4 border-b border-border/50">
+                    <div>
+                      <h2 className="text-lg font-semibold text-white">Coaching OS Demo</h2>
+                      <p className="text-sm text-muted-foreground">Coaching operating system</p>
+                    </div>
+                    <Link href="/coachingOSdemo">
+                      <a className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors" data-testid="link-fullscreen-demo">
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Link>
                   </div>
-                  <Link href="/coachingOSdemo">
-                    <a className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors" data-testid="link-fullscreen-demo">
-                      <span>Open Full Screen</span>
+                  <div className="aspect-video w-full">
+                    <iframe
+                      src="https://school-os.replit.app/"
+                      className="w-full h-full border-0"
+                      title="Coaching OS Demo"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      data-testid="iframe-coaching-os-tile"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+            >
+              <Card className="bg-card/50 border-border/50 overflow-hidden h-full" data-testid="card-navigrade-demo">
+                <CardContent className="p-0">
+                  <div className="flex items-center justify-between p-4 border-b border-border/50">
+                    <div>
+                      <h2 className="text-lg font-semibold text-white">NaviGrade</h2>
+                      <p className="text-sm text-muted-foreground">AI-powered grading system</p>
+                    </div>
+                    <a 
+                      href="https://NaviGrade.replit.app" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors" 
+                      data-testid="link-navigrade-fullscreen"
+                    >
                       <ExternalLink className="h-4 w-4" />
                     </a>
-                  </Link>
-                </div>
-                <div className="aspect-video w-full">
-                  <iframe
-                    src="https://school-os.replit.app/"
-                    className="w-full h-full border-0"
-                    title="Coaching OS Demo"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    data-testid="iframe-coaching-os-tile"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                  </div>
+                  <div className="aspect-video w-full">
+                    <iframe
+                      src="https://NaviGrade.replit.app/"
+                      className="w-full h-full border-0"
+                      title="NaviGrade Demo"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      data-testid="iframe-navigrade-tile"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
       </section>
 
