@@ -15,6 +15,7 @@ import InvestorPortal from "@/pages/InvestorPortal";
 import InvestorPortalEmbed from "@/pages/InvestorPortalEmbed";
 import PreventativeControl from "@/pages/PreventativeControl";
 import CoachingOSDemo from "@/pages/CoachingOSDemo";
+import NavigatorSchools from "@/pages/NavigatorSchools";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -44,6 +45,7 @@ function Router() {
         <Route path="/invest" component={InvestorPortal} />
         <Route path="/preventative-control" component={PreventativeControl} />
         <Route path="/coachingOSdemo" component={CoachingOSDemo} />
+        <Route path="/navigator-schools" component={NavigatorSchools} />
         <Route component={NotFound} />
       </Switch>
     </>
