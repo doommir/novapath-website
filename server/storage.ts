@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, type InvestorInquiry, type InsertInvestorInquiry, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries, investorInquiries } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, type InvestorInquiry, type InsertInvestorInquiry, type ConsultingInquiry, type InsertConsultingInquiry, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries, investorInquiries, consultingInquiries } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -16,6 +16,7 @@ export interface IStorage {
   createAutograderInquiry(inquiry: InsertAutograderInquiry): Promise<AutograderInquiry>;
   createMathMovesInquiry(inquiry: InsertMathMovesInquiry): Promise<MathMovesInquiry>;
   createInvestorInquiry(inquiry: InsertInvestorInquiry): Promise<InvestorInquiry>;
+  createConsultingInquiry(inquiry: InsertConsultingInquiry): Promise<ConsultingInquiry>;
 }
 
 export class MemStorage implements IStorage {
@@ -26,6 +27,7 @@ export class MemStorage implements IStorage {
   private autograderInquiries: Map<string, AutograderInquiry>;
   private mathMovesInquiries: Map<string, MathMovesInquiry>;
   private investorInquiries: Map<string, InvestorInquiry>;
+  private consultingInquiries: Map<string, ConsultingInquiry>;
 
   constructor() {
     this.users = new Map();
@@ -35,6 +37,7 @@ export class MemStorage implements IStorage {
     this.autograderInquiries = new Map();
     this.mathMovesInquiries = new Map();
     this.investorInquiries = new Map();
+    this.consultingInquiries = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -142,6 +145,21 @@ export class MemStorage implements IStorage {
     this.investorInquiries.set(id, investorInquiry);
     return investorInquiry;
   }
+
+  async createConsultingInquiry(insertConsultingInquiry: InsertConsultingInquiry): Promise<ConsultingInquiry> {
+    const id = randomUUID();
+    const consultingInquiry: ConsultingInquiry = {
+      id,
+      name: insertConsultingInquiry.name,
+      role: insertConsultingInquiry.role,
+      district: insertConsultingInquiry.district,
+      email: insertConsultingInquiry.email,
+      challenge: insertConsultingInquiry.challenge ?? null,
+      submittedAt: new Date()
+    };
+    this.consultingInquiries.set(id, consultingInquiry);
+    return consultingInquiry;
+  }
 }
 
 export class DbStorage implements IStorage {
@@ -223,6 +241,17 @@ export class DbStorage implements IStorage {
       notes: insertInvestorInquiry.notes ?? null,
     }).returning();
     return investorInquiry;
+  }
+
+  async createConsultingInquiry(insertConsultingInquiry: InsertConsultingInquiry): Promise<ConsultingInquiry> {
+    const [consultingInquiry] = await db.insert(consultingInquiries).values({
+      name: insertConsultingInquiry.name,
+      role: insertConsultingInquiry.role,
+      district: insertConsultingInquiry.district,
+      email: insertConsultingInquiry.email,
+      challenge: insertConsultingInquiry.challenge ?? null,
+    }).returning();
+    return consultingInquiry;
   }
 }
 

@@ -17,6 +17,7 @@ import PreventativeControl from "@/pages/PreventativeControl";
 import CoachingOSDemo from "@/pages/CoachingOSDemo";
 import NavigatorSchools from "@/pages/NavigatorSchools";
 import NaviGradeDemo from "@/pages/NaviGradeDemo";
+import NovaPathConsulting from "@/pages/NovaPathConsulting";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -48,6 +49,7 @@ function Router() {
         <Route path="/coachingOSdemo" component={CoachingOSDemo} />
         <Route path="/navigator-schools" component={NavigatorSchools} />
         <Route path="/navigrade" component={NaviGradeDemo} />
+        <Route path="/consulting" component={NovaPathConsulting} />
         <Route component={NotFound} />
       </Switch>
     </>
