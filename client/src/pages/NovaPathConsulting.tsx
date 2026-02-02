@@ -3,6 +3,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 import danHeadshot from "@assets/dan-headshot-about_1770050115907.jpeg";
 
 export default function NovaPathConsulting() {
@@ -22,16 +24,22 @@ export default function NovaPathConsulting() {
     <div className="min-h-screen font-['DM_Sans',sans-serif]" style={{ backgroundColor: "#0F0A1A" }}>
       <StickyNav onCtaClick={scrollToForm} />
       <Hero onCtaClick={scrollToForm} onSecondaryClick={scrollToProcess} />
-      <ProblemSection />
-      <MeetDan />
+      <div id="problem">
+        <ProblemSection />
+      </div>
+      <div id="about">
+        <MeetDan />
+      </div>
       <WhyCobuilding />
-      <div ref={processRef}>
+      <div id="process" ref={processRef}>
         <CobuildingProcess />
       </div>
-      <WhatWeBuilt />
+      <div id="solutions">
+        <WhatWeBuilt />
+      </div>
       <WhatDistrictsGet />
       <Testimonials />
-      <div ref={formRef}>
+      <div id="contact" ref={formRef}>
         <ConsultationForm />
       </div>
       <ConsultingFooter />
@@ -40,18 +48,39 @@ export default function NovaPathConsulting() {
 }
 
 function StickyNav({ onCtaClick }: { onCtaClick: () => void }) {
+  const navLinks = [
+    { label: "Problem", href: "#problem" },
+    { label: "About Dan", href: "#about" },
+    { label: "Process", href: "#process" },
+    { label: "Solutions", href: "#solutions" },
+    { label: "Contact", href: "#contact" },
+  ];
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 backdrop-blur-md" style={{ backgroundColor: "rgba(26, 20, 37, 0.8)" }}>
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         <span className="text-xl font-bold" style={{ color: "#F5F3FF" }}>NovaPath</span>
-        <button
+        <div className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium transition-colors"
+              style={{ color: "#B4B0C4" }}
+              data-testid={`link-nav-${link.label.toLowerCase().replace(" ", "-")}`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <Button
           onClick={onCtaClick}
-          className="px-6 py-2 rounded-lg font-medium text-white transition-all hover:opacity-90"
+          className="text-white font-medium"
           style={{ backgroundColor: "#7C5CFF" }}
           data-testid="button-nav-cta"
         >
           Schedule a Consultation
-        </button>
+        </Button>
       </div>
     </nav>
   );
@@ -96,22 +125,25 @@ function Hero({ onCtaClick, onSecondaryClick }: { onCtaClick: () => void; onSeco
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <button
+              <Button
                 onClick={onCtaClick}
-                className="px-8 py-4 rounded-lg font-semibold text-white transition-all hover:shadow-lg hover:shadow-purple-500/20"
+                size="lg"
+                className="text-white font-semibold"
                 style={{ backgroundColor: "#7C5CFF" }}
                 data-testid="button-hero-cta"
               >
                 Schedule a Free Consultation
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={onSecondaryClick}
-                className="px-8 py-4 rounded-lg font-semibold transition-all hover:bg-white/5"
-                style={{ color: "#7C5CFF", border: "2px solid #7C5CFF" }}
+                variant="outline"
+                size="lg"
+                className="font-semibold"
+                style={{ color: "#7C5CFF", borderColor: "#7C5CFF" }}
                 data-testid="button-hero-secondary"
               >
-                See How It Works ↓
-              </button>
+                See How It Works
+              </Button>
             </div>
           </motion.div>
           
@@ -142,7 +174,7 @@ function Hero({ onCtaClick, onSecondaryClick }: { onCtaClick: () => void; onSeco
         >
           {credibilityItems.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
-              <span style={{ color: "#7C5CFF" }}>✦</span>
+              <Sparkles className="w-3 h-3" style={{ color: "#7C5CFF" }} />
               <span className="text-sm" style={{ color: "#6B6580" }}>{item}</span>
             </div>
           ))}
@@ -764,15 +796,16 @@ function ConsultationForm() {
             />
           </div>
           
-          <button
+          <Button
             type="submit"
             disabled={mutation.isPending}
-            className="w-full py-4 rounded-lg font-semibold text-white transition-all hover:shadow-lg hover:shadow-purple-500/20 disabled:opacity-50"
+            size="lg"
+            className="w-full font-semibold text-white"
             style={{ backgroundColor: "#7C5CFF" }}
             data-testid="button-submit-consultation"
           >
             {mutation.isPending ? "Submitting..." : "Schedule a Free Consultation"}
-          </button>
+          </Button>
           
           <p className="text-center text-sm" style={{ color: "#6B6580" }}>
             No pitch. No pressure. Just a conversation about what's possible for your district.
