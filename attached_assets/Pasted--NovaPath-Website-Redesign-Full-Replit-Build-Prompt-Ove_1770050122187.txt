@@ -1,0 +1,352 @@
+# NovaPath Website Redesign — Full Replit Build Prompt
+
+## Overview
+
+Rebuild explorenovapath.com as a consulting landing page for NovaPath, an AI consulting practice for K-12 school districts. The site should position NovaPath as a premium, practitioner-led consulting firm — not a SaaS product, not a PD workshop vendor. The founder, Dan Whitlock, is the face of the brand. People hire Dan. NovaPath is the entity.
+
+This is a single-page site. No routing needed. Clean, fast, conversion-focused. One goal: get a qualified superintendent or district leader to schedule a free consultation.
+
+---
+
+## Brand System (MUST MATCH EXACTLY)
+
+These colors and fonts are shared across Dan's entire brand ecosystem (newsletter, LinkedIn, this site). Consistency is non-negotiable.
+
+```css
+:root {
+  --bg-primary: #0F0A1A;        /* Deep purple-black — main background */
+  --bg-card: #1A1425;           /* Slightly lighter — card/section backgrounds */
+  --bg-elevated: #241E30;       /* Elevated surfaces, hover states on cards */
+  --accent-primary: #7C5CFF;    /* Vibrant purple — CTAs, highlights, links */
+  --accent-hover: #A78BFA;      /* Lighter purple — hover states, secondary accents */
+  --accent-glow: rgba(124, 92, 255, 0.15); /* Subtle glow/gradient behind elements */
+  --text-primary: #F5F3FF;      /* Near-white with slight purple tint — headlines */
+  --text-body: #B4B0C4;         /* Muted purple-gray — body text */
+  --text-dim: #6B6580;          /* Dimmed — labels, captions, meta text */
+  --border: #2A2435;            /* Subtle borders between sections */
+  --success: #4ADE80;           /* Green for checkmarks, positive indicators */
+}
+```
+
+**Font:** Use `"DM Sans"` from Google Fonts for everything. Bold (700) for headlines, Medium (500) for subheads, Regular (400) for body. DM Sans is clean and modern without being generic. Import: `https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap`
+
+**Design Aesthetic:** Dark, premium, confident. Think high-end SaaS crossed with editorial design. Generous whitespace. No clutter. No playful edtech vibes. No teal or green anywhere. This should feel like a site that a superintendent would take seriously — not a teacher's Pinterest board.
+
+**Subtle texture/depth:** Use very faint radial gradients of `--accent-glow` behind key sections to create depth. A barely-visible noise texture overlay on the background adds premium feel. Subtle purple gradient lines or dividers between sections.
+
+---
+
+## Page Structure (Top to Bottom)
+
+### 1. NAVIGATION BAR (Fixed/Sticky)
+
+Minimal. Left: "NovaPath" as text wordmark in `--text-primary`, bold, no logo image. Right: Single CTA button "Schedule a Consultation" in `--accent-primary` with white text. No other nav links. This is a single-page site — no hamburger menus, no dropdowns.
+
+On scroll, the nav should get a subtle `--bg-card` background with slight blur (backdrop-filter).
+
+---
+
+### 2. HERO SECTION
+
+**Layout:** Two columns on desktop. Left column: text content. Right column: Dan's headshot photo (use the blue-background headshot — `dan-headshot-2.jpeg`). On mobile: stack vertically, text first, photo second (or hide photo on mobile and show it in the bio section instead).
+
+**Small label above headline:** "AI Consulting for K-12 Districts" — in `--accent-primary`, uppercase, small text (12-13px), letter-spacing: 2px. A small purple line or dot before it.
+
+**Headline:**
+```
+Your teachers are already using AI.
+The question is whether you have a plan.
+```
+Style: `--text-primary`, bold, large (48-56px desktop, 32-36px mobile). The second line can be slightly dimmer or use `--accent-primary` for emphasis on "have a plan."
+
+**Subheadline:**
+```
+NovaPath works with K-12 districts to build real AI strategy — not slide decks. We embed with your team, identify the workflows burning the most time, and cobuild working solutions in weeks, not months.
+```
+Style: `--text-body`, regular weight, 18-20px. Max-width ~560px so lines don't stretch too wide.
+
+**Two CTA buttons:**
+- Primary: "Schedule a Free Consultation" → scrolls to bottom form. `--accent-primary` background, white text, generous padding (16px 32px), rounded corners (8px), subtle hover glow effect.
+- Secondary: "See How It Works ↓" → scrolls to the cobuilding process section. Ghost/outline style: transparent background, `--accent-primary` border and text, same size.
+
+**Dan's photo treatment:** The headshot should have a subtle gradient fade on the edges that blends into `--bg-primary`. Not a hard rectangle — let it breathe into the dark background. Consider a faint purple glow/shadow behind the photo for depth.
+
+**Credibility bar below the hero content:** A horizontal row of 4 trust markers, separated by subtle dividers. Small text, `--text-dim` color, with small icons or subtle emphasis:
+
+- ✦ California SB 1288 AI Workgroup
+- ✦ Featured in Education Week
+- ✦ 8 AI Tools Deployed in Real Classrooms
+- ✦ 4 Campuses · 1,900+ Students
+
+On mobile this can become a 2x2 grid.
+
+---
+
+### 3. "THE PROBLEM" SECTION
+
+Brief section that names the pain. Dark background with a subtle gradient.
+
+**Section header:** "What We're Hearing from Districts" — in `--text-dim`, small caps or uppercase, letter-spaced.
+
+**Three pain-point cards** in a row (stack on mobile). Each card: `--bg-card` background, subtle border, rounded corners. Each has a short quote-style statement representing what district leaders actually say:
+
+**Card 1:**
+Title: "Teachers are using AI with no guardrails"
+Body: "Half our staff is pasting student work into ChatGPT. We have no policy, no training, and no idea what data is being shared."
+
+**Card 2:**
+Title: "Vendors keep pitching, nothing sticks"
+Body: "We've sat through a dozen AI demos. They all look great on stage. None of them survive contact with an actual classroom."
+
+**Card 3:**
+Title: "The board is asking questions we can't answer"
+Body: "We need an AI strategy by next quarter. We don't even know what the right questions are yet, let alone the answers."
+
+Each card should have a small purple accent — maybe a top border line in `--accent-primary`, or a subtle icon.
+
+---
+
+### 4. "MEET DAN WHITLOCK" SECTION
+
+This is critical. The person behind the consulting practice needs to be front and center.
+
+**Layout:** Photo on left, bio content on right (reverse on mobile or stack).
+
+**Photo:** Use `dan-headshot-2.jpeg` (the blue-background one). Display at a good size — not a tiny circle, but a proper portrait. Rounded corners (12-16px), maybe a subtle purple border or glow.
+
+**Name:** "Dan Whitlock" — large, bold, `--text-primary`
+**Title:** "Founder, NovaPath · Technology Innovation Lead, Navigator Schools" — `--text-dim`, medium weight
+
+**Bio text (--text-body):**
+```
+Dan doesn't advise from the outside — he cobuilds. As Technology Innovation Lead at Navigator Schools, he works inside real classrooms every week, building AI tools alongside teachers and watching what actually works.
+
+He's built and deployed 8 AI-powered tools across 4 school campuses serving 1,900+ students. He was selected for California's SB 1288 AI in Education Workgroup and featured in Education Week for his approach to teacher-led AI design.
+
+When districts work with NovaPath, they're not getting a slide deck. They're getting someone who's done this — in hallways, in classrooms, at the board table.
+```
+
+**Credential badges** below the bio — small, pill-shaped tags in `--bg-elevated` with `--text-dim` text:
+- SB 1288 AI Workgroup
+- Education Week Feature
+- ASU+GSV Speaker
+- FETC 2026 Speaker
+- Navigator Schools
+
+---
+
+### 5. "WHY COBUILDING" SECTION
+
+**Section headline:** "Why Districts Choose Cobuilding Over Buying"
+**Section subhead:** "Most AI implementations fail because they're built for a demo, not a classroom. Cobuilding changes that." — `--text-body`
+
+**Three columns** (stack on mobile), each with an icon/illustration at top, headline, and body:
+
+**Column 1:**
+Icon: A simple geometric icon suggesting collaboration (two overlapping shapes, a handshake abstraction — keep it minimal, use SVG, `--accent-primary` color)
+Headline: "Solutions That Actually Get Used"
+Body: "When teachers help build the tool, they actually use it. No shelfware. No 'we bought this but nobody logs in.' The people doing the work define how the work gets done."
+
+**Column 2:**
+Icon: Something suggesting learning/growth
+Headline: "Real AI Literacy, Not Slideware"
+Body: "Your team doesn't learn AI by watching a presentation. They learn by building — choosing what data is safe to use, defining what 'good enough' looks like, and testing with real students."
+
+**Column 3:**
+Icon: Something suggesting ownership/sustainability
+Headline: "You Own Everything We Build"
+Body: "No subscriptions. No vendor lock-in. No 'call us if it breaks.' Every tool, workflow, and resource we cobuild together belongs to your district. When we leave, the capability stays."
+
+---
+
+### 6. "THE COBUILDING PROCESS" SECTION
+
+**Section headline:** "How a Cobuilding Engagement Works"
+**Section subhead:** "Four phases. Weeks, not months. Real tools in real classrooms."
+
+**Four steps in a horizontal flow** (or vertical timeline on mobile). Each step is a card or node connected by a subtle line/arrow. Use numbered circles (1-4) in `--accent-primary`.
+
+**Step 1: "Identify the Pain Point"**
+"We start with the workflow that's burning the most time. Grading? Coaching documentation? Parent communication? Attendance tracking? We find the 'this is ridiculous' moment and work backwards from there."
+
+**Step 2: "Design the Solution Together"**
+"Your team defines what the tool needs to do — not in theory, but in the real constraints of their day. How much time do they have? What reading level are students at? What data is safe to use? Teachers set the rules."
+
+**Step 3: "Cobuild with AI"**
+"Using AI coding agents and rapid prototyping, we build a working tool in days. Not a mockup. Not a wireframe. A real, testable application your team can use that week."
+
+**Step 4: "Deploy and Keep Building"**
+"The tool goes live in real classrooms. We measure what works, what doesn't, and iterate. The tool evolves with your practice — because it was never meant to be 'finished.'"
+
+---
+
+### 7. "WHAT WE'VE BUILT" SECTION
+
+**Section headline:** "Real Tools Built by Real Educators"
+**Section subhead:** "These aren't hypotheticals. These are applications educators have cobuilt to solve their actual challenges."
+
+**Grid of 6 solution cards** (3x2 on desktop, stack on mobile). Each card: `--bg-card` background, subtle top-border accent in `--accent-primary`, icon, title, description.
+
+**Card 1: NaviGrade Autograder**
+"Students photograph or audio-record their work → AI scores against the rubric → instant feedback via QR code → students revise on the spot. 75% of students voluntarily revised their work without being asked."
+
+**Card 2: Coaching Dashboard**
+"Classroom observations flow into AI-powered synthesis → specific action steps generated → fidelity tracking over time. A coaching system, not coaching vibes."
+
+**Card 3: Restorative Practice Generator**
+"Incident description in → SEL-aligned reflection prompts + parent communication letter out. A 45-minute process reduced to 3 minutes. Featured in Education Week."
+
+**Card 4: Mixteco Translator Plus**
+"A custom AI translator supporting Mixtec, Spanish, and English with image recognition. Because language access isn't a feature request — it's a foundation."
+
+**Card 5: ELD R.I.S.E. (K-2)**
+"A 15-minute ELD workflow aligned to California ELD standards, designed for iPad-based delivery in early elementary classrooms."
+
+**Card 6: Attendance Automation**
+"Reducing the process-layer busywork around attendance tracking so teachers can spend the most important 20 minutes of the day on what matters — students."
+
+---
+
+### 8. "WHAT DISTRICTS GET" SECTION
+
+**Section headline:** "What a NovaPath Engagement Looks Like"
+**Section subhead:** "Every district is different. Here's what they all have in common."
+
+**Two-column layout or stacked cards** with checkmark items:
+
+**Left column — "What's Included":**
+- ✓ On-site or virtual cobuilding sessions with your team
+- ✓ Working AI tools deployed in your classrooms within weeks
+- ✓ AI readiness assessment and gap analysis
+- ✓ Data privacy and governance framework
+- ✓ Teacher training embedded in the build process (not bolted on after)
+- ✓ Full ownership of everything we create together
+
+**Right column — "What You Won't Get":**
+- ✗ A 60-page strategy document nobody reads
+- ✗ Vendor demos dressed up as professional development
+- ✗ Tools that require a PhD to configure
+- ✗ Recurring SaaS fees for something your district paid to build
+- ✗ AI hype without implementation plans
+
+Style the ✓ items with `--success` green checkmarks. Style the ✗ items with a muted red or `--text-dim` with strikethrough effect.
+
+---
+
+### 9. SOCIAL PROOF / TESTIMONIALS (Placeholder)
+
+**Section headline:** "What Educators Are Saying"
+
+For now, use a quote from the Education Week article. We'll add real testimonials as we collect them.
+
+**Quote block:**
+```
+"The AI tool that Whitlock developed turned a 45-minute documentation process into 3 minutes, freeing teachers to focus on actually supporting students."
+— Education Week, August 2025
+```
+
+Large quote text, centered, with a subtle left border in `--accent-primary` or large quotation marks as decorative elements. `--text-primary` for the quote, `--text-dim` for the attribution.
+
+If we can add 1-2 more placeholder slots that say "More testimonials coming soon" in `--text-dim`, that signals we're collecting them without looking empty.
+
+---
+
+### 10. BOTTOM CTA / CONSULTATION FORM
+
+**Section headline:** "Let's Talk About Your District"
+**Section subhead:** "Schedule a free 30-minute consultation. We'll identify your biggest pain point and map out what a cobuilding engagement could look like for your team."
+
+**Background:** This section should feel slightly different — maybe `--bg-card` background with a subtle purple gradient or glow to make it stand out as the destination.
+
+**Simple form with fields:**
+- Your Name (text input)
+- Your Role (text input — e.g., "Superintendent," "Director of Curriculum")
+- District / Organization (text input)
+- Email (email input)
+- What's your biggest challenge with AI right now? (textarea, 3-4 rows)
+
+**Submit button:** "Schedule a Free Consultation" — large, `--accent-primary`, full-width on mobile.
+
+**Below the form:** Small text in `--text-dim`: "No pitch. No pressure. Just a conversation about what's possible for your district."
+
+**Form handling:** For now, have the form submit to a simple endpoint or use Formspree/EmailJS to send submissions to hello@explorenovapath.com. We'll upgrade to a proper CRM later.
+
+---
+
+### 11. FOOTER
+
+Minimal. Dark, `--bg-primary` or slightly darker.
+
+**Left:** "© 2026 NovaPath" in `--text-dim`
+**Center or right:** Small links: "Newsletter" (links to smarterbydesign.app) · "LinkedIn" (links to Dan's LinkedIn) · "Contact" (mailto:hello@explorenovapath.com)
+
+No social icons grid. No sitemap. No blog links. Keep it dead simple.
+
+---
+
+## OG / Meta Tags (CRITICAL FOR LINKEDIN)
+
+When this URL is shared on LinkedIn (specifically in Dan's Featured section), the preview card needs to look cohesive with the newsletter card next to it.
+
+```html
+<meta property="og:title" content="NovaPath — AI Consulting for K-12 Districts" />
+<meta property="og:description" content="We embed with your team, identify the workflows burning the most time, and cobuild working AI solutions in weeks. Schedule a free consultation." />
+<meta property="og:image" content="[URL to OG image]" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://explorenovapath.com" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="NovaPath — AI Consulting for K-12 Districts" />
+<meta name="twitter:description" content="We embed with your team, identify the workflows burning the most time, and cobuild working AI solutions in weeks." />
+```
+
+**OG Image spec (MUST CREATE):**
+- Size: 1200x630px
+- Background: `#0F0A1A`
+- Left side: "NovaPath" text wordmark in white, bold
+- Below: "AI Consulting for K-12 Districts" in `--accent-primary`
+- Subtle purple gradient/glow element for visual interest
+- Right side: Dan's headshot with gradient fade (optional, but would match the newsletter card's approach)
+- Overall vibe should match the Smarter by Design newsletter card that sits next to it on LinkedIn
+
+Create this OG image as a static PNG and serve it from the site's public/assets folder.
+
+---
+
+## Responsive Behavior
+
+- **Desktop (1200px+):** Full two-column layouts, generous spacing
+- **Tablet (768-1199px):** Reduce columns to single where needed, maintain readability
+- **Mobile (< 768px):** Single column everything. Hero photo can be smaller or hidden (Dan appears in the bio section anyway). Form fields stack vertically. CTAs become full-width. Font sizes scale down proportionally.
+
+---
+
+## Performance & Technical Notes
+
+- Single HTML page, no framework needed. Vanilla HTML/CSS/JS is fine. If you want to use a framework, keep it minimal.
+- Lazy-load Dan's headshot photos
+- Use CSS scroll-behavior: smooth for anchor links
+- Add subtle fade-in animations on scroll (IntersectionObserver) for each section — nothing aggressive, just gentle opacity + translateY transitions as sections enter viewport
+- Ensure the page scores 90+ on Lighthouse for performance
+- Use semantic HTML (section, article, header, footer, nav)
+- The sticky nav should have a z-index above everything
+
+---
+
+## Assets to Include
+
+- `dan-headshot-2.jpeg` — Dan's headshot with blue/dark background (use for hero and bio sections)
+- OG image — generate as described above (1200x630px PNG)
+- No other images needed. All icons should be inline SVG.
+
+---
+
+## What This Site Is NOT
+
+- Not a SaaS product page. No "features" list, no pricing tiers, no "Start Free Trial"
+- Not a PD workshop signup. No "Register for our next session"
+- Not an agency portfolio. No client logo bar (we don't have permission yet), no case study grid
+- Not a generic edtech site. No stock photos of diverse kids with tablets. No teal/orange/bright color palette. No playful illustrations.
+
+This is a consulting practice. One person's expertise, packaged professionally, presented with confidence. The site should feel like Dan is someone you'd trust with a $50K engagement — because he is.
