@@ -27,6 +27,7 @@ export default function NovaPathConsulting() {
       <div id="problem">
         <ProblemSection />
       </div>
+      <ChecklistCTA />
       <div id="about">
         <MeetDan />
       </div>
@@ -39,7 +40,6 @@ export default function NovaPathConsulting() {
       </div>
       <WhatDistrictsGet />
       <Testimonials />
-      <ChecklistCTA />
       <div id="contact" ref={formRef}>
         <ConsultationForm />
       </div>
