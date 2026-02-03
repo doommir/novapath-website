@@ -49,7 +49,13 @@ export default function NovaPathConsulting() {
 }
 
 function StickyNav({ onCtaClick }: { onCtaClick: () => void }) {
-  const navLinks = [
+  const externalLinks = [
+    { label: "Newsletter", href: "https://smarterbydesign.app", external: true },
+    { label: "Consulting", href: "#", external: false },
+    { label: "AI Readiness", href: "https://checklist.smarterbydesign.app", external: true },
+  ];
+
+  const sectionLinks = [
     { label: "Problem", href: "#problem" },
     { label: "About Dan", href: "#about" },
     { label: "Process", href: "#process" },
@@ -60,15 +66,35 @@ function StickyNav({ onCtaClick }: { onCtaClick: () => void }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 backdrop-blur-md" style={{ backgroundColor: "rgba(26, 20, 37, 0.8)" }}>
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-        <span className="text-xl font-bold" style={{ color: "#F5F3FF" }}>NovaPath</span>
-        <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
+        <div className="flex items-center gap-8">
+          <span className="text-xl font-bold" style={{ color: "#F5F3FF" }}>NovaPath</span>
+          <div className="hidden md:flex items-center gap-4">
+            {externalLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className="text-sm font-medium transition-colors px-3 py-1.5 rounded-md"
+                style={{ 
+                  color: link.label === "Consulting" ? "#F5F3FF" : "#B4B0C4",
+                  backgroundColor: link.label === "Consulting" ? "rgba(124, 92, 255, 0.2)" : "transparent"
+                }}
+                data-testid={`link-nav-${link.label.toLowerCase().replace(" ", "-")}`}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div className="hidden lg:flex items-center gap-6">
+          {sectionLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className="text-sm font-medium transition-colors"
-              style={{ color: "#B4B0C4" }}
-              data-testid={`link-nav-${link.label.toLowerCase().replace(" ", "-")}`}
+              style={{ color: "#6B6580" }}
+              data-testid={`link-section-${link.label.toLowerCase().replace(" ", "-")}`}
             >
               {link.label}
             </a>
