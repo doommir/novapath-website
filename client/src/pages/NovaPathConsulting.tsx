@@ -39,6 +39,7 @@ export default function NovaPathConsulting() {
       </div>
       <WhatDistrictsGet />
       <Testimonials />
+      <ChecklistCTA />
       <div id="contact" ref={formRef}>
         <ConsultationForm />
       </div>
@@ -811,6 +812,75 @@ function ConsultationForm() {
             No pitch. No pressure. Just a conversation about what's possible for your district.
           </p>
         </motion.form>
+      </div>
+    </section>
+  );
+}
+
+function ChecklistCTA() {
+  const reducedMotion = useReducedMotion();
+
+  return (
+    <section className="py-20 px-6" style={{ backgroundColor: "#0F0A1A" }}>
+      <div className="max-w-2xl mx-auto">
+        <motion.div
+          className="p-8 rounded-xl"
+          style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435", borderLeft: "4px solid #7C5CFF" }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+        >
+          <div className="text-center">
+            <span
+              className="text-xs font-semibold uppercase tracking-widest"
+              style={{ color: "#7C5CFF" }}
+            >
+              START HERE
+            </span>
+            
+            <h2
+              className="text-2xl md:text-3xl font-bold mt-4 mb-4"
+              style={{ color: "#F5F3FF" }}
+            >
+              Find out where your district actually stands.
+            </h2>
+            
+            <p
+              className="max-w-xl mx-auto mb-8 leading-relaxed"
+              style={{ color: "#B4B0C4" }}
+            >
+              Before we talk, take the free AI Readiness Checklist. Ten minutes, six dimensions — policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision. You'll get a personalized breakdown of your gaps and a clear picture of where to focus first.
+            </p>
+            
+            <Button
+              asChild
+              size="lg"
+              className="font-semibold text-white w-full md:w-auto"
+              style={{ backgroundColor: "#7C5CFF" }}
+              data-testid="button-checklist-cta"
+            >
+              <a href="https://checklist.smarterbydesign.app" target="_blank" rel="noopener noreferrer">
+                Take the Free Checklist →
+              </a>
+            </Button>
+            
+            <p className="text-xs mt-4" style={{ color: "#6B6580" }}>
+              Free · 10 minutes · No login required
+            </p>
+          </div>
+        </motion.div>
+        
+        <motion.p
+          className="text-center text-sm italic mt-8"
+          style={{ color: "#6B6580" }}
+          initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
+        >
+          Already know you need help?
+        </motion.p>
       </div>
     </section>
   );

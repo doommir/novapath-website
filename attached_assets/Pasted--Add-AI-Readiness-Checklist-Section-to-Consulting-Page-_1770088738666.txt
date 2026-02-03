@@ -1,0 +1,79 @@
+# Add AI Readiness Checklist Section to Consulting Page
+
+## Task
+Add a new section to the consulting page at `explorenovapath.com/consulting` that promotes the free K-12 AI Readiness Checklist. This section links out to `https://checklist.smarterbydesign.app` — do NOT embed or iframe the tool.
+
+## Context
+The consulting page asks visitors to schedule a consultation. That's a high-commitment action — many visitors aren't ready for it. This new section catches those people with a lower-commitment first step: take the free checklist, see your gaps, THEN decide if you want to talk. The checklist results page already has a CTA to book a readiness review, so this creates a warm lead path: consulting page → checklist → results → book call.
+
+## Placement
+Add the section **directly above the main "Schedule a Consultation" CTA section** (or directly after the "Problem" section if there's a natural break there). The idea is: you've just read about the problem, you're not sure if you need help yet — here's a free way to find out.
+
+It should NOT replace the consultation CTA. It should appear as a softer alternative BEFORE it, so the page flow becomes:
+1. Problem section (existing)
+2. **New: "Start here" checklist section**
+3. Consultation CTA (existing)
+
+## Design Requirements
+Match the existing explorenovapath.com design system:
+- Background: `#0F0A1A` (or whatever the page currently uses — match it)
+- Accent color: `#7C5CFF` (purple)
+- Font: Inter
+- The section should feel like a natural part of the consulting page, not a bolted-on ad.
+- Use the same component patterns (cards, borders, spacing) already present on the page.
+
+## Layout
+- **Desktop:** Centered, max-width matching other page sections. Text centered or left-aligned depending on existing page patterns.
+- **Mobile:** Full-width with proper padding, everything stacked.
+- Consider a subtle top divider line or extra whitespace to separate it from the section above.
+
+## Content (use exactly this copy)
+
+**Small label** (purple `#7C5CFF`, uppercase, letter-spaced, ~12px):
+```
+START HERE
+```
+
+**Headline** (white, bold, ~24-28px):
+```
+Find out where your district actually stands.
+```
+
+**Body text** (`#B4B0C4`, regular weight, ~16px, max-width ~560px):
+```
+Before we talk, take the free AI Readiness Checklist. Ten minutes, six dimensions — policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision. You'll get a personalized breakdown of your gaps and a clear picture of where to focus first.
+```
+
+**CTA button** (`#7C5CFF` background, white text, rounded corners ~8px):
+```
+Take the Free Checklist →
+```
+
+**Link:** `https://checklist.smarterbydesign.app` (opens in new tab)
+
+**Subtext below button** (small, muted, ~13px):
+```
+Free · 10 minutes · No login required
+```
+
+**Separator or transition text below** (small, muted, centered, ~14px italic or regular):
+```
+Already know you need help?
+```
+
+This naturally flows into the existing "Schedule a Consultation" section below it.
+
+## Optional Enhancement
+If the page already has a card-style design pattern, wrap this section in a card with a subtle purple left-border accent (3-4px solid `#7C5CFF`). This visually signals "this is a callout" without being heavy-handed.
+
+## Responsive Behavior
+- Full-width stacked layout on mobile
+- Button full-width on mobile
+- Proper padding (match existing mobile padding on the page)
+- "Already know you need help?" transition text should still flow naturally into the consultation section on mobile
+
+## Do NOT
+- Add email capture here (the checklist handles that)
+- Use an iframe or embed
+- Remove or modify the existing consultation CTA
+- Change any existing sections or content on the page
