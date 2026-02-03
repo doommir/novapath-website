@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import danHeadshot from "@assets/dan-headshot-about_1770050115907.jpeg";
+import danPresenting from "@assets/copyofdan_1770090391461.png";
 
 export default function NovaPathConsulting() {
   const reducedMotion = useReducedMotion();
@@ -288,8 +289,8 @@ function MeetDan() {
           >
             <div className="absolute inset-0 rounded-2xl blur-3xl" style={{ background: "radial-gradient(circle at center, rgba(124, 92, 255, 0.2), transparent 70%)" }} />
             <img
-              src={danHeadshot}
-              alt="Dan Whitlock"
+              src={danPresenting}
+              alt="Dan Whitlock presenting"
               className="relative rounded-2xl w-full max-w-sm mx-auto md:mx-0"
               style={{ border: "2px solid #2A2435" }}
               loading="lazy"
