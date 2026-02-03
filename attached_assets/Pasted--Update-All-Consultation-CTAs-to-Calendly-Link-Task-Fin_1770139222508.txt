@@ -1,0 +1,51 @@
+# Update All Consultation CTAs to Calendly Link
+
+## Task
+Find and update every consultation/booking CTA on the consulting page to point to a Calendly booking link. Every button, link, or CTA that invites visitors to schedule a call, book a consultation, or talk to Dan should point to the same URL.
+
+## Target URL
+```
+https://calendly.com/daniel-whitlock/30min
+```
+
+All links should open in a new tab (`target="_blank"` with `rel="noopener noreferrer"`).
+
+## Locations to Update
+
+### 1. Navigation Bar
+The "Schedule a Consultation" button in the top-right nav. Update its `href` to the Calendly link.
+
+### 2. Hero Section
+The "Schedule a Free Consultation" button in the hero area. Update its `href` to the Calendly link.
+
+### 3. Contact Form Section ("Let's Talk About Your District")
+This is the form at the bottom of the page with fields for name, email, district, title, and a message. Two options here — pick whichever is easier:
+
+**Option A (preferred):** Keep the form but add a line directly above it:
+```
+Prefer to book directly? Schedule a free 30-minute call →
+```
+Style "Schedule a free 30-minute call →" as a purple text link (`#7C5CFF`), pointing to the Calendly URL. This way visitors can either fill out the form OR book directly — both paths work.
+
+**Option B:** Replace the entire form with a centered CTA that links to Calendly. Only do this if the form isn't actually connected to anything (no backend, no email notifications). If the form works and sends Dan submissions, keep it and go with Option A.
+
+### 4. Any Other CTAs
+Search the entire codebase for any other buttons, links, or text that reference booking, scheduling, consultations, or "let's talk." Common patterns to search for:
+- `Schedule`
+- `Consultation`
+- `Book`
+- `Let's talk`
+- `Contact`
+- `Get started`
+- Any `href` pointing to `#contact`, `#book`, `/contact`, or similar anchor/page links
+
+Update all of them to the Calendly URL.
+
+### 5. "See How It Works" Button (Hero)
+Check what this button currently does. If it scrolls to a booking section or contact form, leave it as-is (it's serving a different purpose — showing methodology). Only update it if it currently points to a booking/scheduling action.
+
+## Do NOT
+- Remove the contact form (unless it's not functional)
+- Change button text or styling — only update the link targets
+- Modify any non-CTA content on the page
+- Change the "Take the Free Checklist" link (that should still point to checklist.smarterbydesign.app)

@@ -102,12 +102,14 @@ function StickyNav({ onCtaClick }: { onCtaClick: () => void }) {
           ))}
         </div>
         <Button
-          onClick={onCtaClick}
+          asChild
           className="text-white font-medium"
           style={{ backgroundColor: "#7C5CFF" }}
           data-testid="button-nav-cta"
         >
-          Schedule a Consultation
+          <a href="https://calendly.com/daniel-whitlock/30min" target="_blank" rel="noopener noreferrer">
+            Schedule a Consultation
+          </a>
         </Button>
       </div>
     </nav>
@@ -154,13 +156,15 @@ function Hero({ onCtaClick, onSecondaryClick }: { onCtaClick: () => void; onSeco
             
             <div className="flex flex-wrap gap-4">
               <Button
-                onClick={onCtaClick}
+                asChild
                 size="lg"
                 className="text-white font-semibold"
                 style={{ backgroundColor: "#7C5CFF" }}
                 data-testid="button-hero-cta"
               >
-                Schedule a Free Consultation
+                <a href="https://calendly.com/daniel-whitlock/30min" target="_blank" rel="noopener noreferrer">
+                  Schedule a Free Consultation
+                </a>
               </Button>
               <Button
                 onClick={onSecondaryClick}
@@ -743,6 +747,19 @@ function ConsultationForm() {
           </h2>
           <p style={{ color: "#B4B0C4" }}>
             Schedule a free 30-minute consultation. We'll identify your biggest pain point and map out what a cobuilding engagement could look like for your team.
+          </p>
+          <p className="mt-4" style={{ color: "#B4B0C4" }}>
+            Prefer to book directly?{" "}
+            <a 
+              href="https://calendly.com/daniel-whitlock/30min" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="font-medium hover:underline"
+              style={{ color: "#7C5CFF" }}
+              data-testid="link-calendly-direct"
+            >
+              Schedule a free 30-minute call →
+            </a>
           </p>
         </motion.div>
         
