@@ -888,7 +888,7 @@ function ChecklistCTA() {
               data-testid="button-checklist-cta"
             >
               <a href="https://checklist.smarterbydesign.app" target="_blank" rel="noopener noreferrer">
-                Take the Free Checklist →
+                Take the Free Assessment →
               </a>
             </Button>
             
