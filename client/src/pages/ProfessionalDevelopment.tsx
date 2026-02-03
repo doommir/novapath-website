@@ -104,6 +104,46 @@ function GoogleCalendarButton() {
   return <div ref={buttonRef} data-testid="google-calendar-button" />;
 }
 
+function StickyNav() {
+  const externalLinks = [
+    { label: "Newsletter", href: "https://smarterbydesign.app", external: true },
+    { label: "Consulting", href: "https://explorenovapath.com/consulting", external: true },
+    { label: "AI Readiness", href: "https://checklist.smarterbydesign.app", external: true },
+  ];
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 backdrop-blur-md bg-background/80 border-b border-border/50">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+        <div className="flex items-center gap-8">
+          <span className="text-xl font-bold text-foreground">NovaPath</span>
+          <div className="hidden md:flex items-center gap-4">
+            {externalLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium transition-colors px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground"
+                data-testid={`link-nav-${link.label.toLowerCase().replace(" ", "-")}`}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+        <Button
+          asChild
+          className="font-medium"
+        >
+          <a href="#inquiry" data-testid="button-nav-cta">
+            Request a Session
+          </a>
+        </Button>
+      </div>
+    </nav>
+  );
+}
+
 export default function ProfessionalDevelopment() {
   const formRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
@@ -114,12 +154,13 @@ export default function ProfessionalDevelopment() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <StickyNav />
       <Hero onCtaClick={scrollToForm} />
       <WhyCobuildingWorks />
       <EducatorExamples />
       <TheProcess />
       <ExampleApps />
-      <div ref={formRef}>
+      <div ref={formRef} id="inquiry">
         <InquirySection />
       </div>
       <Footer />
@@ -160,7 +201,7 @@ function Hero({ onCtaClick }: { onCtaClick: () => void }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
+    <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background pt-16">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_1600px_1200px_at_50%_40%,hsl(280,95%,60%,0.25),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_1000px_at_70%_60%,hsl(340,85%,65%,0.20),transparent_50%)] animate-pulse-slow" />
 
