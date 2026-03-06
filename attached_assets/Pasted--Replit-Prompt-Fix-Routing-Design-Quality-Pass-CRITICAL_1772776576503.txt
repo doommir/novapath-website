@@ -1,0 +1,177 @@
+# Replit Prompt: Fix Routing + Design Quality Pass
+
+## CRITICAL: Fix the routing first
+
+In `client/src/App.tsx`, the homepage route (`/`) currently points to `ProfessionalDevelopment`. This is the old cobuilding PD page. The consulting page I've been rebuilding is at `/consulting`.
+
+**The consulting page IS the homepage. Make these changes:**
+
+1. Change `<Route path="/" component={ProfessionalDevelopment} />` to `<Route path="/" component={NovaPathConsulting} />`
+2. Change `<Route path="/consulting" component={NovaPathConsulting} />` to a redirect: `<Route path="/consulting">{() => { window.location.href = '/'; return null; }}</Route>` (so old links still work)
+3. Remove these legacy routes and their imports — they are dead pages:
+   - `/science-kit` (ScienceKit)
+   - `/autograder` (AutoGrader)
+   - `/math-moves` (MathMoves)
+   - `/blog` (Blog)
+   - `/invest` and `/investorportal` (InvestorPortal, InvestorPortalEmbed)
+   - `/preventative-control` (PreventativeControl)
+   - `/novapath` (Home)
+   - `/navigator-schools` (NavigatorSchools)
+   - `/professional-development` (ProfessionalDevelopment)
+
+4. The final router should only have:
+```
+/                → NovaPathConsulting
+/consulting      → redirect to /
+/coachingOSdemo  → CoachingOSDemo (keep)
+/navigrade       → NaviGradeDemo (keep)
+/about           → AboutUs (keep or remove if folded into homepage)
+/*               → NotFound
+```
+
+5. Remove "Consulting" from the nav highlight/pill. Since the consulting page IS the homepage now, the nav should not show "Consulting" as a separate destination. The nav items should be anchor scrolls within the same page: Services, Results, About, plus external links for Newsletter and AI Readiness.
+
+---
+
+## DESIGN QUALITY PASS
+
+The current page looks vibe-coded. Every section has the same purple dashed borders, inconsistent spacing, and no visual rhythm. I want it to look like a polished, professional consulting site — closer to the HexaCore template (hexacore.framer.website) in terms of quality and cohesion.
+
+### Global design changes:
+
+**Kill the purple dashed borders.** Every card on the page currently has a `border: 1px dashed` or similar purple outline. This is the single biggest thing making it look AI-generated. Replace with:
+- Cards should use a subtle solid border (`1px solid rgba(124, 92, 255, 0.15)`) or no border at all
+- Use background color differentiation instead: card backgrounds at `#1A1425` against page background `#0F0A1A`
+- On hover, cards can get a subtle glow: `box-shadow: 0 0 20px rgba(124, 92, 255, 0.1)`
+- The "featured" or "Most Popular" pricing card can have a brighter border (`1px solid #7C5CFF`)
+
+**Consistent section spacing.** Every major section should have the same vertical padding: `padding: 96px 0` on desktop, `padding: 64px 0` on mobile. Right now some sections are cramped and others have huge gaps.
+
+**Section dividers.** Between major sections, use either:
+- A subtle gradient line (like HexaCore's curved gradient accents)
+- OR consistent spacing with no divider (cleaner)
+- Do NOT use thick purple borders or heavy horizontal rules
+
+**Typography hierarchy.** 
+- Section eyebrow labels (like "SERVICES", "WHAT WE'RE HEARING"): 12px, uppercase, letter-spacing 2px, color #7C5CFF, font-weight 600
+- Section headlines: 36-42px on desktop, 28-32px on mobile, font-weight 700, white
+- Section subheads: 16-18px, color #B4B0C4, max-width 600px, centered
+- Card titles: 20px, font-weight 600, white
+- Card body text: 15px, color #B4B0C4, line-height 1.6
+- "Best for" or tag text on service cards: 13px, color #A78BFA, italic or with a small icon
+
+**Smooth scroll.** Add `scroll-behavior: smooth` to the html element. All nav anchor links should smoothly scroll to their sections.
+
+### Section-specific fixes:
+
+**Hero:**
+- Remove Dan's headshot from the hero. Move it to the About Dan section.
+- The hero should be text-only with a subtle gradient background (like HexaCore's hero: dark with a colored glow at the bottom or sides).
+- Headline left-aligned or centered, with the purple text line as an accent.
+- CTAs should be pill-shaped buttons with clear hierarchy: filled primary, outlined secondary.
+- Credibility bar sits at the bottom of the hero section as a thin strip. No icons, just text items separated by subtle dividers (vertical lines or dots).
+
+**Problem cards:**
+- Remove purple dashed borders. Use dark card backgrounds (#1A1425) with subtle rounded corners (12px).
+- Optional: add a small icon or emoji above each card title for visual interest.
+- Cards should have consistent padding (24px) and a subtle hover effect (slight lift or glow).
+
+**Readiness CTA callout:**
+- This should feel like a special callout, not just another card. Use a gradient border (like a 1px border that transitions from #7C5CFF to #A78BFA) or a subtle purple glow background.
+- Center-aligned content. Clear visual hierarchy: eyebrow → headline → body → button.
+
+**About Dan:**
+- Photo on the left, text on the right (desktop). Stacked on mobile.
+- Photo should have a subtle border-radius (8-12px) and maybe a faint purple shadow.
+- The credential tags at the bottom (SB 1288, Education Week, etc.) should be small pills with dark backgrounds and muted purple text — like the current design but more subtle.
+
+**Services grid (6 cards):**
+- 3×2 grid on desktop, 2×3 on tablet, 1 column on mobile.
+- No dashed borders. Clean dark cards with subtle hover states.
+- Each card gets a small icon (use Lucide icons or simple SVG icons) in #7C5CFF at the top.
+- "Best for:" line at the bottom of each card in smaller, muted purple text.
+- The Frameworks & Resources card should have a subtle accent (maybe a different icon or a small "NEW" badge) to distinguish it as the digital product entry point.
+
+**"Why Districts Choose Cobuilding Over Buying" section:**
+- This section exists on the current page but isn't in my spec. Either:
+  - (a) Remove it entirely (the Problem section + Services section already cover this ground), OR
+  - (b) Keep it but restyle: remove purple dashed borders from the 3 cards, use clean dark cards instead
+
+**Methodology (4 steps):**
+- The numbered circles are good. Keep them.
+- Remove purple dashed borders from the step cards.
+- Consider a horizontal layout on desktop (4 steps in a row with connecting lines between the numbered circles, like a timeline/process flow).
+
+**Tools grid (6 cards):**
+- Same treatment as services grid: no dashed borders, clean dark cards.
+- Stats should be highlighted in #7C5CFF with a larger font size (like "75%" in 24px bold purple).
+- The "hook" phrases (like "Coaching system, not coaching vibes") should be in italic or a slightly different color to stand out from the description.
+
+**"What a NovaPath Engagement Looks Like" section:**
+- The "What's Included" / "What You Won't Get" two-column layout is actually good. Keep it.
+- But restyle: remove heavy borders. Use clean dark cards. The "What You Won't Get" column with strikethrough text is a nice touch — keep that visual.
+
+**Stats Bar (new section):**
+- Full-width section with a subtle gradient background (not flat dark).
+- Like HexaCore's "Don't take our word for it" section: large numbers, muted descriptors, visual weight.
+- Consider a curved gradient accent line above or below the numbers.
+
+**Testimonial:**
+- The Education Week quote with the purple left border is good. Keep that styling.
+- The "More testimonials coming soon" placeholder cards look unfinished. Either remove them entirely or replace with a cleaner placeholder (just leave the one real quote without drawing attention to what's missing).
+
+**Pricing tiers (new section):**
+- Three cards side by side, middle card elevated (like HexaCore's pricing).
+- Middle card ("Go Deeper") should have: a "Most Popular" badge in #7C5CFF, a slightly brighter border or background, and a filled CTA button (vs outlined on the other two).
+- Price ranges should be in large, bold white text. The "/month" on the retainer should be smaller, muted.
+- Clean bullet points with small purple checkmarks (not heavy list styling).
+
+**FAQ Accordion (new section):**
+- Use the existing Accordion component.
+- Clean, minimal styling. Question text in white, answer text in #B4B0C4.
+- Subtle bottom border between items. No heavy card styling around each Q&A.
+
+**Bridge CTA:**
+- A contained card/callout (like HexaCore's "Ready to Start Your Digital Transformation?" section).
+- Subtle gradient background or a clean bordered card.
+- Two CTAs: filled primary, outlined secondary.
+
+**Contact form:**
+- Clean, dark form inputs with subtle borders.
+- Role should be a dropdown (select element), not a text input.
+- Submit button: full-width, #7C5CFF background, white text.
+
+**Footer:**
+- Three-column layout: Contact / Links / Newsletter signup
+- Clean, minimal. Remove ALL legacy links (Science Kit, Auto-Grader, Math Moves, etc.)
+- Remove Reg D / securities disclaimer
+
+---
+
+## NAV FIX
+
+The nav currently shows: Newsletter | Consulting | AI Readiness | Problem | About Dan | Process | Solutions | Contact + "Schedule a Consultation" button
+
+This is too many items and "Consulting" shouldn't be a nav item when you're already ON the consulting page.
+
+**New nav (5 anchor links + 2 external + 1 CTA):**
+- Services (anchor → #services)
+- Results (anchor → #results)  
+- About (anchor → #about)
+- Newsletter (external → smarterbydesign.app)
+- AI Readiness (external → checklist.smarterbydesign.app)
+- CTA button: "Book a Call" (external → Calendly URL)
+
+Remove: Consulting, Problem, About Dan (rename to just About), Process, Solutions, Contact as separate nav items.
+
+---
+
+## SUMMARY OF PRIORITIES
+
+1. **Fix App.tsx routing** — make NovaPathConsulting the `/` route
+2. **Kill purple dashed borders everywhere** — this is the #1 design fix
+3. **Simplify the nav** — 5 items + CTA, anchor scrolls
+4. **Move Dan's photo out of hero** — hero is text + gradient + CTAs only
+5. **Consistent spacing and typography** — make it look intentional, not generated
+6. **Remove "More testimonials coming soon" placeholders** — never show empty states on a live site
+7. **Build remaining new sections** (Stats Bar, Pricing, FAQ, Bridge CTA) if not already done from the previous task list

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* LIGHT MODE - Purple/Violet Dark Theme with Teal Accent */
 :root {
   --button-outline: rgba(255,255,255, .15);

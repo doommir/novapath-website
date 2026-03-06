@@ -1,58 +1,32 @@
-import { Switch, Route, useLocation } from "wouter";
+import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
-import Home from "@/pages/Home";
-import ScienceKit from "@/pages/ScienceKit";
-import ProfessionalDevelopment from "@/pages/ProfessionalDevelopment";
-import AutoGrader from "@/pages/AutoGrader";
-import MathMoves from "@/pages/MathMoves";
-import Blog from "@/pages/Blog";
-import AboutUs from "@/pages/AboutUs";
-import InvestorPortal from "@/pages/InvestorPortal";
-import InvestorPortalEmbed from "@/pages/InvestorPortalEmbed";
-import PreventativeControl from "@/pages/PreventativeControl";
 import CoachingOSDemo from "@/pages/CoachingOSDemo";
-import NavigatorSchools from "@/pages/NavigatorSchools";
 import NaviGradeDemo from "@/pages/NaviGradeDemo";
+import AboutUs from "@/pages/AboutUs";
 import NovaPathConsulting from "@/pages/NovaPathConsulting";
 import NotFound from "@/pages/not-found";
 
-function ScrollToTop() {
-  const [location] = useLocation();
-  
+function ConsultingRedirect() {
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
-  
+    window.location.replace("/");
+  }, []);
   return null;
 }
 
 function Router() {
   return (
-    <>
-      <ScrollToTop />
-      <Switch>
-        <Route path="/" component={ProfessionalDevelopment} />
-        <Route path="/investorportal" component={InvestorPortalEmbed} />
-        <Route path="/novapath" component={Home} />
-        <Route path="/science-kit" component={ScienceKit} />
-        <Route path="/professional-development" component={ProfessionalDevelopment} />
-        <Route path="/autograder" component={AutoGrader} />
-        <Route path="/math-moves" component={MathMoves} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/about" component={AboutUs} />
-        <Route path="/invest" component={InvestorPortal} />
-        <Route path="/preventative-control" component={PreventativeControl} />
-        <Route path="/coachingOSdemo" component={CoachingOSDemo} />
-        <Route path="/navigator-schools" component={NavigatorSchools} />
-        <Route path="/navigrade" component={NaviGradeDemo} />
-        <Route path="/consulting" component={NovaPathConsulting} />
-        <Route component={NotFound} />
-      </Switch>
-    </>
+    <Switch>
+      <Route path="/" component={NovaPathConsulting} />
+      <Route path="/consulting" component={ConsultingRedirect} />
+      <Route path="/coachingOSdemo" component={CoachingOSDemo} />
+      <Route path="/navigrade" component={NaviGradeDemo} />
+      <Route path="/about" component={AboutUs} />
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 

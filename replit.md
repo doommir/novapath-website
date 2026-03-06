@@ -1,19 +1,26 @@
-# NovaPath Landing Pages
+# NovaPath Consulting
 
 ## Overview
-This application hosts five distinct product landing pages under the NovaPath brand, with the Professional Development page as the homepage, plus Blog and About Us pages:
+This application is a single-page consulting landing page for NovaPath, targeting K-12 district leaders for AI consulting services. The homepage (/) is the NovaPath Consulting page.
 
-1.  **Professional Development** (Homepage at `/`): A landing page for educator professional development sessions focused on AI literacy through cobuilding solutions to real school challenges (e.g., attendance tracking, parent communication). Features include: hero video demo, "Why Cobuilding Builds AI Literacy That Lasts" section, two educator-built app examples (Loom embeds), 4-step cobuilding process with demonstration video showing actual AI coding agent usage, real solution examples, Google Calendar scheduling button for direct session booking, and inquiry form for custom sessions.
-2.  **NovaPath (Education Operations)** (at `/novapath`): An AI-powered education operations toolkit for K-12 schools, focused on lead generation through an interactive, voice-driven demo and early access waitlist. It emphasizes human-centered AI, freeing educators to focus on core tasks.
-3.  **AI-Infused Science Kit** (at `/science-kit`): A product page for a hands-on science experiment kit with an integrated AI assistant, promoting AI literacy and human-in-the-loop design for K-5 students, aligned with NGSS. It includes pre-order functionality.
-4.  **Navigator Auto-Grader** (at `/autograder`): A comprehensive landing page showcasing an AI-powered grading system that uses OCR (Google Vision) and speech recognition (Whisper) to provide instant, rubric-based feedback on handwritten student work, featuring an 8-step workflow, rubric framework, sample feedback, tech stack details, and demo inquiry form.
-5.  **Math Moves** (at `/math-moves`): A landing page for a movement-based math learning system that translates assessment data into physical PE lessons using AI analysis, featuring a 4-step workflow (pre-test, AI analysis, movement lesson, post-test), pilot results showing 43% → 93% mastery gains, embodied learning benefits, and pilot signup form.
-6.  **Blog** (at `/blog`): A blog page that displays embedded LinkedIn posts with optional metadata (title, description, date). Users can easily add new posts by updating the posts array in Blog.tsx with LinkedIn embed URLs.
-7.  **About Us** (at `/about`): An about page showcasing NovaPath's values (Educators First, Real Solutions, AI Literacy), featuring a highlighted EdWeek article about founder Dan Whitlock (August 2025), upcoming events section showing Dan's conference presentations (FETC 2026 and Charter Conference 2026), and embedded LinkedIn posts in a "Recent Updates" section. The EdWeek article "Want Teachers to Learn How to Use AI for Instruction? Let Them Design the Tools" profiles Dan's work at Navigator Schools. Upcoming events include: (1) FETC 2026 - "Rapid AI Micro-Pilots: Classroom to District in Ten Weeks" (January 13, 2026, Orlando, FL), and (2) Charter Schools Conference 2026 - "Designing the Future Before It Designs Us: AI at Navigator Schools" (February 24, 2026, Long Beach, CA).
-8.  **Investor Portal** (at `/invest`): An investor portal for NovaPath's Rolling SAFE fundraise featuring: $7M valuation cap, check sizes from $5,000-$50,000, raise window through January 15. Includes investor interest form (name, email, check size selection, accredited investor confirmation, optional notes), SAFE terms display, "Why NovaPath" section with 6 investment reasons (Proven Traction, Experienced Leadership, Clear Market Opportunity, Unique Approach, Investor-Friendly Terms, Near-Term Milestones), and direct contact information for founder Dan Whitlock (founder@novapath.ai, 831-402-1133).
-9.  **NovaPath Consulting** (at `/consulting`): A rebuilt single-page consulting homepage for AI consulting services targeting K-12 district leaders. Features a dark purple theme (#0F0A1A background, #7C5CFF primary accent) with Inter font. Section order: Sticky Nav (Services/Results/About/Newsletter/AI Readiness anchor links + "Book a Call" Calendly CTA), Hero ("Your district's AI strategy shouldn't come from a vendor pitch deck." + "Book a Free AI Readiness Review" CTA), Credibility Bar (4 proof points: SB 1288, Education Week, 8+ tools, Speaker credits), Problem Section ("The Problem Every District Leader Knows" - 3 pain-point cards), Methodology ("How We Work" - 4-step cobuilding process reframed for consulting), Services ("How We Work With Districts" - 4 cards with price ranges: AI Readiness Audit $5K-$15K, Cobuilding Engagement $15K-$50K+, AI Policy Development $8K-$20K, Implementation Support $10K-$30K, plus EdTech advisory sub-section), Results ("Real Tools. Real Classrooms. Real Results." - 6 real tools: NaviGrade, Restorative Practice Generator, CoachingOS, Mixteco Translator Plus, ELD R.I.S.E., Voice SEL Check-ins with stats highlighted in purple), About Dan (bio with headshot photo, 3 paragraphs, newsletter link), Testimonials (EdWeek quote + placeholder cards), Bridge Offer ("Ready to Figure Out AI for Your District?" + primary Calendly CTA + inquiry form with Role dropdown), Footer (3-column: contact info / links / newsletter signup - no Reg D disclaimers).
+**Active Routes:**
+1. **NovaPath Consulting** (Homepage at `/`): Premium dark-purple single-page consulting site for K-12 AI consulting services. Dark theme (#0F0A1A background, #7C5CFF primary accent), Inter font, framer-motion animations. Section order: Sticky Nav → Hero (text-only, gradient background) → Problem Cards → Readiness CTA → About Dan → Services (6 cards with Lucide icons) → Methodology (4-step) → Results (6 tools) → Stats Bar → Testimonials (EdWeek quote only) → Pricing Tiers (3 cards, middle "Go Deeper" featured) → FAQ Accordion → Bridge CTA → Contact Form → Footer.
+2. `/consulting` → Client-side redirect to `/` (for backward compatibility)
+3. `/coachingOSdemo` → CoachingOSDemo
+4. `/navigrade` → NaviGradeDemo
+5. `/about` → AboutUs (legacy)
+6. `/*` → NotFound
 
-The project is a full-stack TypeScript application with a React frontend and an Express backend, designed for mobile-first responsiveness.
+**Key Design Decisions:**
+- Hero: text-only, no headshot. Dan's photo lives in the About Dan section.
+- All cards: clean dark `#1A1425` backgrounds, `1px solid rgba(255,255,255,0.06)` borders, no colored top borders
+- Services: 6 cards in 3×2 grid with Lucide icons (Map, Hammer, FileText, BookOpen, Lightbulb, Library)
+- Testimonials: only the real EdWeek quote, no placeholder "coming soon" cards
+- Pricing: middle "Go Deeper" card featured with Most Popular badge and filled purple button
+- FAQ: minimal Radix accordion with no heavy card styling
+- Scroll: smooth scroll behavior via `html { scroll-behavior: smooth; }` in index.css
+- Calendly: all CTAs link to `https://calendly.com/novapath`
+- Nav: Services / Results / About anchor links + Newsletter (smarterbydesign.app) + AI Readiness (checklist.smarterbydesign.app) external links + "Book a Call" CTA
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -21,7 +28,7 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-The frontend is built with React 18, TypeScript, Vite, and Wouter for routing. UI components utilize Shadcn/ui (New York style), Radix UI primitives, and Tailwind CSS, featuring a mobile-first, dark-themed design with purple/violet and indigo-to-blue gradients, and the Inter font. Form management uses React Hook Form with Zod for validation. It employs a single-page application structure and a component-based architecture with path aliasing.
+The frontend is built with React 18, TypeScript, Vite, and Wouter for routing. UI components utilize Shadcn/ui (New York style), Radix UI primitives, and Tailwind CSS, featuring a mobile-first, dark-themed design with purple/violet gradients and the Inter font. Framer-motion is used for scroll-triggered animations. It employs a single-page application structure and a component-based architecture with path aliasing.
 
 ### Backend Architecture
 The backend uses Express.js and TypeScript with ESM. It integrates Vite middleware for HMR in development and includes custom logging and error handling. Storage is abstracted via an `IStorage` interface, supporting in-memory storage and prepared for PostgreSQL using Drizzle ORM and Neon serverless. The API is RESTful, uses JSON, and leverages shared, Drizzle-Zod generated schemas for type safety and validation.
@@ -39,25 +46,23 @@ The system uses Drizzle ORM for PostgreSQL with the following data models:
 All tables use varchar IDs with gen_random_uuid(), type-safe schemas, and Zod validation, with schema-first development.
 
 ### UI/UX Decisions
-The design is mobile-first and responsive, featuring a dark theme with purple/violet and indigo-to-blue gradients. Typography uses the Inter font. Interactive elements include hover/active elevation effects. The interactive demo simulates a student experience (e.g., "Maya Chen") with voice interaction (TTS and Web Speech API) for AI-driven workflows (attendance, counselor alerts, peer support), emphasizing human oversight via a teacher review dashboard. The AI assistant uses sentiment analysis to adapt its tone and provides natural, human-like voice responses via OpenAI's TTS.
+Dark theme with #0F0A1A background, #1A1425 card backgrounds, #7C5CFF primary purple, #A78BFA secondary purple, #B4B0C4 body text, #FFFFFF headlines. Inter font. Framer-motion scroll animations. Mobile-first responsive layout.
 
 ## External Dependencies
 
 ### Frontend Libraries
--   **Radix UI**: Primitive component library.
--   **Lucide React**: Icon library.
+-   **Radix UI**: Primitive component library (Accordion for FAQ).
+-   **Lucide React**: Icon library (service card icons).
 -   **Tailwind CSS**: Utility-first CSS framework.
 -   **React Hook Form & Zod**: Form management and validation.
 -   **Wouter**: Lightweight client-side routing.
 -   **TanStack Query**: Server state management.
--   **Embla Carousel React**: Carousel functionality.
--   **React Day Picker**: Date picker.
--   **Vaul**: Drawer component primitive.
+-   **Framer Motion**: Scroll-triggered animations.
 
 ### Backend Services
 -   **Neon Database**: Serverless PostgreSQL provider.
 -   **Drizzle ORM**: Type-safe database toolkit.
--   **OpenAI**: AI model integration for emotional validation and peer prompt generation via Replit AI Integrations.
+-   **OpenAI**: AI model integration (for CoachingOS demo and NovaPath demo).
 
 ### Build Tools & Developer Experience
 -   **Vite**: Frontend build tool and dev server.
@@ -71,4 +76,4 @@ The design is mobile-first and responsive, featuring a dark theme with purple/vi
 
 ### Fonts & Assets
 -   **Google Fonts (Inter)**: Primary typography.
--   **Local Assets**: Hero dashboard mockup images.
+-   **Local Assets**: Dan Whitlock presenting photo (`copyofdan_1770090391461.png`).

@@ -10,10 +10,25 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import danHeadshot from "@assets/dan-headshot-about_1770050115907.jpeg";
+import {
+  Map,
+  Hammer,
+  FileText,
+  BookOpen,
+  Lightbulb,
+  Library,
+} from "lucide-react";
 import danPresenting from "@assets/copyofdan_1770090391461.png";
 
 const CALENDLY_URL = "https://calendly.com/novapath";
+
+const CARD_STYLE = {
+  backgroundColor: "#1A1425",
+  border: "1px solid rgba(255,255,255,0.06)",
+  borderRadius: "12px",
+} as const;
+
+const CARD_HOVER_SHADOW = "0 0 24px rgba(124,92,255,0.1)";
 
 export default function NovaPathConsulting() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -77,7 +92,7 @@ function StickyNav() {
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 px-6 py-4 backdrop-blur-md"
-      style={{ backgroundColor: "rgba(15, 10, 26, 0.92)", borderBottom: "1px solid #2A2435" }}
+      style={{ backgroundColor: "rgba(15, 10, 26, 0.92)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         <a
@@ -119,7 +134,7 @@ function StickyNav() {
         <div className="flex items-center gap-3">
           <Button
             asChild
-            className="text-white font-medium"
+            className="text-white font-medium hidden md:inline-flex"
             style={{ backgroundColor: "#7C5CFF" }}
             data-testid="button-nav-cta"
           >
@@ -147,7 +162,7 @@ function StickyNav() {
       {menuOpen && (
         <div
           className="md:hidden mt-3 pb-3 flex flex-col gap-3"
-          style={{ borderTop: "1px solid #2A2435", paddingTop: "0.75rem" }}
+          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "0.75rem" }}
         >
           {anchorLinks.map((link) => (
             <a
@@ -173,6 +188,15 @@ function StickyNav() {
               {link.label}
             </a>
           ))}
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold px-2 py-1"
+            style={{ color: "#7C5CFF" }}
+          >
+            Book a Call
+          </a>
         </div>
       )}
     </nav>
@@ -196,101 +220,137 @@ function Hero({
   ];
 
   return (
-    <section className="pt-32 pb-20 px-6 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1200px_800px_at_30%_20%,rgba(124,92,255,0.15),transparent_60%)]" />
+    <section className="relative overflow-hidden" style={{ paddingTop: "128px", paddingBottom: "80px" }}>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_900px_at_50%_-10%,rgba(124,92,255,0.18),transparent_65%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(124,92,255,0.3), transparent)" }} />
 
-      <div className="max-w-6xl mx-auto relative">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-          >
-            <div
-              className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest"
-              style={{
-                backgroundColor: "rgba(124, 92, 255, 0.15)",
-                color: "#A78BFA",
-                border: "1px solid rgba(124,92,255,0.3)",
-              }}
-            >
-              K-12 AI Consulting
-            </div>
-
-            <h1
-              className="text-4xl md:text-5xl font-bold leading-tight mb-6"
-              style={{ color: "#FFFFFF" }}
-              data-testid="text-hero-headline"
-            >
-              Your teachers are already using AI.
-              <br />
-              <span style={{ color: "#A78BFA" }}>The question is whether you have a plan.</span>
-            </h1>
-
-            <p className="text-lg mb-8 max-w-xl leading-relaxed" style={{ color: "#B4B0C4" }}>
-              NovaPath works with K-12 districts to build real AI strategy, not slide decks. We embed with your team, identify the workflows costing the most time, and cobuild working solutions in weeks, not months.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="text-white font-semibold"
-                style={{ backgroundColor: "#7C5CFF" }}
-                data-testid="button-hero-primary"
-              >
-                <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-                  Schedule a Free Consultation
-                </a>
-              </Button>
-              <button
-                onClick={onSecondaryClick}
-                className="text-sm font-medium hover:opacity-80 transition-opacity border rounded-lg px-5 py-2.5"
-                style={{ color: "#FFFFFF", borderColor: "#FFFFFF" }}
-                data-testid="button-hero-secondary"
-              >
-                See How It Works
-              </button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="relative hidden md:block"
-            initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
-          >
-            <div
-              className="absolute inset-0 rounded-2xl blur-3xl"
-              style={{ background: "radial-gradient(circle at center, rgba(124,92,255,0.3), transparent 70%)" }}
-            />
-            <img
-              src={danHeadshot}
-              alt="Dan Whitlock, Founder of NovaPath"
-              className="relative rounded-2xl w-full max-w-md mx-auto"
-              style={{ boxShadow: "0 0 60px rgba(124,92,255,0.2)" }}
-              loading="lazy"
-              data-testid="img-hero-dan"
-            />
-          </motion.div>
-        </div>
-
+      <div className="max-w-4xl mx-auto px-6 relative text-center">
         <motion.div
-          className="mt-16 pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
-          style={{ borderTop: "1px solid #2A2435" }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.5 }}
+        >
+          <div
+            className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest"
+            style={{
+              backgroundColor: "rgba(124,92,255,0.12)",
+              color: "#A78BFA",
+              border: "1px solid rgba(124,92,255,0.25)",
+            }}
+          >
+            K-12 AI Consulting
+          </div>
+        </motion.div>
+
+        <motion.h1
+          className="text-4xl md:text-6xl font-bold leading-tight mb-6"
+          style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.4 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          data-testid="text-hero-headline"
+        >
+          Your teachers are already using AI.
+          <br />
+          <span style={{ color: "#A78BFA" }}>The question is whether you have a plan.</span>
+        </motion.h1>
+
+        <motion.p
+          className="text-lg md:text-xl mb-10 mx-auto leading-relaxed"
+          style={{ color: "#B4B0C4", maxWidth: "640px" }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
+        >
+          NovaPath works with K-12 districts to build real AI strategy, not slide decks. We embed with your team, identify the workflows costing the most time, and cobuild working solutions in weeks, not months.
+        </motion.p>
+
+        <motion.div
+          className="flex flex-wrap justify-center gap-4 mb-16"
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
+        >
+          <Button
+            asChild
+            size="lg"
+            className="text-white font-semibold rounded-full px-8"
+            style={{ backgroundColor: "#7C5CFF" }}
+            data-testid="button-hero-primary"
+          >
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+              Schedule a Free Consultation
+            </a>
+          </Button>
+          <button
+            onClick={onSecondaryClick}
+            className="text-sm font-medium hover:opacity-80 transition-opacity border rounded-full px-6 py-2.5"
+            style={{ color: "#FFFFFF", borderColor: "rgba(255,255,255,0.3)" }}
+            data-testid="button-hero-secondary"
+          >
+            See How It Works
+          </button>
+        </motion.div>
+
+        <motion.div
+          className="flex flex-wrap justify-center gap-x-8 gap-y-3"
+          initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.5 }}
         >
           {credibilityItems.map((item, index) => (
-            <div key={index} className="flex items-center gap-2" data-testid={`cred-item-${index}`}>
-              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#7C5CFF" }} />
-              <span className="text-sm" style={{ color: "#B4B0C4" }}>{item}</span>
-            </div>
+            <span key={index} className="text-sm" style={{ color: "#6B6580" }} data-testid={`cred-item-${index}`}>
+              {item}
+            </span>
           ))}
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="text-xs font-semibold uppercase tracking-widest mb-3"
+      style={{ color: "#7C5CFF", letterSpacing: "0.12em" }}
+    >
+      {children}
+    </p>
+  );
+}
+
+function SectionHeader({ eyebrow, title, subtitle, centered = true }: {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  centered?: boolean;
+}) {
+  const reducedMotion = useReducedMotion();
+  return (
+    <motion.div
+      className={`mb-14 ${centered ? "text-center" : ""}`}
+      initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+    >
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h2
+        className="text-3xl md:text-4xl font-bold mb-4"
+        style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p
+          className={`text-base md:text-lg leading-relaxed ${centered ? "mx-auto" : ""}`}
+          style={{ color: "#B4B0C4", maxWidth: "600px" }}
+        >
+          {subtitle}
+        </p>
+      )}
+    </motion.div>
   );
 }
 
@@ -313,37 +373,33 @@ function ProblemSection() {
   ];
 
   return (
-    <section
-      className="py-20 px-6"
-      style={{ background: "linear-gradient(180deg, #0F0A1A 0%, #1A1425 100%)" }}
-    >
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", background: "linear-gradient(180deg, #0F0A1A 0%, #130E1F 100%)" }}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          className="text-center mb-12"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold" style={{ color: "#FFFFFF" }}>
-            What We're Hearing from Districts
-          </h2>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-6">
+        <SectionHeader
+          eyebrow="What We're Hearing"
+          title="The Problem Every District Leader Knows"
+        />
+        <div className="grid md:grid-cols-3 gap-5">
           {painPoints.map((point, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-xl"
-              style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435", borderTop: "3px solid #7C5CFF" }}
+              className="p-7 rounded-xl transition-all duration-300"
+              style={CARD_STYLE}
               initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ boxShadow: CARD_HOVER_SHADOW }}
               data-testid={`card-problem-${index}`}
             >
-              <h3 className="text-lg font-semibold mb-3" style={{ color: "#FFFFFF" }}>{point.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>{point.body}</p>
+              <div
+                className="w-8 h-8 rounded-lg mb-5 flex items-center justify-center"
+                style={{ backgroundColor: "rgba(124,92,255,0.15)" }}
+              >
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#7C5CFF" }} />
+              </div>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: "#FFFFFF", fontSize: "18px" }}>{point.title}</h3>
+              <p className="leading-relaxed" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.65" }}>{point.body}</p>
             </motion.div>
           ))}
         </div>
@@ -356,39 +412,36 @@ function ReadinessCTA() {
   const reducedMotion = useReducedMotion();
 
   return (
-    <section className="py-16 px-6" style={{ backgroundColor: "#1A1425" }}>
+    <section className="px-6" style={{ paddingTop: "40px", paddingBottom: "80px", backgroundColor: "#130E1F" }}>
       <div className="max-w-3xl mx-auto">
         <motion.div
-          className="p-8 rounded-xl"
-          style={{ border: "2px solid #7C5CFF", backgroundColor: "#0F0A1A" }}
+          className="p-10 rounded-2xl text-center relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, #1A1425 0%, #160F22 100%)",
+            border: "1px solid rgba(124,92,255,0.35)",
+            boxShadow: "0 0 40px rgba(124,92,255,0.08)",
+          }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
         >
-          <div className="text-center">
-            <span
-              className="text-xs font-bold uppercase tracking-widest"
-              style={{ color: "#7C5CFF" }}
-            >
-              Free Tool
-            </span>
-
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_600px_400px_at_50%_-20%,rgba(124,92,255,0.12),transparent_70%)]" />
+          <div className="relative">
+            <Eyebrow>Free Tool</Eyebrow>
             <h2
-              className="text-2xl md:text-3xl font-bold mt-3 mb-4"
-              style={{ color: "#FFFFFF" }}
+              className="text-2xl md:text-3xl font-bold mt-1 mb-4"
+              style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
             >
               Find out where your district actually stands.
             </h2>
-
-            <p className="max-w-2xl mx-auto mb-8 leading-relaxed" style={{ color: "#B4B0C4" }}>
+            <p className="mx-auto mb-8 leading-relaxed" style={{ color: "#B4B0C4", maxWidth: "520px", fontSize: "15px" }}>
               Before we talk, take the free K-12 AI Readiness Checklist. 29 items across 6 dimensions of readiness: policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision.
             </p>
-
             <Button
               asChild
               size="lg"
-              className="font-semibold text-white"
+              className="font-semibold text-white rounded-full px-8"
               style={{ backgroundColor: "#7C5CFF" }}
               data-testid="button-readiness-cta"
             >
@@ -396,7 +449,6 @@ function ReadinessCTA() {
                 Take the Free Assessment
               </a>
             </Button>
-
             <p className="text-xs mt-4" style={{ color: "#6B6580" }}>
               Free · 10 minutes · No login required
             </p>
@@ -410,10 +462,18 @@ function ReadinessCTA() {
 function AboutDan() {
   const reducedMotion = useReducedMotion();
 
+  const credentials = [
+    "SB 1288 AI Workgroup",
+    "Education Week",
+    "ASU+GSV Speaker",
+    "FETC 2026",
+    "Navigator Schools",
+  ];
+
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#0F0A1A" }}>
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
           <motion.div
             className="relative"
             initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
@@ -422,14 +482,14 @@ function AboutDan() {
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
           >
             <div
-              className="absolute inset-0 rounded-2xl blur-3xl"
-              style={{ background: "radial-gradient(circle at center, rgba(124,92,255,0.2), transparent 70%)" }}
+              className="absolute -inset-4 rounded-2xl blur-2xl"
+              style={{ background: "radial-gradient(circle, rgba(124,92,255,0.15), transparent 70%)" }}
             />
             <img
               src={danPresenting}
               alt="Dan Whitlock presenting"
-              className="relative rounded-2xl w-full max-w-sm mx-auto md:mx-0"
-              style={{ border: "1px solid #2A2435" }}
+              className="relative w-full rounded-xl"
+              style={{ maxWidth: "400px", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 20px 60px rgba(0,0,0,0.4)" }}
               loading="lazy"
               data-testid="img-dan-bio"
             />
@@ -441,14 +501,18 @@ function AboutDan() {
             viewport={{ once: true }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
           >
-            <h2 className="text-3xl font-bold mb-1" style={{ color: "#FFFFFF" }} data-testid="text-dan-name">
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-1"
+              style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
+              data-testid="text-dan-name"
+            >
               Dan Whitlock
             </h2>
-            <p className="text-sm font-medium mb-6" style={{ color: "#6B6580" }}>
-              Technology Innovation Lead, Navigator Schools
+            <p className="text-sm font-medium mb-7" style={{ color: "#6B6580" }}>
+              Founder, NovaPath · Technology Innovation Lead, Navigator Schools
             </p>
 
-            <div className="space-y-4 mb-8" style={{ color: "#B4B0C4" }}>
+            <div className="space-y-4 mb-8" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.7" }}>
               <p>
                 Dan doesn't advise from the outside. He's the Technology Innovation Lead at Navigator Schools, a 4-campus charter network serving 1,900+ students, with an approved expansion to Orange County. He's in classrooms every week building AI tools alongside the teachers who use them.
               </p>
@@ -458,6 +522,18 @@ function AboutDan() {
               <p>
                 When districts work with NovaPath, they're not getting a slide deck. They're getting someone who builds the tools, tests them with students, and iterates based on what actually happens in the classroom.
               </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-7">
+              {credentials.map((cred, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-xs font-medium"
+                  style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}
+                >
+                  {cred}
+                </span>
+              ))}
             </div>
 
             <a
@@ -476,6 +552,8 @@ function AboutDan() {
     </section>
   );
 }
+
+const SERVICE_ICONS = [Map, Hammer, FileText, BookOpen, Lightbulb, Library];
 
 function ServicesSection({ onCtaClick }: { onCtaClick: () => void }) {
   const reducedMotion = useReducedMotion();
@@ -515,58 +593,55 @@ function ServicesSection({ onCtaClick }: { onCtaClick: () => void }) {
   ];
 
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#1A1425" }}>
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#130E1F" }}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <div
-            className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-4"
-            style={{ backgroundColor: "rgba(124,92,255,0.15)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.3)" }}
-          >
-            Services
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#FFFFFF" }}>
-            How We Work With You
-          </h2>
-          <p className="max-w-2xl mx-auto" style={{ color: "#B4B0C4" }}>
-            Every engagement starts with understanding where you are.
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Services"
+          title="How We Work With You"
+          subtitle="Every engagement starts with understanding where you are."
+        />
 
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              className="p-6 rounded-xl flex flex-col gap-3"
-              style={{ backgroundColor: "#0F0A1A", border: "1px solid #2A2435" }}
-              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: (index % 3) * 0.08 }}
-              data-testid={`card-service-${index}`}
-            >
-              <h3 className="text-lg font-semibold" style={{ color: "#FFFFFF" }}>{service.title}</h3>
-              <p className="text-sm leading-relaxed flex-1" style={{ color: "#B4B0C4" }}>{service.body}</p>
-              <p className="text-xs" style={{ color: "#6B6580" }}>
-                <span style={{ color: "#A78BFA" }}>Best for:</span> {service.bestFor}
-              </p>
-              {service.cta && (
-                <a
-                  href={service.cta.href}
-                  className="text-sm font-medium hover:underline mt-1"
-                  style={{ color: "#7C5CFF" }}
-                  data-testid="link-ip-library"
+        <div className="grid md:grid-cols-3 gap-5 mb-10">
+          {services.map((service, index) => {
+            const Icon = SERVICE_ICONS[index];
+            return (
+              <motion.div
+                key={index}
+                className="p-7 rounded-xl flex flex-col gap-4 transition-all duration-300"
+                style={CARD_STYLE}
+                initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: (index % 3) * 0.08 }}
+                whileHover={{ boxShadow: CARD_HOVER_SHADOW }}
+                data-testid={`card-service-${index}`}
+              >
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: "rgba(124,92,255,0.12)" }}
                 >
-                  {service.cta.label} →
-                </a>
-              )}
-            </motion.div>
-          ))}
+                  <Icon className="w-5 h-5" style={{ color: "#7C5CFF" }} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold mb-2" style={{ color: "#FFFFFF", fontSize: "18px" }}>{service.title}</h3>
+                  <p className="leading-relaxed" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.65" }}>{service.body}</p>
+                </div>
+                <p className="text-xs italic" style={{ color: "#A78BFA" }}>
+                  Best for: {service.bestFor}
+                </p>
+                {service.cta && (
+                  <a
+                    href={service.cta.href}
+                    className="text-sm font-medium hover:underline"
+                    style={{ color: "#7C5CFF" }}
+                    data-testid="link-ip-library"
+                  >
+                    {service.cta.label} →
+                  </a>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
 
         <motion.div
@@ -579,7 +654,7 @@ function ServicesSection({ onCtaClick }: { onCtaClick: () => void }) {
           <p className="text-sm mb-4" style={{ color: "#6B6580" }}>Can't find what you're looking for?</p>
           <Button
             asChild
-            className="text-white font-semibold"
+            className="text-white font-semibold rounded-full px-8"
             style={{ backgroundColor: "#7C5CFF" }}
             data-testid="button-services-cta"
           >
@@ -620,24 +695,13 @@ function MethodologySection() {
   ];
 
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#0F0A1A" }}>
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#FFFFFF" }}>
-            How a Cobuilding Engagement Works
-          </h2>
-          <p style={{ color: "#B4B0C4" }}>
-            Four phases. Real tools. Real classrooms. Your team keeps building.
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-4 gap-6">
+        <SectionHeader
+          title="How a Cobuilding Engagement Works"
+          subtitle="Four phases. Real tools. Real classrooms. Your team keeps building."
+        />
+        <div className="grid md:grid-cols-4 gap-5">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -650,22 +714,19 @@ function MethodologySection() {
             >
               {index < steps.length - 1 && (
                 <div
-                  className="hidden md:block absolute top-8 left-1/2 w-full h-px"
-                  style={{ backgroundColor: "#2A2435" }}
+                  className="hidden md:block absolute top-6 left-[calc(50%+24px)] right-[-50%] h-px"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
                 />
               )}
-              <div
-                className="relative p-6 rounded-xl"
-                style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435" }}
-              >
+              <div className="p-6 rounded-xl" style={CARD_STYLE}>
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mb-4"
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mb-5"
                   style={{ backgroundColor: "#7C5CFF", color: "#FFFFFF" }}
                 >
                   {step.num}
                 </div>
-                <h3 className="text-lg font-semibold mb-3" style={{ color: "#FFFFFF" }}>{step.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>{step.body}</p>
+                <h3 className="font-semibold mb-3" style={{ color: "#FFFFFF", fontSize: "17px" }}>{step.title}</h3>
+                <p style={{ color: "#B4B0C4", fontSize: "14px", lineHeight: "1.65" }}>{step.body}</p>
               </div>
             </motion.div>
           ))}
@@ -681,19 +742,19 @@ function ResultsSection() {
   const tools = [
     {
       name: "NaviGrade Autograder",
-      description: "Paper → photo → AI-scored rubric feedback → student revision via QR codes.",
+      description: "Paper to photo to AI-scored rubric feedback to student revision via QR codes.",
       stat: "75% of students voluntarily revised their work",
       hook: null,
     },
     {
       name: "Coaching Dashboard",
-      description: "Classroom observation → AI synthesis → action steps → fidelity tracking.",
+      description: "Classroom observation to AI synthesis to action steps to fidelity tracking.",
       stat: null,
       hook: "Coaching system, not coaching vibes.",
     },
     {
       name: "Restorative Practice Generator",
-      description: "Incident → SEL-aligned reflection + parent letter, generated in minutes.",
+      description: "Incident to SEL-aligned reflection plus parent letter, generated in minutes.",
       stat: "45-minute process reduced to 3 minutes",
       hook: "Featured in Education Week",
     },
@@ -718,42 +779,33 @@ function ResultsSection() {
   ];
 
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#1A1425" }}>
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#130E1F" }}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#FFFFFF" }}>
-            Real Tools Built by Real Educators
-          </h2>
-          <p className="max-w-2xl mx-auto" style={{ color: "#B4B0C4" }}>
-            These aren't hypotheticals. These are tools built and deployed at Navigator Schools.
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-6">
+        <SectionHeader
+          eyebrow="Proof of Practice"
+          title="Real Tools Built by Real Educators"
+          subtitle="These aren't hypotheticals. These are tools built and deployed at Navigator Schools."
+        />
+        <div className="grid md:grid-cols-3 gap-5">
           {tools.map((tool, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-xl flex flex-col gap-3"
-              style={{ backgroundColor: "#0F0A1A", border: "1px solid #2A2435" }}
+              className="p-7 rounded-xl flex flex-col gap-3 transition-all duration-300"
+              style={CARD_STYLE}
               initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: (index % 3) * 0.08 }}
+              whileHover={{ boxShadow: CARD_HOVER_SHADOW }}
               data-testid={`card-tool-${index}`}
             >
-              <h3 className="text-lg font-semibold" style={{ color: "#FFFFFF" }}>{tool.name}</h3>
-              <p className="text-sm leading-relaxed flex-1" style={{ color: "#B4B0C4" }}>{tool.description}</p>
+              <h3 className="font-semibold" style={{ color: "#FFFFFF", fontSize: "18px" }}>{tool.name}</h3>
+              <p className="flex-1 leading-relaxed" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.65" }}>{tool.description}</p>
               {tool.stat && (
-                <p className="text-sm font-semibold" style={{ color: "#7C5CFF" }}>{tool.stat}</p>
+                <p className="font-bold" style={{ color: "#7C5CFF", fontSize: "15px" }}>{tool.stat}</p>
               )}
               {tool.hook && (
-                <p className="text-xs italic" style={{ color: "#6B6580" }}>{tool.hook}</p>
+                <p className="italic" style={{ color: "#6B6580", fontSize: "13px" }}>{tool.hook}</p>
               )}
             </motion.div>
           ))}
@@ -774,13 +826,23 @@ function StatsBar() {
 
   return (
     <section
-      className="py-20 px-6"
-      style={{ background: "linear-gradient(135deg, #0F0A1A 0%, #1A1025 50%, #0F0A1A 100%)" }}
+      className="px-6"
+      style={{
+        paddingTop: "96px",
+        paddingBottom: "96px",
+        background: "linear-gradient(135deg, #0D0919 0%, #130E22 40%, #0D0919 100%)",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 800px 500px at 50% 50%, rgba(124,92,255,0.08), transparent)" }}
+      />
+      <div className="max-w-5xl mx-auto relative">
         <motion.h2
           className="text-3xl md:text-4xl font-bold text-center mb-16"
-          style={{ color: "#FFFFFF" }}
+          style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -799,10 +861,13 @@ function StatsBar() {
               transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
               data-testid={`stat-${index}`}
             >
-              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: "#FFFFFF" }}>
+              <div
+                className="text-5xl md:text-7xl font-bold mb-3 leading-none"
+                style={{ color: "#FFFFFF", letterSpacing: "-0.03em" }}
+              >
                 {stat.number}
               </div>
-              <div className="text-base" style={{ color: "#B4B0C4" }}>{stat.label}</div>
+              <div className="text-base" style={{ color: "#6B6580" }}>{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -815,11 +880,11 @@ function Testimonials() {
   const reducedMotion = useReducedMotion();
 
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#0F0A1A" }}>
-      <div className="max-w-4xl mx-auto">
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
+      <div className="max-w-3xl mx-auto">
         <motion.p
           className="text-xs font-semibold uppercase tracking-widest text-center mb-12"
-          style={{ color: "#6B6580" }}
+          style={{ color: "#6B6580", letterSpacing: "0.12em" }}
           initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -828,15 +893,22 @@ function Testimonials() {
         </motion.p>
 
         <motion.div
-          className="p-8 rounded-xl relative pl-12"
-          style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435", borderLeft: "4px solid #7C5CFF" }}
+          className="p-8 rounded-2xl"
+          style={{
+            ...CARD_STYLE,
+            borderLeft: "3px solid #7C5CFF",
+            paddingLeft: "2.5rem",
+          }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
           data-testid="quote-edweek"
         >
-          <p className="text-xl md:text-2xl font-medium leading-relaxed mb-6 italic" style={{ color: "#FFFFFF" }}>
+          <p
+            className="font-medium leading-relaxed mb-6 italic"
+            style={{ color: "#FFFFFF", fontSize: "20px", lineHeight: "1.7" }}
+          >
             "The AI tool that Whitlock developed turned a 45-minute documentation process into 3 minutes, freeing teachers to focus on actually supporting students."
           </p>
           <p className="text-sm" style={{ color: "#6B6580" }}>— Education Week, August 2025</p>
@@ -863,7 +935,6 @@ function PricingSection({ onCtaClick }: { onCtaClick: () => void }) {
         "Written report with prioritized next steps",
       ],
       ctaLabel: "Book a Readiness Review",
-      ctaVariant: "outline" as const,
     },
     {
       name: "Go Deeper",
@@ -879,12 +950,12 @@ function PricingSection({ onCtaClick }: { onCtaClick: () => void }) {
         "Ongoing iteration and support",
       ],
       ctaLabel: "Schedule a Consultation",
-      ctaVariant: "filled" as const,
     },
     {
       name: "Stay Connected",
       tagline: "For districts that want ongoing advisory and support.",
-      price: "$12K – $20K/month",
+      price: "$12K – $20K",
+      priceSuffix: "/month",
       featured: false,
       bullets: [
         "Embedded advisory retainer",
@@ -894,38 +965,29 @@ function PricingSection({ onCtaClick }: { onCtaClick: () => void }) {
         "Priority support and direct access",
       ],
       ctaLabel: "Let's Talk",
-      ctaVariant: "outline" as const,
     },
   ];
 
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#1A1425" }}>
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#130E1F" }}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#FFFFFF" }}>
-            Engagement Options
-          </h2>
-          <p style={{ color: "#B4B0C4" }}>
-            Every district is different. Here's what working together can look like.
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Engagement Options"
+          title="What Working Together Looks Like"
+          subtitle="Every district is different. Here's a starting point."
+        />
 
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6 mb-8 items-start">
           {tiers.map((tier, index) => (
             <motion.div
               key={index}
-              className="p-8 rounded-xl flex flex-col gap-6 relative"
+              className="p-8 rounded-2xl flex flex-col gap-6 relative"
               style={{
-                backgroundColor: "#0F0A1A",
-                border: tier.featured ? "2px solid #7C5CFF" : "1px solid #2A2435",
+                backgroundColor: tier.featured ? "#1D1530" : "#1A1425",
+                border: tier.featured ? "1px solid #7C5CFF" : "1px solid rgba(255,255,255,0.06)",
+                boxShadow: tier.featured ? "0 0 40px rgba(124,92,255,0.15)" : "none",
               }}
-              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: index === 1 ? -10 : 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
@@ -933,7 +995,7 @@ function PricingSection({ onCtaClick }: { onCtaClick: () => void }) {
             >
               {tier.badge && (
                 <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
                   style={{ backgroundColor: "#7C5CFF", color: "#FFFFFF" }}
                   data-testid="badge-popular"
                 >
@@ -943,22 +1005,27 @@ function PricingSection({ onCtaClick }: { onCtaClick: () => void }) {
 
               <div>
                 <h3 className="text-xl font-bold mb-1" style={{ color: "#FFFFFF" }}>{tier.name}</h3>
-                <p className="text-sm mb-4" style={{ color: "#B4B0C4" }}>{tier.tagline}</p>
-                <div className="text-3xl font-bold" style={{ color: tier.featured ? "#7C5CFF" : "#FFFFFF" }}>
-                  {tier.price}
+                <p className="text-sm mb-5" style={{ color: "#B4B0C4" }}>{tier.tagline}</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold" style={{ color: tier.featured ? "#7C5CFF" : "#FFFFFF" }}>
+                    {tier.price}
+                  </span>
+                  {tier.priceSuffix && (
+                    <span className="text-sm" style={{ color: "#6B6580" }}>{tier.priceSuffix}</span>
+                  )}
                 </div>
               </div>
 
               <ul className="space-y-3 flex-1">
                 {tier.bullets.map((bullet, bIndex) => (
-                  <li key={bIndex} className="flex items-start gap-3 text-sm" style={{ color: "#B4B0C4" }}>
-                    <span className="mt-0.5 flex-shrink-0" style={{ color: "#7C5CFF" }}>✓</span>
+                  <li key={bIndex} className="flex items-start gap-3" style={{ fontSize: "14px", color: "#B4B0C4" }}>
+                    <span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: "#7C5CFF" }}>✓</span>
                     {bullet}
                   </li>
                 ))}
               </ul>
 
-              {tier.ctaVariant === "filled" ? (
+              {tier.featured ? (
                 <Button
                   asChild
                   className="w-full text-white font-semibold"
@@ -974,7 +1041,7 @@ function PricingSection({ onCtaClick }: { onCtaClick: () => void }) {
                   asChild
                   variant="outline"
                   className="w-full font-semibold"
-                  style={{ borderColor: "#7C5CFF", color: "#7C5CFF" }}
+                  style={{ borderColor: "rgba(124,92,255,0.4)", color: "#A78BFA" }}
                   data-testid={`button-pricing-${index}`}
                 >
                   <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
@@ -1031,35 +1098,28 @@ function FaqSection() {
   ];
 
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: "#0F0A1A" }}>
+    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
       <div className="max-w-3xl mx-auto">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-12"
-          style={{ color: "#FFFFFF" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          Common Questions
-        </motion.h2>
-
-        <Accordion type="single" collapsible className="space-y-2">
+        <SectionHeader title="Common Questions" />
+        <Accordion type="single" collapsible className="space-y-0">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
               value={`faq-${index}`}
-              className="rounded-xl px-6"
-              style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435" }}
+              className="border-b"
+              style={{ borderColor: "rgba(255,255,255,0.06)" }}
               data-testid={`faq-item-${index}`}
             >
               <AccordionTrigger
-                className="text-left hover:no-underline py-5"
+                className="text-left hover:no-underline py-5 text-base font-medium"
                 style={{ color: "#FFFFFF" }}
               >
                 {faq.q}
               </AccordionTrigger>
-              <AccordionContent style={{ color: "#B4B0C4" }}>
+              <AccordionContent
+                className="pb-5 text-base leading-relaxed"
+                style={{ color: "#B4B0C4" }}
+              >
                 {faq.a}
               </AccordionContent>
             </AccordionItem>
@@ -1074,44 +1134,53 @@ function BridgeCTA({ onInquiryClick }: { onInquiryClick: () => void }) {
   const reducedMotion = useReducedMotion();
 
   return (
-    <section className="py-16 px-6" style={{ backgroundColor: "#1A1425" }}>
+    <section className="px-6" style={{ paddingTop: "40px", paddingBottom: "80px", backgroundColor: "#130E1F" }}>
       <div className="max-w-3xl mx-auto">
         <motion.div
-          className="p-10 rounded-2xl text-center"
-          style={{ backgroundColor: "#0F0A1A", border: "1px solid #2A2435" }}
+          className="p-10 rounded-2xl text-center relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, #1D1530 0%, #16102A 100%)",
+            border: "1px solid rgba(124,92,255,0.3)",
+          }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#FFFFFF" }}>
-            Ready to Figure Out AI for Your District?
-          </h2>
-          <p className="max-w-xl mx-auto mb-8" style={{ color: "#B4B0C4" }}>
-            Start with a free 30-minute AI Readiness Review. We'll assess where you are, identify your biggest gaps, and map a path forward.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="text-white font-semibold"
-              style={{ backgroundColor: "#7C5CFF" }}
-              data-testid="button-bridge-primary"
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_600px_400px_at_50%_0%,rgba(124,92,255,0.12),transparent_70%)]" />
+          <div className="relative">
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-4"
+              style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
             >
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-                Schedule a Free Consultation
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="font-semibold"
-              style={{ borderColor: "#7C5CFF", color: "#7C5CFF" }}
-              onClick={onInquiryClick}
-              data-testid="button-bridge-secondary"
-            >
-              Or send us an inquiry
-            </Button>
+              Ready to Figure Out AI for Your District?
+            </h2>
+            <p className="mx-auto mb-8" style={{ color: "#B4B0C4", maxWidth: "480px", fontSize: "16px", lineHeight: "1.65" }}>
+              Start with a free 30-minute AI Readiness Review. We'll assess where you are, identify your biggest gaps, and map a path forward.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="text-white font-semibold rounded-full px-8"
+                style={{ backgroundColor: "#7C5CFF" }}
+                data-testid="button-bridge-primary"
+              >
+                <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+                  Schedule a Free Consultation
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="font-semibold rounded-full"
+                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#FFFFFF" }}
+                onClick={onInquiryClick}
+                data-testid="button-bridge-secondary"
+              >
+                Or send us an inquiry
+              </Button>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -1166,13 +1235,19 @@ function ContactForm() {
     "Other",
   ];
 
+  const inputStyle = {
+    backgroundColor: "#1A1425",
+    border: "1px solid rgba(255,255,255,0.08)",
+    color: "#F5F3FF",
+    borderRadius: "8px",
+  };
+
   return (
     <section
-      className="py-20 px-6 relative"
-      style={{ background: "linear-gradient(180deg, #0F0A1A 0%, #1A1425 100%)" }}
+      className="px-6"
+      style={{ paddingTop: "80px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_800px_600px_at_50%_30%,rgba(124,92,255,0.08),transparent_60%)]" />
-      <div className="max-w-2xl mx-auto relative">
+      <div className="max-w-2xl mx-auto">
         <motion.div
           className="text-center mb-10"
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -1180,24 +1255,24 @@ function ContactForm() {
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
         >
-          <h2 className="text-3xl font-bold mb-3" style={{ color: "#FFFFFF" }}>
+          <h2 className="text-3xl font-bold mb-3" style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}>
             Send Us a Note
           </h2>
-          <p style={{ color: "#B4B0C4" }}>
+          <p style={{ color: "#B4B0C4", fontSize: "16px" }}>
             Tell us about your district and we'll be in touch within 24 hours.
           </p>
         </motion.div>
 
         <motion.form
           onSubmit={handleSubmit}
-          className="p-8 rounded-xl space-y-6"
-          style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435" }}
+          className="p-8 rounded-2xl space-y-6"
+          style={{ backgroundColor: "#1A1425", border: "1px solid rgba(255,255,255,0.06)" }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
         >
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>Your Name</label>
               <input
@@ -1205,8 +1280,8 @@ function ContactForm() {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500"
-                style={{ backgroundColor: "#241E30", border: "1px solid #2A2435", color: "#F5F3FF" }}
+                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                style={inputStyle}
                 data-testid="input-name"
               />
             </div>
@@ -1216,17 +1291,13 @@ function ContactForm() {
                 required
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500"
-                style={{
-                  backgroundColor: "#241E30",
-                  border: "1px solid #2A2435",
-                  color: formData.role ? "#F5F3FF" : "#6B6580",
-                }}
+                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                style={{ ...inputStyle, color: formData.role ? "#F5F3FF" : "#6B6580" }}
                 data-testid="select-role"
               >
                 <option value="" disabled>Select your role</option>
                 {roleOptions.map((option) => (
-                  <option key={option} value={option} style={{ backgroundColor: "#241E30", color: "#F5F3FF" }}>
+                  <option key={option} value={option} style={{ backgroundColor: "#1A1425", color: "#F5F3FF" }}>
                     {option}
                   </option>
                 ))}
@@ -1234,7 +1305,7 @@ function ContactForm() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>District / Organization</label>
               <input
@@ -1242,8 +1313,8 @@ function ContactForm() {
                 required
                 value={formData.district}
                 onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500"
-                style={{ backgroundColor: "#241E30", border: "1px solid #2A2435", color: "#F5F3FF" }}
+                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                style={inputStyle}
                 data-testid="input-district"
               />
             </div>
@@ -1254,8 +1325,8 @@ function ContactForm() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500"
-                style={{ backgroundColor: "#241E30", border: "1px solid #2A2435", color: "#F5F3FF" }}
+                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                style={inputStyle}
                 data-testid="input-email"
               />
             </div>
@@ -1269,8 +1340,8 @@ function ContactForm() {
               rows={4}
               value={formData.challenge}
               onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 resize-none"
-              style={{ backgroundColor: "#241E30", border: "1px solid #2A2435", color: "#F5F3FF" }}
+              className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 resize-none transition-shadow"
+              style={inputStyle}
               data-testid="input-challenge"
             />
           </div>
@@ -1306,12 +1377,12 @@ function ConsultingFooter() {
 
   return (
     <footer
-      className="py-12 px-6"
-      style={{ backgroundColor: "#0A0612", borderTop: "1px solid #2A2435" }}
+      className="px-6 py-12"
+      style={{ backgroundColor: "#080512", borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10">
         <div>
-          <p className="text-base font-semibold mb-2" style={{ color: "#F5F3FF" }}>NovaPath Consulting</p>
+          <p className="text-base font-semibold mb-2" style={{ color: "#FFFFFF" }}>NovaPath Consulting</p>
           <a
             href="mailto:dan.j.whitlock@gmail.com"
             className="text-sm hover:opacity-80 block mb-1"
@@ -1367,8 +1438,8 @@ function ConsultingFooter() {
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-3 py-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-600"
-              style={{ backgroundColor: "#1A1425", border: "1px solid #2A2435", color: "#F5F3FF" }}
+              className="flex-1 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-500 rounded-lg placeholder:text-gray-600"
+              style={{ backgroundColor: "#1A1425", border: "1px solid rgba(255,255,255,0.06)", color: "#F5F3FF" }}
               data-testid="input-footer-email"
             />
             <Button
