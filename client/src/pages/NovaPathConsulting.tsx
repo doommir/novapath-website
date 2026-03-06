@@ -466,7 +466,6 @@ function AboutDan() {
     "SB 1288 AI Workgroup",
     "Education Week",
     "ASU+GSV Speaker",
-    "FETC 2026",
     "Navigator Schools",
   ];
 
