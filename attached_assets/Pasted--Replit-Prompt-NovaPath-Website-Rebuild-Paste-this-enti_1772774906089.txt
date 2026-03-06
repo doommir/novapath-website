@@ -1,0 +1,399 @@
+# Replit Prompt: NovaPath Website Rebuild
+
+Paste this entire prompt into Replit. It contains the complete spec.
+
+---
+
+## THE TASK
+
+Rebuild explorenovapath.com as a **single-page consulting homepage**. One page, one scroll, multiple sections. No separate routes for Cobuilding, Testimony, Prices, or Book a Time. Kill all of those as separate pages. The only separate route that stays is the AI Readiness Checklist (which lives at checklist.smarterbydesign.app, not on this site).
+
+**Design reference:** Use the HexaCore template (hexacore.framer.website) as the layout/structure reference. Dark theme, clean services grid, stats bar, pricing tiers, FAQ accordion, strong CTA sections. But adapt it entirely for NovaPath's brand, colors, content, and audience.
+
+**This is a K-12 AI consulting practice, not a tech startup.** The site needs to communicate: "We help school districts figure out AI by building real tools with real educators."
+
+---
+
+## BRAND SPECS (Non-negotiable)
+
+```
+Background:       #0F0A1A (deep purple-black)
+Card backgrounds:  #1A1425
+Primary accent:    #7C5CFF (vibrant purple)
+Secondary accent:  #A78BFA (lighter purple)
+Body text:         #B4B0C4 (muted gray)
+Headlines:         #FFFFFF (white)
+Font:              Inter (Bold for headlines, Regular for body)
+Aesthetic:         Premium SaaS, not playful edtech. Dark, clean, modern.
+                   Think: serious tool for serious decisions.
+```
+
+Use subtle purple gradient on the hero section. Dark card backgrounds for all card-based sections. High contrast. Typography-focused, minimal icons.
+
+---
+
+## NAV (Sticky, dark background)
+
+Logo left: **NovaPath** (bold white text)
+Links center (these are anchor scrolls to sections on the same page):
+- Services
+- Results  
+- About
+- Newsletter (external link → smarterbydesign.app)
+- AI Readiness (external link → checklist.smarterbydesign.app)
+
+CTA button right: **"Book a Call"** (#7C5CFF background, white text, links to Calendly URL: https://calendly.com/novapath)
+
+**IMPORTANT:** Remove all other nav items. No "Consulting", "Cobuilding", "Prices", "Book a Time", "Testimony" as separate nav links. Those are sections within this single page.
+
+---
+
+## SECTION 1: HERO
+
+**Eyebrow pill tag:** "K-12 AI Consulting"
+
+**Headline:** 
+```
+Your teachers are already using AI.
+The question is whether you have a plan.
+```
+
+**Subhead:**
+"NovaPath works with K-12 districts to build real AI strategy, not slide decks. We embed with your team, identify the workflows costing the most time, and cobuild working solutions in weeks, not months."
+
+**Two CTAs side by side:**
+- Primary (filled #7C5CFF): "Schedule a Free Consultation →"  
+- Secondary (outlined white): "See How It Works ↓" (anchor scrolls to methodology section)
+
+**Below CTAs, a credibility bar** (thin horizontal strip, 4 items evenly spaced):
+- "California SB 1288 AI Workgroup"
+- "Featured in Education Week"  
+- "8+ AI Tools Deployed in K-12"
+- "ASU+GSV · FETC · CSDC Speaker"
+
+No icons needed. Just the text, clean, in muted gray (#B4B0C4).
+
+---
+
+## SECTION 2: PROBLEM (3 cards)
+
+**Section header:** "What We're Hearing from Districts"
+
+Three dark cards (#1A1425 background) in a row:
+
+**Card 1:** "Teachers are using AI with no guardrails"
+"Half your staff is using ChatGPT with student data. The other half won't touch it. Both groups need direction, and banning AI won't work."
+
+**Card 2:** "Vendors keep pitching, nothing sticks"
+"Webinars, pilots, abandoned licenses. You've tried AI solutions before. They all start strong and end up collecting dust."
+
+**Card 3:** "The board is asking questions we can't answer"
+"You need an AI strategy but the landscape changes monthly. A position paper from February is obsolete by spring."
+
+---
+
+## SECTION 3: READINESS CTA (inline callout)
+
+A prominent callout/banner section:
+
+**Eyebrow:** "FREE TOOL"
+
+**Headline:** "Find out where your district actually stands."
+
+**Body:** "Before we talk, take the free K-12 AI Readiness Checklist. 29 items across 6 dimensions of readiness: policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision."
+
+**CTA button:** "Take the Free Assessment →" (links to checklist.smarterbydesign.app)
+
+Style this as a bordered card or callout section. It should feel like a natural pause in the page that offers value before continuing.
+
+---
+
+## SECTION 4: ABOUT DAN
+
+**Layout:** Photo on left (or top on mobile), text on right.
+
+**Use a placeholder image** (we'll replace with Dan's actual headshot). Make it a rounded rectangle or circle crop.
+
+**Headline:** "Dan Whitlock"
+**Subtitle:** "Technology Innovation Lead, Navigator Schools"
+
+**Bio (3 paragraphs):**
+
+Paragraph 1: "Dan doesn't advise from the outside. He's the Technology Innovation Lead at Navigator Schools, a 4-campus charter network serving 1,900+ students, with an approved expansion to Orange County. He's in classrooms every week building AI tools alongside the teachers who use them."
+
+Paragraph 2: "He's built and deployed 8+ AI-powered tools in real K-12 settings. He was selected for California's SB 1288 AI in Education Workgroup and was featured in Education Week. He speaks at major conferences including ASU+GSV Summit, FETC, and CSDC."
+
+Paragraph 3: "When districts work with NovaPath, they're not getting a slide deck. They're getting someone who builds the tools, tests them with students, and iterates based on what actually happens in the classroom."
+
+**Below bio:** "Read the newsletter →" link to smarterbydesign.app
+
+---
+
+## SECTION 5: SERVICES GRID (HexaCore "Our Expertise" style)
+
+**Section eyebrow pill:** "Services"
+**Section header:** "How We Work With You"
+**Subhead:** "Every engagement starts with understanding where you are."
+
+**6 cards in a 3x2 grid** (dark card backgrounds, subtle border, icon optional):
+
+**Card 1: District AI Consulting**
+"Readiness audits, strategic roadmaps, and implementation support. We assess where your district stands on AI and build a plan to move forward."
+Best for: Superintendents, tech directors, curriculum leads
+
+**Card 2: Cobuilding Engagements**  
+"Our signature offering. We embed with your teachers, identify the workflows costing the most time, and cobuild custom AI tools in 10-week sprints."
+Best for: Districts ready to build, not just plan
+
+**Card 3: AI Policy Development**
+"Create AI use policies teachers will actually follow. Built on Dan's experience with California's SB 1288 AI workgroup."
+Best for: Districts with no or outdated AI policies
+
+**Card 4: Professional Development**
+"Hands-on AI literacy through cobuilding, not slide decks. Your team leaves with a working app and the skills to build more."
+Best for: Schools wanting real AI training for staff
+
+**Card 5: Product Advisory**
+"Educator-informed product strategy for edtech companies. We ensure your AI product reflects how teachers and leaders actually work."
+Best for: EdTech founders and product teams
+
+**Card 6: Frameworks & Resources**
+"Explore our library of instructional frameworks for AI product design. MTSS alignment, funding stream positioning, evidence requirements, and more."
+Best for: Self-serve exploration, product teams, researchers
+CTA on this card: "Explore the IP Library →" (this will link to the public IP Explorer when ready; for now link to explorenovapath.com/frameworks or use # as placeholder)
+
+**Below the grid:** "Can't find what you're looking for?" + "Book a Free Consultation" button
+
+---
+
+## SECTION 6: METHODOLOGY ("How a Cobuilding Engagement Works")
+
+**Section header:** "How a Cobuilding Engagement Works"
+**Subhead:** "Four phases. Real tools. Real classrooms. Your team keeps building."
+
+4 steps in a row (numbered, with icons):
+
+**1. Identify the Pain Point**
+"We start by discussing the workflow that frustrates your team most. Attendance tracking? Coaching documentation? Parent communication? Pick the problem that costs you the most time."
+
+**2. Design the Solution Together**
+"Your team defines what a good solution looks like. We facilitate the design process, ensuring the app fits your actual workflow, not a generic template."
+
+**3. Cobuild with AI**
+"Using AI coding agents, we build the app together. Your team sees how prompts become code, how to debug, how to iterate. This is where real AI literacy develops."
+
+**4. Deploy and Keep Building**
+"By the end, your app is live. Your team can use it that afternoon. More importantly, they've developed the AI literacy to tackle future challenges independently."
+
+---
+
+## SECTION 7: RESULTS / TOOLS ("Real Tools Built by Real Educators")
+
+**Section header:** "Real Tools Built by Real Educators"
+**Subhead:** "These aren't hypotheticals. These are tools built and deployed at Navigator Schools."
+
+**6 cards in a 3x2 grid:**
+
+**NaviGrade Autograder**
+"Paper → photo → AI-scored rubric feedback → student revision via QR codes."
+Stat highlight in purple: "75% of students voluntarily revised their work"
+
+**Coaching Dashboard**
+"Classroom observation → AI synthesis → action steps → fidelity tracking."
+Hook: "Coaching system, not coaching vibes."
+
+**Restorative Practice Generator**
+"Incident → SEL-aligned reflection + parent letter, generated in minutes."
+Stat highlight in purple: "45-minute process → 3 minutes"
+
+**Mixteco Translator Plus**
+"Custom AI for Mixtec/Spanish/English translation with image recognition."
+Hook: "Dignity isn't a feature request."
+
+**ELD R.I.S.E. (K-2)**
+"15-minute ELD workflow aligned to California ELD standards."
+Hook: "Every K-2 teacher can deliver ELD in 15 minutes."
+
+**Attendance Automation**
+"AI tracks patterns and notifies counselors when absences suggest a student needs support, before the problem escalates."
+
+---
+
+## SECTION 8: STATS BAR (HexaCore "Don't take our word for it" style)
+
+A wide section with subtle gradient or curved background accent.
+
+**Headline:** "Built in Classrooms, Not Conference Rooms"
+
+**3 stats, large numbers, evenly spaced:**
+
+- **1,900+** "students across Navigator Schools"
+- **8+** "AI tools deployed in real classrooms"  
+- **4** "campuses, with Orange County expansion approved"
+
+Use large white numbers with muted gray descriptors below. Keep it clean.
+
+---
+
+## SECTION 9: TESTIMONIAL
+
+**Section eyebrow:** "What Educators Are Saying"
+
+**Large quote block:**
+"The AI tool that Whitlock developed turned a 45-minute documentation process into 3 minutes, freeing teachers to focus on actually supporting students."
+— Education Week, August 2025
+
+Style as a large italic quote with attribution below. Dark card background with subtle purple left border or accent.
+
+---
+
+## SECTION 10: PRICING / ENGAGEMENT TIERS (HexaCore pricing style)
+
+**Section header:** "Engagement Options"
+**Subhead:** "Every district is different. Here's what working together can look like."
+
+**3 pricing cards side by side:**
+
+**Card 1: "Get Started"**
+"For districts beginning their AI journey."
+**$5K – $15K**
+- AI readiness audit and gap analysis
+- Policy and governance review
+- Teacher readiness assessment
+- Strategic roadmap and recommendations
+- Written report with prioritized next steps
+CTA: "Book a Readiness Review" (outlined button)
+
+**Card 2: "Go Deeper" (highlighted/featured, like HexaCore's "Popular" badge)**
+Badge: "Most Popular"
+"For districts ready to build real solutions."
+**$15K – $50K+**
+- Everything in Get Started
+- 10-week embedded cobuilding sprint
+- Custom AI tool built with your teachers  
+- Teacher training and AI literacy development
+- Ongoing iteration and support
+CTA: "Schedule a Consultation" (filled #7C5CFF button)
+
+**Card 3: "Stay Connected"**
+"For districts that want ongoing advisory and support."
+**$12K – $20K /month**
+- Embedded advisory retainer
+- Continuous tool development and iteration
+- Monthly strategy sessions
+- Staff training and onboarding
+- Priority support and direct access
+CTA: "Let's Talk" (outlined button)
+
+**Below the cards, smaller text:**
+"For EdTech companies: Product advisory starts at $250/hour. Project-based cobuilding from $5K–$30K+. Contact us for details."
+
+---
+
+## SECTION 11: FAQ ACCORDION
+
+**Section header:** "Common Questions"
+
+**Q: What's a cobuilding engagement?**
+A: "Instead of buying an off-the-shelf AI tool, we build one with your team. Dan works alongside your teachers to identify a painful workflow, then we prototype and deploy a custom AI solution in a 10-week sprint. Your team learns AI literacy through the process of building something real."
+
+**Q: Do you work with charter schools and traditional districts?**
+A: "Yes, both. Navigator Schools is a charter network, but the methodology works for any K-12 organization. The common thread is leadership that's ready to move past vendor pitches and build something real."
+
+**Q: How is this different from hiring an AI consultant?**
+A: "Most AI consultants deliver a report. We deliver working tools. Dan is in classrooms every week at Navigator Schools building and iterating AI tools with teachers. That practitioner credibility is what makes our recommendations actionable, not theoretical."
+
+**Q: What about data privacy and FERPA?**
+A: "Every tool we build follows a core architecture principle: the AI never knows who the student is. Student identity stays in the local database and never enters AI API calls. We architect the data flow so identity and AI processing never share the same pipe."
+
+**Q: What does a free readiness review look like?**
+A: "It's a 30-minute conversation where we assess where your district stands on AI readiness. We'll identify your biggest gaps and map a path forward. No pitch, no pressure. Most district leaders say it's the most useful 30 minutes they've spent on AI strategy."
+
+**Q: Do you work with edtech companies?**
+A: "Yes. We offer product advisory for edtech companies building AI-powered tools. We bring the educator lens: product positioning, workflow design, classroom fit diagnostics, and prototype-to-production cobuilding. Details at the bottom of our Services section."
+
+---
+
+## SECTION 12: BRIDGE CTA (HexaCore's "Ready to Start" style)
+
+A contained card/callout section near the bottom:
+
+**Headline:** "Ready to Figure Out AI for Your District?"
+**Body:** "Start with a free 30-minute AI Readiness Review. We'll assess where you are, identify your biggest gaps, and map a path forward."
+
+**Two CTAs:**
+- Primary (filled): "Schedule a Free Consultation →"
+- Secondary (outlined): "Or send us an inquiry ↓" (scrolls to contact form below)
+
+---
+
+## SECTION 13: CONTACT FORM
+
+Simple form:
+- Your Name (text)
+- Your Role (dropdown: Superintendent, Asst. Superintendent, Technology Director, Curriculum Director, Principal, Instructional Coach, EdTech Company, Other)
+- District / Organization (text)
+- Email (email)
+- What's your biggest challenge with AI right now? (textarea)
+- Submit button: "Schedule a Free Consultation" (#7C5CFF)
+
+Form submissions should send to dan.j.whitlock@gmail.com (or route to whatever backend is set up).
+
+---
+
+## FOOTER
+
+Three columns:
+
+**Left:**
+- NovaPath Consulting
+- dan.j.whitlock@gmail.com
+- © 2026 NovaPath Consulting
+
+**Center:**
+- Newsletter: smarterbydesign.app
+- AI Readiness: checklist.smarterbydesign.app  
+- LinkedIn (link to Dan's profile)
+
+**Right:**
+- Mini newsletter signup: "Get the Smarter by Design newsletter" + email input + subscribe button
+
+**REMOVE ALL OF THESE from the current footer:** Home, Professional Development, Science Kit, Auto-Grader, Math Moves, Blog, About Us, Early Supporters, Contact, and the Reg D / Rule 506(b) securities disclaimer. Kill them all.
+
+---
+
+## TECHNICAL NOTES
+
+- Single page application. One route: `/` (the homepage described above).
+- The AI Readiness Checklist lives at checklist.smarterbydesign.app (external). Do NOT rebuild it here. Just link to it.
+- All section headers should have `id` attributes matching the nav anchors (e.g., `id="services"`, `id="results"`, `id="about"`).
+- Mobile responsive. Everything stacks cleanly on mobile.
+- Smooth scroll behavior for anchor links.
+- Add basic meta tags: Title "NovaPath Consulting — K-12 AI Strategy & Cobuilding", description "We help K-12 districts build AI systems that work. Readiness audits, custom tool builds, policy development. Built by a practitioner, not a vendor."
+
+---
+
+## COPY RULES
+
+- **Voice:** Practitioner, not professor. Warm but direct. No corporate fluff. Uses "we" alongside educators.
+- **BANNED WORDS:** revolutionize, disrupt, game-changer, unlock, leverage, "thought leader," "passionate about," "excited to announce," "digital transformation"
+- **No em dashes** on the live site. Use commas, periods, or parentheses.
+- **Every claim needs a specific stat or example.** "75% voluntary revision" not "improved outcomes."
+- **Headlines:** Short, direct, 8 words or fewer when possible.
+
+---
+
+## WHAT TO DELETE FROM THE CURRENT SITE
+
+1. The separate Cobuilding PD page (the original "Build AI Literacy by Cobuilding" page)
+2. Any separate Testimony page
+3. Any separate Prices page  
+4. Any separate "Book a Time" page
+5. The "Play with Sound" button
+6. The "Hands-On Building / AI Coding Agents / Real Solutions / Team Empowerment" pill tags
+7. "NovaPath Professional Development" branding
+8. Footer links to Science Kit, Auto-Grader, Math Moves, Early Supporters
+9. The Reg D / Rule 506(b) securities disclaimer
+10. Any Loom embeds that aren't Dan's actual tools (e.g., "Goal Getter" and "Educational Command Center" if those aren't his)
+
+Keep the Loom embed of the coaching dashboard build (the "Building a Comprehensive Coaching Dashboard with AI Assistance" video) — move it into the Methodology section.
