@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Wrench, Server, ShieldCheck, Sparkles, Rocket, Compass } from "lucide-react";
 import danPresenting from "@assets/copyofdan_1770090391461.png";
 
-const CALENDLY_URL = "https://calendly.com/novapath";
+const CALENDLY_URL = "https://calendly.com/novapath711/30min";
 
 const CARD_STYLE = {
   backgroundColor: "#1A1425",
