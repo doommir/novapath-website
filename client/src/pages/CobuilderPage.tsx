@@ -708,7 +708,7 @@ function CobuilderForm() {
       toast({
         variant: "destructive",
         title: "Something went wrong",
-        description: "Please try again or email dan.j.whitlock@gmail.com directly.",
+        description: "Please try again or email Dan@explorenovapath.com directly.",
       });
     },
   });
@@ -880,12 +880,12 @@ function CobuilderFooter() {
         <div>
           <p className="text-base font-semibold mb-2" style={{ color: "#FFFFFF" }}>NovaPath</p>
           <a
-            href="mailto:dan.j.whitlock@gmail.com"
+            href="mailto:Dan@explorenovapath.com"
             className="text-sm hover:opacity-80 block mb-1"
             style={{ color: "#6B6580" }}
             data-testid="link-cobuilder-footer-email"
           >
-            dan.j.whitlock@gmail.com
+            Dan@explorenovapath.com
           </a>
           <p className="text-sm mt-3" style={{ color: "#6B6580" }}>© 2026 NovaPath</p>
         </div>
