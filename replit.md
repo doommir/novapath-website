@@ -6,10 +6,11 @@ This application is a single-page consulting landing page for NovaPath, targetin
 **Active Routes:**
 1. **NovaPath Consulting** (Homepage at `/`): Premium dark-purple single-page consulting site for K-12 AI consulting services. Dark theme (#0F0A1A background, #7C5CFF primary accent), Inter font, framer-motion animations. Section order: Sticky Nav → Hero (text-only, gradient background) → Problem Cards → Readiness CTA → About Dan → Services (6 cards with Lucide icons) → Methodology (4-step) → Results (6 tools) → Stats Bar → Testimonials (EdWeek quote only) → Pricing Tiers (3 cards, middle "Go Deeper" featured) → FAQ Accordion → Bridge CTA → Contact Form → Footer.
 2. `/consulting` → Client-side redirect to `/` (for backward compatibility)
-3. `/coachingOSdemo` → CoachingOSDemo
-4. `/navigrade` → NaviGradeDemo
-5. `/about` → AboutUs (legacy)
-6. `/*` → NotFound
+3. `/cobuilder` → CobuilderPage: Non-K-12 landing page targeting founders/developers with half-finished apps. Sections: Minimal Nav → Hero ("You have an app that's 60% done. Let's finish it.") → Problem Cards (3: contractor disappeared, stuck technically, won't ship) → How It Works (3-step: Assess → Cobuild → Ship) → What We Fix (6 cards with Lucide icons) → About Dan (short) → Pricing (2 tiers: Advisory $250/hr, Sprint from $2,500) → Contact Form → Footer. Submissions go to `cobuilder_inquiries` DB table.
+4. `/coachingOSdemo` → CoachingOSDemo
+5. `/navigrade` → NaviGradeDemo
+6. `/about` → AboutUs (legacy)
+7. `/*` → NotFound
 
 **Key Design Decisions:**
 - Hero: text-only, no headshot. Dan's photo lives in the About Dan section.
@@ -43,6 +44,7 @@ The system uses Drizzle ORM for PostgreSQL with the following data models:
 -   `MathMovesInquiries`: Stores email, name, school, role, grade level, and optional additional info for Math Moves pilot signups.
 -   `InvestorInquiries`: Stores email, name, check size, accredited investor status (boolean), and optional notes for investor interest form submissions.
 -   `ConsultingInquiries`: Stores name, role, district, email, and optional challenge for consulting page inquiry form submissions.
+-   `CobuilderInquiries`: Stores name, email, appDescription, stuckPoint, and optional budget for /cobuilder page form submissions.
 All tables use varchar IDs with gen_random_uuid(), type-safe schemas, and Zod validation, with schema-first development.
 
 ### UI/UX Decisions

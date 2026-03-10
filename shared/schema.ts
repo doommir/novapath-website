@@ -182,3 +182,27 @@ export const insertConsultingInquirySchema = createInsertSchema(consultingInquir
 
 export type InsertConsultingInquiry = z.infer<typeof insertConsultingInquirySchema>;
 export type ConsultingInquiry = typeof consultingInquiries.$inferSelect;
+
+export const cobuilderInquiries = pgTable("cobuilder_inquiries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  appDescription: text("app_description").notNull(),
+  stuckPoint: text("stuck_point").notNull(),
+  budget: text("budget"),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+});
+
+export const insertCobuilderInquirySchema = createInsertSchema(cobuilderInquiries).omit({
+  id: true,
+  submittedAt: true,
+}).extend({
+  name: z.string().min(1, "Please enter your name"),
+  email: z.string().email("Please enter a valid email address"),
+  appDescription: z.string().min(10, "Please describe your app (at least 10 characters)"),
+  stuckPoint: z.string().min(5, "Please describe where you're stuck"),
+  budget: z.string().optional(),
+});
+
+export type InsertCobuilderInquiry = z.infer<typeof insertCobuilderInquirySchema>;
+export type CobuilderInquiry = typeof cobuilderInquiries.$inferSelect;

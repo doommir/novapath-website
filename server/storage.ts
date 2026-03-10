@@ -1,10 +1,7 @@
-import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, type InvestorInquiry, type InsertInvestorInquiry, type ConsultingInquiry, type InsertConsultingInquiry, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries, investorInquiries, consultingInquiries } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, type InvestorInquiry, type InsertInvestorInquiry, type ConsultingInquiry, type InsertConsultingInquiry, type CobuilderInquiry, type InsertCobuilderInquiry, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries, investorInquiries, consultingInquiries, cobuilderInquiries } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
-
-// modify the interface with any CRUD methods
-// you might need
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -17,6 +14,7 @@ export interface IStorage {
   createMathMovesInquiry(inquiry: InsertMathMovesInquiry): Promise<MathMovesInquiry>;
   createInvestorInquiry(inquiry: InsertInvestorInquiry): Promise<InvestorInquiry>;
   createConsultingInquiry(inquiry: InsertConsultingInquiry): Promise<ConsultingInquiry>;
+  createCobuilderInquiry(inquiry: InsertCobuilderInquiry): Promise<CobuilderInquiry>;
 }
 
 export class MemStorage implements IStorage {
@@ -28,6 +26,7 @@ export class MemStorage implements IStorage {
   private mathMovesInquiries: Map<string, MathMovesInquiry>;
   private investorInquiries: Map<string, InvestorInquiry>;
   private consultingInquiries: Map<string, ConsultingInquiry>;
+  private cobuilderInquiries: Map<string, CobuilderInquiry>;
 
   constructor() {
     this.users = new Map();
@@ -38,6 +37,7 @@ export class MemStorage implements IStorage {
     this.mathMovesInquiries = new Map();
     this.investorInquiries = new Map();
     this.consultingInquiries = new Map();
+    this.cobuilderInquiries = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -160,6 +160,21 @@ export class MemStorage implements IStorage {
     this.consultingInquiries.set(id, consultingInquiry);
     return consultingInquiry;
   }
+
+  async createCobuilderInquiry(insertCobuilderInquiry: InsertCobuilderInquiry): Promise<CobuilderInquiry> {
+    const id = randomUUID();
+    const cobuilderInquiry: CobuilderInquiry = {
+      id,
+      name: insertCobuilderInquiry.name,
+      email: insertCobuilderInquiry.email,
+      appDescription: insertCobuilderInquiry.appDescription,
+      stuckPoint: insertCobuilderInquiry.stuckPoint,
+      budget: insertCobuilderInquiry.budget ?? null,
+      submittedAt: new Date()
+    };
+    this.cobuilderInquiries.set(id, cobuilderInquiry);
+    return cobuilderInquiry;
+  }
 }
 
 export class DbStorage implements IStorage {
@@ -253,7 +268,17 @@ export class DbStorage implements IStorage {
     }).returning();
     return consultingInquiry;
   }
+
+  async createCobuilderInquiry(insertCobuilderInquiry: InsertCobuilderInquiry): Promise<CobuilderInquiry> {
+    const [cobuilderInquiry] = await db.insert(cobuilderInquiries).values({
+      name: insertCobuilderInquiry.name,
+      email: insertCobuilderInquiry.email,
+      appDescription: insertCobuilderInquiry.appDescription,
+      stuckPoint: insertCobuilderInquiry.stuckPoint,
+      budget: insertCobuilderInquiry.budget ?? null,
+    }).returning();
+    return cobuilderInquiry;
+  }
 }
 
-// Use database storage for production
 export const storage = new DbStorage();

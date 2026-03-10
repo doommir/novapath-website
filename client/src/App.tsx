@@ -8,6 +8,7 @@ import CoachingOSDemo from "@/pages/CoachingOSDemo";
 import NaviGradeDemo from "@/pages/NaviGradeDemo";
 import AboutUs from "@/pages/AboutUs";
 import NovaPathConsulting from "@/pages/NovaPathConsulting";
+import CobuilderPage from "@/pages/CobuilderPage";
 import NotFound from "@/pages/not-found";
 
 function ConsultingRedirect() {
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/coachingOSdemo" component={CoachingOSDemo} />
       <Route path="/navigrade" component={NaviGradeDemo} />
       <Route path="/about" component={AboutUs} />
+      <Route path="/cobuilder" component={CobuilderPage} />
       <Route component={NotFound} />
     </Switch>
   );
