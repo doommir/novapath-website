@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import ShaderBackground from "@/components/ui/shader-background";
 import {
   Accordion,
   AccordionContent,
@@ -220,7 +221,9 @@ function Hero({
 
   return (
     <section className="relative overflow-hidden" style={{ paddingTop: "128px", paddingBottom: "80px" }}>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_900px_at_50%_-10%,rgba(124,92,255,0.18),transparent_65%)]" />
+      <ShaderBackground />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_900px_at_50%_-10%,rgba(124,92,255,0.25),transparent_65%)]" />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(15,10,26,0.15) 0%, rgba(15,10,26,0.5) 100%)" }} />
       <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(124,92,255,0.3), transparent)" }} />
 
       <div className="max-w-4xl mx-auto px-6 relative text-center">
