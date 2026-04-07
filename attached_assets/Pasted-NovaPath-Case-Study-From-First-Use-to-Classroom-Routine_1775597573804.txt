@@ -1,0 +1,110 @@
+NovaPath Case Study
+From First Use to Classroom Routine in 90 Days
+
+Between January and April 2026, NovaPath was used to run 1,014 AI-scored writing assessments across real classrooms.
+
+What started as a pilot quickly became part of the instructional routine.
+
+Teachers launched sessions within minutes
+Students completed full-class writing tasks in a single period
+Results were available immediately
+
+No delays. No batching. No “we’ll look at this later.”
+
+What Growth Actually Looked Like
+Month	Submissions	Avg Score
+Jan	238	2.13
+Feb	457	2.75
+Mar	296	2.46
+Apr (partial)	23	3.31
+
+February marked peak adoption as multiple classrooms began using NovaPath at the same time.
+
+By March, usage stabilized — not as a one-time activity, but as a repeatable classroom workflow.
+
+What Teachers Saw Immediately
+
+Every session produced the same kind of clarity:
+
+Who is meeting expectations
+Who is close
+Who is not there yet
+Exactly why
+
+Not weeks later. Not after grading at home.
+
+In the moment.
+
+The Signal That Showed Up Everywhere
+
+Across every classroom, one pattern kept showing up:
+
+Students can answer the question.
+They struggle to support their answer with evidence.
+
+This wasn’t isolated to a grade, a teacher, or a rubric.
+
+It was consistent across the entire system.
+
+Why That Matters
+
+Most tools tell you if students are struggling.
+
+NovaPath shows you where and how they are struggling — fast enough to adjust instruction the next day.
+
+Instead of:
+
+“Writing scores are low”
+
+Teachers get:
+
+“Students are not citing evidence clearly”
+“Explanations are underdeveloped”
+“Responses stop at the claim”
+
+That level of specificity changes what happens in the next lesson.
+
+What Changed in Classrooms
+
+Teachers didn’t need to redesign everything.
+
+They made small, targeted shifts:
+
+More explicit modeling of evidence use
+Structured response formats
+Focused feedback on explanation, not just correctness
+
+And because data came back instantly, they could see what worked right away.
+
+How NovaPath Fits Into Instruction
+
+NovaPath isn’t another assessment platform.
+
+It acts as a real-time feedback loop inside the classroom:
+
+Assign a writing task
+Students respond
+AI scores using a standards-aligned rubric
+Teachers see class-wide patterns immediately
+Instruction adjusts the next day
+What This Proves
+
+In four months:
+
+Over 1,000 real student responses analyzed
+Across multiple classrooms and contexts
+With teachers returning and reusing the system
+
+This isn’t theoretical.
+
+It’s a working system that:
+
+Surfaces instructional gaps
+Speeds up feedback cycles
+Makes writing performance visible in real time
+The Bottom Line
+
+NovaPath doesn’t just grade writing.
+
+It shows teachers what to do next —
+while it still matters.

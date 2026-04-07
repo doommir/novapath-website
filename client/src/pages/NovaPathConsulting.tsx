@@ -854,6 +854,114 @@ function ResultsSection() {
             </div>
           </div>
         </motion.div>
+
+        {/* Case Study 2 — NaviGrade */}
+        <motion.div
+          className="mt-8 rounded-2xl overflow-hidden"
+          style={{ border: "1px solid rgba(124,92,255,0.25)", backgroundColor: "#110D1E" }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          data-testid="card-case-study-2"
+        >
+          {/* Header bar */}
+          <div className="px-8 py-5 flex flex-wrap items-center justify-between gap-4" style={{ borderBottom: "1px solid rgba(124,92,255,0.15)", background: "linear-gradient(90deg, rgba(124,92,255,0.1), transparent)" }}>
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study</span>
+              <h3 className="text-xl font-bold mt-1" style={{ color: "#FFFFFF" }}>NaviGrade</h3>
+              <p className="text-sm mt-0.5" style={{ color: "#B4B0C4" }}>From First Use to Classroom Routine &nbsp;·&nbsp; January – April 2026</p>
+            </div>
+            <div className="text-sm px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.12)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>
+              AI-scored writing assessments &nbsp;·&nbsp; Multiple classrooms
+            </div>
+          </div>
+
+          <div className="p-8">
+            {/* Stats row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              {[
+                { number: "1,014", label: "Student writing responses analyzed" },
+                { number: "90", label: "Days from pilot to routine" },
+                { number: "3.31", label: "Avg score by April (up from 2.13)" },
+                { number: "0", label: "Delays — results available immediately" },
+              ].map((s, i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-xl text-center"
+                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.12)" }}
+                >
+                  <div className="text-2xl font-bold mb-1" style={{ color: "#A78BFA" }}>{s.number}</div>
+                  <div className="text-xs leading-snug" style={{ color: "#B4B0C4" }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Left: growth table + context */}
+              <div className="flex flex-col gap-5">
+                <div>
+                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: "#7C5CFF" }}>Adoption by Month</h4>
+                  <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(124,92,255,0.15)" }}>
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr style={{ backgroundColor: "rgba(124,92,255,0.1)" }}>
+                          <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "#A78BFA" }}>Month</th>
+                          <th className="text-right px-4 py-2.5 font-semibold" style={{ color: "#A78BFA" }}>Submissions</th>
+                          <th className="text-right px-4 py-2.5 font-semibold" style={{ color: "#A78BFA" }}>Avg Score</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          { month: "January", subs: "238", score: "2.13" },
+                          { month: "February", subs: "457", score: "2.75" },
+                          { month: "March", subs: "296", score: "2.46" },
+                          { month: "April (partial)", subs: "23", score: "3.31" },
+                        ].map((row, i) => (
+                          <tr key={i} style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                            <td className="px-4 py-2.5" style={{ color: "#FFFFFF" }}>{row.month}</td>
+                            <td className="px-4 py-2.5 text-right" style={{ color: "#B4B0C4" }}>{row.subs}</td>
+                            <td className="px-4 py-2.5 text-right font-semibold" style={{ color: "#A78BFA" }}>{row.score}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-xs mt-2" style={{ color: "#6B6580" }}>February marked peak adoption as multiple classrooms began using NaviGrade simultaneously. By March, usage stabilized as a repeatable classroom workflow — not a one-time activity.</p>
+                </div>
+              </div>
+
+              {/* Right: insight + quote */}
+              <div className="flex flex-col gap-5">
+                <div>
+                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>The Signal That Showed Up Everywhere</h4>
+                  <p className="leading-relaxed text-sm mb-3" style={{ color: "#B4B0C4" }}>
+                    Across every classroom, one pattern appeared consistently: students can answer the question — but they struggle to support their answer with evidence. This wasn't isolated to a grade, a teacher, or a rubric. It was system-wide.
+                  </p>
+                  <p className="leading-relaxed text-sm" style={{ color: "#B4B0C4" }}>
+                    That specificity changed what happened in the next lesson. Instead of "writing scores are low," teachers got: "Students are not citing evidence clearly" and "Explanations stop at the claim." Teachers made targeted shifts — more explicit evidence modeling, structured response formats, focused feedback — and saw results the following day.
+                  </p>
+                </div>
+
+                <blockquote
+                  className="p-5 rounded-xl text-sm leading-relaxed"
+                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.15)", color: "#B4B0C4" }}
+                >
+                  <p className="font-semibold not-italic mb-2" style={{ color: "#FFFFFF" }}>What teachers saw immediately:</p>
+                  <ul className="space-y-1">
+                    {["Who is meeting expectations", "Who is close", "Who is not there yet", "Exactly why"].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="flex-shrink-0 font-bold" style={{ color: "#7C5CFF" }}>–</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-3 italic text-xs" style={{ color: "#6B6580" }}>Not weeks later. Not after grading at home. In the moment.</p>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
