@@ -774,7 +774,7 @@ function ResultsSection() {
           <div className="p-8">
             {/* Headline stat */}
             <div className="mb-8 p-6 rounded-xl text-center" style={{ background: "linear-gradient(135deg, rgba(124,92,255,0.12), rgba(124,92,255,0.05))", border: "1px solid rgba(124,92,255,0.2)" }}>
-              <div className="text-5xl font-bold mb-2" style={{ color: "#A78BFA" }}>+0.44 pts</div>
+              <div className="text-5xl font-bold mb-2" style={{ color: "#A78BFA" }}>+19%</div>
               <div className="text-base font-medium" style={{ color: "#FFFFFF" }}>Improvement in instructional practice — network-wide, in one school year</div>
               <div className="text-sm mt-1" style={{ color: "#6B6580" }}>Instructional growth became visible. And measurable.</div>
             </div>
