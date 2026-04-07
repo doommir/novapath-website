@@ -763,7 +763,7 @@ function ResultsSection() {
           <div className="px-8 py-5 flex flex-wrap items-center justify-between gap-4" style={{ borderBottom: "1px solid rgba(124,92,255,0.15)", background: "linear-gradient(90deg, rgba(124,92,255,0.1), transparent)" }}>
             <div>
               <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study</span>
-              <h3 className="text-xl font-bold mt-1" style={{ color: "#FFFFFF" }}>Educators Co-Building with AI</h3>
+              <h3 className="text-xl font-bold mt-1" style={{ color: "#FFFFFF" }}>CoachOS</h3>
               <p className="text-sm mt-0.5" style={{ color: "#B4B0C4" }}>Instructional Coaching Transformation &nbsp;·&nbsp; August 2025 – March 2026</p>
             </div>
             <div className="text-sm px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.12)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>
