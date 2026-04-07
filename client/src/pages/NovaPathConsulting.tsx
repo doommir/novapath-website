@@ -772,13 +772,19 @@ function ResultsSection() {
           </div>
 
           <div className="p-8">
-            {/* Stats row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {/* Headline stat */}
+            <div className="mb-8 p-6 rounded-xl text-center" style={{ background: "linear-gradient(135deg, rgba(124,92,255,0.12), rgba(124,92,255,0.05))", border: "1px solid rgba(124,92,255,0.2)" }}>
+              <div className="text-5xl font-bold mb-2" style={{ color: "#A78BFA" }}>+0.44 pts</div>
+              <div className="text-base font-medium" style={{ color: "#FFFFFF" }}>Improvement in instructional practice — network-wide, in one school year</div>
+              <div className="text-sm mt-1" style={{ color: "#6B6580" }}>Instructional growth became visible. And measurable.</div>
+            </div>
+
+            {/* Supporting stats */}
+            <div className="grid grid-cols-3 gap-4 mb-8">
               {[
-                { number: "1,781", label: "Classroom observations" },
-                { number: "2,185", label: "Targeted action steps" },
-                { number: "+19%", label: "Improvement in instructional practice" },
-                { number: "92%", label: "Teachers engaged in coaching cycles" },
+                { number: "1,892", label: "Classroom observations" },
+                { number: "244", label: "Teachers supported" },
+                { number: "44", label: "Instructional coaches engaged" },
               ].map((s, i) => (
                 <div
                   key={i}
@@ -791,67 +797,48 @@ function ResultsSection() {
               ))}
             </div>
 
-            {/* Body */}
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="flex flex-col gap-5">
-                <div>
-                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>The Challenge</h4>
-                  <p className="leading-relaxed text-sm" style={{ color: "#B4B0C4" }}>
-                    Instructional coaching often generates activity without clear evidence of impact. Observations are conducted, feedback is given, and action steps are assigned — but what happens next is rarely visible. Without that visibility, coaching becomes episodic and impact is inferred rather than observed.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>The Approach</h4>
-                  <p className="leading-relaxed text-sm" style={{ color: "#B4B0C4" }}>
-                    Rather than deploying a pre-built platform, this network co-developed their system alongside AI. Educators defined what effective instruction looks like, how coaching feedback should be structured, and which instructional priorities matter most. AI organized observation data in real time, surfaced patterns across teachers and schools, and standardized coaching language — without replacing educator judgment.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-5">
-                <div>
-                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>What the Data Showed</h4>
-                  <ul className="space-y-2 text-sm" style={{ color: "#B4B0C4" }}>
-                    {[
-                      "Average observation scores rose from 2.29 to 2.73 — a sustained upward trajectory",
-                      "Small Group Instruction led all areas at ~2.77 average",
-                      "ELA and STEM each logged 400+ observations",
-                      "14 action steps per teacher on average; up to 24 for highest-need teachers",
-                      "\"Tracking, Not Watching\" used 130+ times — the most common coaching technique",
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: "#7C5CFF" }}>–</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Pull quote */}
-                <blockquote
-                  className="p-5 rounded-xl italic text-sm leading-relaxed"
-                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.15)", color: "#B4B0C4" }}
-                >
-                  "The system didn't tell us what good instruction was. We defined that. The AI just made it visible across every classroom."
-                  <footer className="mt-2 not-italic text-xs" style={{ color: "#6B6580" }}>— Assistant Principal, Navigator Schools</footer>
-                </blockquote>
-              </div>
-            </div>
-
-            {/* Footer takeaway */}
-            <div className="mt-8 pt-6 flex flex-wrap gap-6" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+            {/* 4 findings */}
+            <div className="grid md:grid-cols-2 gap-5 mb-8">
               {[
-                { label: "Relevance", desc: "The system reflects real classrooms because educators defined it." },
-                { label: "Consistency", desc: "AI ensures shared structures across all sites." },
-                { label: "Visibility", desc: "Patterns that were previously invisible are now clear and actionable." },
-                { label: "Adaptability", desc: "The system evolves as instructional priorities shift." },
+                {
+                  title: "Observation volume isn't the lever",
+                  body: "Some campuses conducted more observations but did not outperform others. How coaching was executed mattered more than how often it happened.",
+                },
+                {
+                  title: "Instructional practice improved over time",
+                  body: "Every campus showed upward movement in instructional scores. Some sites improved by nearly half a point over the year. Others reached or approached proficiency benchmarks.",
+                },
+                {
+                  title: "Consistency drives results",
+                  body: "The strongest campuses shared a pattern: stable score growth, less variability across classrooms, more consistent instructional expectations. Fluctuation was the common factor in lower-performing sites.",
+                },
+                {
+                  title: "Data use is not automatic",
+                  body: "Having a system doesn't guarantee use. Adoption of structured data conversations and visible student performance data varied significantly across campuses. Implementation determines impact.",
+                },
               ].map((item, i) => (
-                <div key={i} className="flex-1 min-w-[180px]">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#7C5CFF" }}>{item.label}</div>
-                  <div className="text-xs leading-snug" style={{ color: "#B4B0C4" }}>{item.desc}</div>
+                <div
+                  key={i}
+                  className="p-5 rounded-xl"
+                  style={{ backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}
+                >
+                  <div className="text-sm font-semibold mb-2" style={{ color: "#FFFFFF" }}>{item.title}</div>
+                  <div className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>{item.body}</div>
                 </div>
               ))}
             </div>
+
+            {/* Pull quote */}
+            <blockquote
+              className="p-6 rounded-xl text-sm leading-relaxed"
+              style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.15)", color: "#B4B0C4" }}
+            >
+              <p className="mb-2">
+                Instead of asking <span style={{ color: "#6B6580" }}>"Are we coaching enough?"</span> — leaders could ask:
+              </p>
+              <p className="font-semibold not-italic" style={{ color: "#FFFFFF" }}>"Where is instruction improving? Where is it not — and why?"</p>
+              <p className="mt-3 text-xs" style={{ color: "#6B6580" }}>And they could answer those questions with real data.</p>
+            </blockquote>
           </div>
         </motion.div>
 
