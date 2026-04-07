@@ -936,6 +936,99 @@ function ResultsSection() {
             </div>
           </div>
         </motion.div>
+
+        {/* Case Study 3 — CoachOS: Early Childhood Compliance */}
+        <motion.div
+          className="mt-8 rounded-2xl overflow-hidden"
+          style={{ border: "1px solid rgba(124,92,255,0.2)", backgroundColor: "#0E0A1C" }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          data-testid="card-case-study-3"
+        >
+          {/* Top accent line */}
+          <div style={{ height: "3px", background: "linear-gradient(90deg, #7C5CFF, #A78BFA, transparent)" }} />
+
+          {/* Header */}
+          <div className="px-8 pt-8 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study 03 &nbsp;·&nbsp; CoachOS</span>
+                <h3 className="text-3xl font-bold mt-2" style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}>Workforce Compliance, Rebuilt</h3>
+                <p className="text-sm mt-1" style={{ color: "#B4B0C4" }}>Federal Head Start Compliance Training Platform &nbsp;·&nbsp; Early 2026</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>Early Childhood Program</span>
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>Multi-Site</span>
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>100+ Staff</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Hero stat + supporting row */}
+          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+              <div className="flex-shrink-0">
+                <div className="text-7xl font-bold leading-none" style={{ color: "#A78BFA", letterSpacing: "-0.03em" }}>2,000+</div>
+                <div className="text-sm mt-2 max-w-xs" style={{ color: "#FFFFFF" }}>Compliance artifacts generated — fully tagged, audit-ready, in six weeks</div>
+              </div>
+              <div className="flex-1 grid grid-cols-3 gap-3">
+                {[
+                  { number: "600+", label: "Digital sign-ins across training events" },
+                  { number: "200+", label: "Certificates issued across required domains" },
+                  { number: "50+", label: "Artifact types mapped to CFR requirements" },
+                ].map((s, i) => (
+                  <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <div className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{s.number}</div>
+                    <div className="text-xs mt-0.5 leading-snug" style={{ color: "#6B6580" }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* What it replaced + what it delivers */}
+          <div className="grid md:grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>What it replaced</p>
+              <p className="text-sm leading-relaxed mb-5" style={{ color: "#B4B0C4" }}>
+                Head Start programs operate under strict federal mandates: verified training hours, signed attendance records, evidence artifacts, individual development plans — all required for monitoring reviews. Without centralized systems, programs rely on paper sign-ins and fragmented spreadsheets.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>
+                When reviews are announced, teams scramble to assemble documentation that should already exist. Large-scale training days that previously used paper sign-in sheets were replaced entirely — with digital signatures creating immediate audit-ready records.
+              </p>
+            </div>
+
+            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>What it delivers now</p>
+              <div className="space-y-4">
+                {[
+                  { who: "For staff", what: "A mobile-accessible training record with completed hours, certifications, and progress across required domains." },
+                  { who: "For administrators", what: "A real-time compliance dashboard — Compliant / At Risk / Non-Compliant — with automated certificates and one-click audit export." },
+                  { who: "For reviewers", what: "Structured compliance packages with training matrices, hours verification, standards alignment, and CFR-referenced artifacts. Available instantly." },
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2" style={{ backgroundColor: "#7C5CFF" }} />
+                    <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#FFFFFF" }}>{item.who} — </span>
+                      <span className="text-sm" style={{ color: "#B4B0C4" }}>{item.what}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Pull quote */}
+          <div className="px-8 py-7 flex gap-5 items-start">
+            <div className="text-5xl leading-none font-serif flex-shrink-0 mt-1" style={{ color: "#7C5CFF", opacity: 0.4 }}>"</div>
+            <div>
+              <p className="text-base font-medium leading-relaxed" style={{ color: "#FFFFFF" }}>Compliance stopped being a last-minute fire drill and became ambient.</p>
+              <p className="text-sm mt-2" style={{ color: "#6B6580" }}>The system doesn't help you get ready for review. It makes you already ready.</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
