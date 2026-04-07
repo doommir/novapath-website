@@ -240,7 +240,7 @@ function Hero({
               border: "1px solid rgba(124,92,255,0.25)",
             }}
           >
-            K-12 AI Consulting
+            K-12 AI Systems
           </div>
         </motion.div>
 
@@ -561,7 +561,7 @@ function ServicesSection({ onCtaClick }: { onCtaClick: () => void }) {
 
   const services = [
     {
-      title: "District AI Consulting",
+      title: "District AI Systems",
       body: "Readiness audits, strategic roadmaps, and implementation support. We assess where your district stands on AI and build a plan to move forward.",
       bestFor: "Superintendents, tech directors, curriculum leads",
     },
@@ -1234,7 +1234,7 @@ function ConsultingFooter() {
     >
       <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10">
         <div>
-          <p className="text-base font-semibold mb-2" style={{ color: "#FFFFFF" }}>NovaPath Consulting</p>
+          <p className="text-base font-semibold mb-2" style={{ color: "#FFFFFF" }}>NovaPath Systems</p>
           <a
             href="mailto:Dan@explorenovapath.com"
             className="text-sm hover:opacity-80 block mb-1"
@@ -1243,7 +1243,7 @@ function ConsultingFooter() {
           >
             Dan@explorenovapath.com
           </a>
-          <p className="text-sm mt-4" style={{ color: "#6B6580" }}>© 2026 NovaPath Consulting</p>
+          <p className="text-sm mt-4" style={{ color: "#6B6580" }}>© 2026 NovaPath Systems</p>
         </div>
 
         <div className="flex flex-col gap-3">
