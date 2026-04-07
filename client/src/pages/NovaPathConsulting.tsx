@@ -780,9 +780,10 @@ function ResultsSection() {
             </div>
 
             {/* Supporting stats */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {[
                 { number: "1,892", label: "Classroom observations" },
+                { number: "2,185", label: "Targeted action steps" },
                 { number: "244", label: "Teachers supported" },
                 { number: "44", label: "Instructional coaches engaged" },
               ].map((s, i) => (
