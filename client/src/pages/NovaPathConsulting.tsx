@@ -740,77 +740,14 @@ function MethodologySection() {
 function ResultsSection() {
   const reducedMotion = useReducedMotion();
 
-  const tools = [
-    {
-      name: "NaviGrade Autograder",
-      description: "Paper to photo to AI-scored rubric feedback to student revision via QR codes.",
-      stat: "75% of students voluntarily revised their work",
-      hook: null,
-    },
-    {
-      name: "Coaching Dashboard",
-      description: "Classroom observation to AI synthesis to action steps to fidelity tracking.",
-      stat: null,
-      hook: "Coaching system, not coaching vibes.",
-    },
-    {
-      name: "Restorative Practice Generator",
-      description: "Incident to SEL-aligned reflection plus parent letter, generated in minutes.",
-      stat: "45-minute process reduced to 3 minutes",
-      hook: "Featured in Education Week",
-    },
-    {
-      name: "Mixteco Translator Plus",
-      description: "Custom AI for Mixtec, Spanish, and English translation with image recognition.",
-      stat: null,
-      hook: "Dignity isn't a feature request.",
-    },
-    {
-      name: "ELD R.I.S.E. (K-2)",
-      description: "15-minute ELD workflow aligned to California ELD standards.",
-      stat: null,
-      hook: "Every K-2 teacher can deliver ELD in 15 minutes.",
-    },
-    {
-      name: "Attendance Automation",
-      description: "AI tracks patterns and notifies counselors when absences suggest a student needs support, before the problem escalates.",
-      stat: null,
-      hook: null,
-    },
-  ];
-
   return (
     <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#130E1F" }}>
       <div className="max-w-6xl mx-auto">
         <SectionHeader
-          eyebrow="Proof of Practice"
-          title="Real Tools Built by Real Educators"
-          subtitle="These aren't hypotheticals. These are tools built and deployed at Navigator Schools."
+          eyebrow="Case Studies"
+          title="What This Looks Like in Practice"
+          subtitle="Real engagements, real data, real classrooms."
         />
-        <div className="grid md:grid-cols-3 gap-5">
-          {tools.map((tool, index) => (
-            <motion.div
-              key={index}
-              className="p-7 rounded-xl flex flex-col gap-3 transition-all duration-300"
-              style={CARD_STYLE}
-              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: (index % 3) * 0.08 }}
-              whileHover={{ boxShadow: CARD_HOVER_SHADOW }}
-              data-testid={`card-tool-${index}`}
-            >
-              <h3 className="font-semibold" style={{ color: "#FFFFFF", fontSize: "18px" }}>{tool.name}</h3>
-              <p className="flex-1 leading-relaxed" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.65" }}>{tool.description}</p>
-              {tool.stat && (
-                <p className="font-bold" style={{ color: "#7C5CFF", fontSize: "15px" }}>{tool.stat}</p>
-              )}
-              {tool.hook && (
-                <p className="italic" style={{ color: "#6B6580", fontSize: "13px" }}>{tool.hook}</p>
-              )}
-            </motion.div>
-          ))}
-        </div>
 
         {/* Case Study */}
         <motion.div
