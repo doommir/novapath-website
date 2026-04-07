@@ -749,204 +749,190 @@ function ResultsSection() {
           subtitle="Real engagements, real data, real classrooms."
         />
 
-        {/* Case Study */}
+        {/* Case Study 1 — CoachOS */}
         <motion.div
           className="mt-12 rounded-2xl overflow-hidden"
-          style={{ border: "1px solid rgba(124,92,255,0.25)", backgroundColor: "#110D1E" }}
+          style={{ border: "1px solid rgba(124,92,255,0.2)", backgroundColor: "#0E0A1C" }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
           data-testid="card-case-study"
         >
-          {/* Header bar */}
-          <div className="px-8 py-5 flex flex-wrap items-center justify-between gap-4" style={{ borderBottom: "1px solid rgba(124,92,255,0.15)", background: "linear-gradient(90deg, rgba(124,92,255,0.1), transparent)" }}>
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study</span>
-              <h3 className="text-xl font-bold mt-1" style={{ color: "#FFFFFF" }}>CoachOS</h3>
-              <p className="text-sm mt-0.5" style={{ color: "#B4B0C4" }}>Instructional Coaching Transformation &nbsp;·&nbsp; August 2025 – March 2026</p>
-            </div>
-            <div className="text-sm px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.12)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>
-              Multi-site public charter network &nbsp;·&nbsp; ~1,900 students &nbsp;·&nbsp; California
+          {/* Top accent line */}
+          <div style={{ height: "3px", background: "linear-gradient(90deg, #7C5CFF, #A78BFA, transparent)" }} />
+
+          {/* Header */}
+          <div className="px-8 pt-8 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study 01</span>
+                <h3 className="text-3xl font-bold mt-2" style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}>CoachOS</h3>
+                <p className="text-sm mt-1" style={{ color: "#B4B0C4" }}>Turning Instructional Coaching Into a System &nbsp;·&nbsp; Aug 2025 – Mar 2026</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>K–8 Charter Network</span>
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>~1,900 Students</span>
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>California</span>
+              </div>
             </div>
           </div>
 
-          <div className="p-8">
-            {/* Headline stat */}
-            <div className="mb-8 p-6 rounded-xl text-center" style={{ background: "linear-gradient(135deg, rgba(124,92,255,0.12), rgba(124,92,255,0.05))", border: "1px solid rgba(124,92,255,0.2)" }}>
-              <div className="text-5xl font-bold mb-2" style={{ color: "#A78BFA" }}>+19%</div>
-              <div className="text-base font-medium" style={{ color: "#FFFFFF" }}>Improvement in instructional practice — network-wide, in one school year</div>
-              <div className="text-sm mt-1" style={{ color: "#6B6580" }}>Instructional growth became visible. And measurable.</div>
+          {/* Hero stat + supporting row */}
+          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+              <div className="flex-shrink-0">
+                <div className="text-7xl font-bold leading-none" style={{ color: "#A78BFA", letterSpacing: "-0.03em" }}>+19%</div>
+                <div className="text-sm mt-2 max-w-xs" style={{ color: "#FFFFFF" }}>Improvement in instructional practice — network-wide, in one school year</div>
+              </div>
+              <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { number: "1,892", label: "Classroom observations" },
+                  { number: "2,185", label: "Targeted action steps" },
+                  { number: "244", label: "Teachers supported" },
+                  { number: "44", label: "Coaches engaged" },
+                ].map((s, i) => (
+                  <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <div className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{s.number}</div>
+                    <div className="text-xs mt-0.5 leading-snug" style={{ color: "#6B6580" }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
 
-            {/* Supporting stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {/* Findings */}
+          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: "#7C5CFF" }}>What the data showed</p>
+            <div className="grid md:grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
               {[
-                { number: "1,892", label: "Classroom observations" },
-                { number: "2,185", label: "Targeted action steps" },
-                { number: "244", label: "Teachers supported" },
-                { number: "44", label: "Instructional coaches engaged" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="p-4 rounded-xl text-center"
-                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.12)" }}
-                >
-                  <div className="text-2xl font-bold mb-1" style={{ color: "#A78BFA" }}>{s.number}</div>
-                  <div className="text-xs leading-snug" style={{ color: "#B4B0C4" }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* 4 findings */}
-            <div className="grid md:grid-cols-2 gap-5 mb-8">
-              {[
-                {
-                  title: "Observation volume isn't the lever",
-                  body: "Some campuses conducted more observations but did not outperform others. How coaching was executed mattered more than how often it happened.",
-                },
-                {
-                  title: "Instructional practice improved over time",
-                  body: "Every campus showed upward movement in instructional scores. Some sites improved by nearly half a point over the year. Others reached or approached proficiency benchmarks.",
-                },
-                {
-                  title: "Consistency drives results",
-                  body: "The strongest campuses shared a pattern: stable score growth, less variability across classrooms, more consistent instructional expectations. Fluctuation was the common factor in lower-performing sites.",
-                },
-                {
-                  title: "Data use is not automatic",
-                  body: "Having a system doesn't guarantee use. Adoption of structured data conversations and visible student performance data varied significantly across campuses. Implementation determines impact.",
-                },
+                { n: "01", title: "Observation volume isn't the lever", body: "Some campuses conducted more observations but did not outperform others. How coaching was executed mattered more than how often it happened." },
+                { n: "02", title: "Instructional practice improved over time", body: "Every campus showed upward movement in scores. Some sites improved by nearly half a point over the year. Others reached or approached proficiency benchmarks." },
+                { n: "03", title: "Consistency drives results", body: "The strongest campuses shared a pattern: stable score growth, less variability across classrooms, more consistent instructional expectations." },
+                { n: "04", title: "Data use is not automatic", body: "Having a system doesn't guarantee use. Adoption varied significantly across campuses. Implementation determines impact." },
               ].map((item, i) => (
-                <div
-                  key={i}
-                  className="p-5 rounded-xl"
-                  style={{ backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}
-                >
+                <div key={i} className="p-6" style={{ backgroundColor: "#0E0A1C" }}>
+                  <div className="text-xs font-bold mb-3" style={{ color: "rgba(124,92,255,0.5)" }}>{item.n}</div>
                   <div className="text-sm font-semibold mb-2" style={{ color: "#FFFFFF" }}>{item.title}</div>
                   <div className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>{item.body}</div>
                 </div>
               ))}
             </div>
+          </div>
 
-            {/* Pull quote */}
-            <blockquote
-              className="p-6 rounded-xl text-sm leading-relaxed"
-              style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.15)", color: "#B4B0C4" }}
-            >
-              <p className="mb-2">
-                Instead of asking <span style={{ color: "#6B6580" }}>"Are we coaching enough?"</span> — leaders could ask:
-              </p>
-              <p className="font-semibold not-italic" style={{ color: "#FFFFFF" }}>"Where is instruction improving? Where is it not — and why?"</p>
-              <p className="mt-3 text-xs" style={{ color: "#6B6580" }}>And they could answer those questions with real data.</p>
-            </blockquote>
+          {/* Pull quote */}
+          <div className="px-8 py-7 flex gap-5 items-start">
+            <div className="text-5xl leading-none font-serif flex-shrink-0 mt-1" style={{ color: "#7C5CFF", opacity: 0.4 }}>"</div>
+            <div>
+              <p className="text-base font-medium leading-relaxed" style={{ color: "#FFFFFF" }}>Where is instruction improving? Where is it not — and why?</p>
+              <p className="text-sm mt-2" style={{ color: "#6B6580" }}>Leaders moved from "are we coaching enough?" to answering that question with real data.</p>
+            </div>
           </div>
         </motion.div>
 
         {/* Case Study 2 — NaviGrade */}
         <motion.div
           className="mt-8 rounded-2xl overflow-hidden"
-          style={{ border: "1px solid rgba(124,92,255,0.25)", backgroundColor: "#110D1E" }}
+          style={{ border: "1px solid rgba(124,92,255,0.2)", backgroundColor: "#0E0A1C" }}
           initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
           data-testid="card-case-study-2"
         >
-          {/* Header bar */}
-          <div className="px-8 py-5 flex flex-wrap items-center justify-between gap-4" style={{ borderBottom: "1px solid rgba(124,92,255,0.15)", background: "linear-gradient(90deg, rgba(124,92,255,0.1), transparent)" }}>
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study</span>
-              <h3 className="text-xl font-bold mt-1" style={{ color: "#FFFFFF" }}>NaviGrade</h3>
-              <p className="text-sm mt-0.5" style={{ color: "#B4B0C4" }}>From First Use to Classroom Routine &nbsp;·&nbsp; January – April 2026</p>
-            </div>
-            <div className="text-sm px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.12)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>
-              AI-scored writing assessments &nbsp;·&nbsp; Multiple classrooms
+          {/* Top accent line */}
+          <div style={{ height: "3px", background: "linear-gradient(90deg, #A78BFA, #7C5CFF, transparent)" }} />
+
+          {/* Header */}
+          <div className="px-8 pt-8 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study 02</span>
+                <h3 className="text-3xl font-bold mt-2" style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}>NaviGrade</h3>
+                <p className="text-sm mt-1" style={{ color: "#B4B0C4" }}>From First Use to Classroom Routine &nbsp;·&nbsp; Jan – Apr 2026</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>AI Writing Assessment</span>
+                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>Multiple Classrooms</span>
+              </div>
             </div>
           </div>
 
-          <div className="p-8">
-            {/* Stats row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              {[
-                { number: "1,014", label: "Student writing responses analyzed" },
-                { number: "90", label: "Days from pilot to routine" },
-                { number: "3.31", label: "Avg score by April (up from 2.13)" },
-                { number: "0", label: "Delays — results available immediately" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="p-4 rounded-xl text-center"
-                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.12)" }}
-                >
-                  <div className="text-2xl font-bold mb-1" style={{ color: "#A78BFA" }}>{s.number}</div>
-                  <div className="text-xs leading-snug" style={{ color: "#B4B0C4" }}>{s.label}</div>
-                </div>
-              ))}
+          {/* Hero stat + supporting row */}
+          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+              <div className="flex-shrink-0">
+                <div className="text-7xl font-bold leading-none" style={{ color: "#A78BFA", letterSpacing: "-0.03em" }}>1,014</div>
+                <div className="text-sm mt-2 max-w-xs" style={{ color: "#FFFFFF" }}>Student writing responses analyzed — in 90 days</div>
+              </div>
+              <div className="flex-1 grid grid-cols-3 gap-3">
+                {[
+                  { number: "90", label: "Days from pilot to routine" },
+                  { number: "2.13→3.31", label: "Avg score growth (Jan to Apr)" },
+                  { number: "Same day", label: "Results available to teachers" },
+                ].map((s, i) => (
+                  <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <div className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{s.number}</div>
+                    <div className="text-xs mt-0.5 leading-snug" style={{ color: "#6B6580" }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Table + insight */}
+          <div className="grid md:grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            {/* Table */}
+            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>Adoption by month</p>
+              <div className="space-y-2">
+                {[
+                  { month: "January", subs: 238, max: 457, score: "2.13" },
+                  { month: "February", subs: 457, max: 457, score: "2.75" },
+                  { month: "March", subs: 296, max: 457, score: "2.46" },
+                  { month: "April", subs: 23, max: 457, score: "3.31", note: "partial" },
+                ].map((row, i) => (
+                  <div key={i}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm" style={{ color: "#FFFFFF" }}>{row.month}{row.note && <span className="text-xs ml-1" style={{ color: "#6B6580" }}>({row.note})</span>}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs" style={{ color: "#6B6580" }}>{row.subs} submissions</span>
+                        <span className="text-sm font-semibold w-8 text-right" style={{ color: "#A78BFA" }}>{row.score}</span>
+                      </div>
+                    </div>
+                    <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
+                      <div className="h-full rounded-full" style={{ width: `${(row.subs / row.max) * 100}%`, background: "linear-gradient(90deg, #7C5CFF, #A78BFA)" }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs mt-4 leading-relaxed" style={{ color: "#6B6580" }}>February marked peak adoption. By March, usage stabilized as a repeatable classroom workflow — not a one-time activity.</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Left: growth table + context */}
-              <div className="flex flex-col gap-5">
-                <div>
-                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: "#7C5CFF" }}>Adoption by Month</h4>
-                  <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(124,92,255,0.15)" }}>
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr style={{ backgroundColor: "rgba(124,92,255,0.1)" }}>
-                          <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "#A78BFA" }}>Month</th>
-                          <th className="text-right px-4 py-2.5 font-semibold" style={{ color: "#A78BFA" }}>Submissions</th>
-                          <th className="text-right px-4 py-2.5 font-semibold" style={{ color: "#A78BFA" }}>Avg Score</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {[
-                          { month: "January", subs: "238", score: "2.13" },
-                          { month: "February", subs: "457", score: "2.75" },
-                          { month: "March", subs: "296", score: "2.46" },
-                          { month: "April (partial)", subs: "23", score: "3.31" },
-                        ].map((row, i) => (
-                          <tr key={i} style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-                            <td className="px-4 py-2.5" style={{ color: "#FFFFFF" }}>{row.month}</td>
-                            <td className="px-4 py-2.5 text-right" style={{ color: "#B4B0C4" }}>{row.subs}</td>
-                            <td className="px-4 py-2.5 text-right font-semibold" style={{ color: "#A78BFA" }}>{row.score}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+            {/* Insight */}
+            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>The signal that showed up everywhere</p>
+              <p className="text-sm leading-relaxed mb-6" style={{ color: "#B4B0C4" }}>
+                Across every classroom, one pattern appeared consistently: students can answer the question — but they struggle to support their answer with evidence. Not isolated to a grade, a teacher, or a rubric. System-wide.
+              </p>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#FFFFFF" }}>What teachers saw, immediately:</p>
+                {["Who is meeting expectations", "Who is close", "Who is not there yet", "Exactly why"].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#7C5CFF" }} />
+                    <span className="text-sm" style={{ color: "#B4B0C4" }}>{item}</span>
                   </div>
-                  <p className="text-xs mt-2" style={{ color: "#6B6580" }}>February marked peak adoption as multiple classrooms began using NaviGrade simultaneously. By March, usage stabilized as a repeatable classroom workflow — not a one-time activity.</p>
-                </div>
+                ))}
               </div>
+            </div>
+          </div>
 
-              {/* Right: insight + quote */}
-              <div className="flex flex-col gap-5">
-                <div>
-                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>The Signal That Showed Up Everywhere</h4>
-                  <p className="leading-relaxed text-sm mb-3" style={{ color: "#B4B0C4" }}>
-                    Across every classroom, one pattern appeared consistently: students can answer the question — but they struggle to support their answer with evidence. This wasn't isolated to a grade, a teacher, or a rubric. It was system-wide.
-                  </p>
-                  <p className="leading-relaxed text-sm" style={{ color: "#B4B0C4" }}>
-                    That specificity changed what happened in the next lesson. Instead of "writing scores are low," teachers got: "Students are not citing evidence clearly" and "Explanations stop at the claim." Teachers made targeted shifts — more explicit evidence modeling, structured response formats, focused feedback — and saw results the following day.
-                  </p>
-                </div>
-
-                <blockquote
-                  className="p-5 rounded-xl text-sm leading-relaxed"
-                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.15)", color: "#B4B0C4" }}
-                >
-                  <p className="font-semibold not-italic mb-2" style={{ color: "#FFFFFF" }}>What teachers saw immediately:</p>
-                  <ul className="space-y-1">
-                    {["Who is meeting expectations", "Who is close", "Who is not there yet", "Exactly why"].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="flex-shrink-0 font-bold" style={{ color: "#7C5CFF" }}>–</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 italic text-xs" style={{ color: "#6B6580" }}>Not weeks later. Not after grading at home. In the moment.</p>
-                </blockquote>
-              </div>
+          {/* Pull quote */}
+          <div className="px-8 py-7 flex gap-5 items-start">
+            <div className="text-5xl leading-none font-serif flex-shrink-0 mt-1" style={{ color: "#7C5CFF", opacity: 0.4 }}>"</div>
+            <div>
+              <p className="text-base font-medium leading-relaxed" style={{ color: "#FFFFFF" }}>Not weeks later. Not after grading at home. In the moment.</p>
+              <p className="text-sm mt-2" style={{ color: "#6B6580" }}>Teachers adjusted instruction the next day — and could see what worked right away.</p>
             </div>
           </div>
         </motion.div>
