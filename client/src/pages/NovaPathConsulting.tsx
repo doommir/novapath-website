@@ -51,6 +51,9 @@ export default function NovaPathConsulting() {
         <ProblemSection />
       </div>
       <ReadinessCTA />
+      <div id="results">
+        <ResultsSection />
+      </div>
       <div id="about">
         <AboutDan />
       </div>
@@ -59,9 +62,6 @@ export default function NovaPathConsulting() {
       </div>
       <div id="methodology" ref={methodologyRef}>
         <MethodologySection />
-      </div>
-      <div id="results">
-        <ResultsSection />
       </div>
       <StatsBar />
       <Testimonials />
