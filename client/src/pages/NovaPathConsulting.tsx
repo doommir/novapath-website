@@ -811,6 +811,112 @@ function ResultsSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* Case Study */}
+        <motion.div
+          className="mt-12 rounded-2xl overflow-hidden"
+          style={{ border: "1px solid rgba(124,92,255,0.25)", backgroundColor: "#110D1E" }}
+          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+          data-testid="card-case-study"
+        >
+          {/* Header bar */}
+          <div className="px-8 py-5 flex flex-wrap items-center justify-between gap-4" style={{ borderBottom: "1px solid rgba(124,92,255,0.15)", background: "linear-gradient(90deg, rgba(124,92,255,0.1), transparent)" }}>
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study</span>
+              <h3 className="text-xl font-bold mt-1" style={{ color: "#FFFFFF" }}>Educators Co-Building with AI</h3>
+              <p className="text-sm mt-0.5" style={{ color: "#B4B0C4" }}>Instructional Coaching Transformation &nbsp;·&nbsp; August 2025 – March 2026</p>
+            </div>
+            <div className="text-sm px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.12)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>
+              Multi-site public charter network &nbsp;·&nbsp; ~1,900 students &nbsp;·&nbsp; California
+            </div>
+          </div>
+
+          <div className="p-8">
+            {/* Stats row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              {[
+                { number: "1,781", label: "Classroom observations" },
+                { number: "2,185", label: "Targeted action steps" },
+                { number: "+19%", label: "Improvement in instructional practice" },
+                { number: "92%", label: "Teachers engaged in coaching cycles" },
+              ].map((s, i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-xl text-center"
+                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.12)" }}
+                >
+                  <div className="text-2xl font-bold mb-1" style={{ color: "#A78BFA" }}>{s.number}</div>
+                  <div className="text-xs leading-snug" style={{ color: "#B4B0C4" }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Body */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="flex flex-col gap-5">
+                <div>
+                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>The Challenge</h4>
+                  <p className="leading-relaxed text-sm" style={{ color: "#B4B0C4" }}>
+                    Instructional coaching often generates activity without clear evidence of impact. Observations are conducted, feedback is given, and action steps are assigned — but what happens next is rarely visible. Without that visibility, coaching becomes episodic and impact is inferred rather than observed.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>The Approach</h4>
+                  <p className="leading-relaxed text-sm" style={{ color: "#B4B0C4" }}>
+                    Rather than deploying a pre-built platform, this network co-developed their system alongside AI. Educators defined what effective instruction looks like, how coaching feedback should be structured, and which instructional priorities matter most. AI organized observation data in real time, surfaced patterns across teachers and schools, and standardized coaching language — without replacing educator judgment.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-5">
+                <div>
+                  <h4 className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: "#7C5CFF" }}>What the Data Showed</h4>
+                  <ul className="space-y-2 text-sm" style={{ color: "#B4B0C4" }}>
+                    {[
+                      "Average observation scores rose from 2.29 to 2.73 — a sustained upward trajectory",
+                      "Small Group Instruction led all areas at ~2.77 average",
+                      "ELA and STEM each logged 400+ observations",
+                      "14 action steps per teacher on average; up to 24 for highest-need teachers",
+                      "\"Tracking, Not Watching\" used 130+ times — the most common coaching technique",
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: "#7C5CFF" }}>–</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Pull quote */}
+                <blockquote
+                  className="p-5 rounded-xl italic text-sm leading-relaxed"
+                  style={{ backgroundColor: "rgba(124,92,255,0.07)", border: "1px solid rgba(124,92,255,0.15)", color: "#B4B0C4" }}
+                >
+                  "The system didn't tell us what good instruction was. We defined that. The AI just made it visible across every classroom."
+                  <footer className="mt-2 not-italic text-xs" style={{ color: "#6B6580" }}>— Assistant Principal, Navigator Schools</footer>
+                </blockquote>
+              </div>
+            </div>
+
+            {/* Footer takeaway */}
+            <div className="mt-8 pt-6 flex flex-wrap gap-6" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+              {[
+                { label: "Relevance", desc: "The system reflects real classrooms because educators defined it." },
+                { label: "Consistency", desc: "AI ensures shared structures across all sites." },
+                { label: "Visibility", desc: "Patterns that were previously invisible are now clear and actionable." },
+                { label: "Adaptability", desc: "The system evolves as instructional priorities shift." },
+              ].map((item, i) => (
+                <div key={i} className="flex-1 min-w-[180px]">
+                  <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#7C5CFF" }}>{item.label}</div>
+                  <div className="text-xs leading-snug" style={{ color: "#B4B0C4" }}>{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

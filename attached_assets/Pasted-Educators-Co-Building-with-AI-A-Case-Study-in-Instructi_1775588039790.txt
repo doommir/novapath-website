@@ -1,0 +1,179 @@
+Educators Co-Building with AI
+
+
+A Case Study in Instructional Coaching Transformation
+
+
+August 2025 – March 2026
+
+
+Overview
+
+
+Most AI in education is built outside schools and then pushed into classrooms.This network took a different approach: educators co-built with AI inside their daily work.
+This work took place in a multi-site public charter network in California, serving ~1,900 students across urban and suburban communities, including a high percentage of English learners and students qualifying for free and reduced-price lunch.
+
+
+Across 4 school sites, 44 instructional coaches supported 189 teachers:
+	•	1,781 classroom observations
+	•	2,185 targeted action steps
+	•	+0.44 improvement in observed instructional practice (~19%)
+
+
+The result is a system that makes instructional change visible — not assumed.
+
+
+The Challenge
+Instructional coaching often generates activity without clear evidence of impact.
+	•	Observations are conducted
+	•	Feedback is given
+	•	Action steps are assigned
+But what happens next is often unclear.
+
+
+As one instructional coach described: “Before this, I was guessing whether my feedback was landing. Now I can see it in the data before the next observation cycle.”
+Without visibility, coaching becomes episodic — and impact is inferred rather than observed.
+
+
+The Approach: Co-Building with AI
+
+
+Rather than implementing a pre-built platform, this network co-developed a system alongside AI.
+Educators defined:
+	•	what effective instruction looks like
+	•	how coaching feedback should be structured
+	•	which instructional priorities matter most
+
+
+AI supported the system by:
+	•	organizing observation data in real time
+	•	surfacing patterns across teachers and schools
+	•	standardizing coaching language and structures
+	•	reducing manual tracking and analysis
+
+
+As one assistant principal noted:
+“The system didn’t tell us what good instruction was. We defined that. The AI just made it visible across every classroom.”
+
+
+
+
+
+
+The Coaching Model
+The system is built around a continuous improvement cycle:
+Observe → Assign → Revisit → Sustain
+	•	Arc-aligned observations
+Each observation reflects what should be happening at that point in the instructional calendar.
+	•	Structured action steps
+Feedback becomes a specific, named instructional move.
+	•	Continuation tracking
+The system captures whether instructional work is sustained across cycles.
+	•	Shared visibility
+Teachers, coaches, and leaders access the same data through role-specific views.
+
+
+What the Data Shows
+Instructional practice improved
+Average observation scores increased from 2.29 in August to 2.73 in March:
+	•	+0.44 points (~19% gain)
+	•	Early-year average: 2.43
+	•	Late-year average: 2.67
+
+
+This reflects a sustained upward trajectory across the year.
+Coaching is aligned to priority areas
+	•	ELA (K–5): 400+ observations
+	•	STEM (K–8): 400+
+	•	Full Inclusion: 300+
+	•	Small Group Instruction: highest performance (avg ~2.77)
+
+
+Effort followed instructional need — not uniform distribution.
+Coaching is sustained over time
+	•	92% of teachers engaged in coaching cycles
+	•	~14 action steps per teacher on average
+	•	Up to 24 for the most-supported teachers
+
+
+Rather than relying on one-time completion, the system reveals:
+	•	which instructional priorities are revisited
+	•	where coaching focus is sustained
+	•	how practices evolve across multiple cycles
+
+
+A shared instructional model emerged
+Most frequently used coaching techniques include:
+	•	Tracking, Not Watching (130+ uses)
+	•	Instructional Excellence Amplification
+	•	Culture
+	•	Classroom Management
+
+
+This reflects increasing alignment across classrooms and schools.
+
+
+Instructional Area Insights
+
+
+Performance varies across instructional roles:
+	•	Accelerated Reader (AR) / Reading Intervention: ~2.98
+	•	Small Group Instruction: ~2.77
+	•	ELA and STEM: approaching proficiency
+	•	Full Inclusion: ~2.41 (complex instructional context)
+	•	Culture: ~2.26
+	•	Campus Safety / Support (CST): ~1.68 (priority area)
+
+
+As one school leader put it:
+
+
+“We always knew some areas were weaker. This was the first time we could see exactly where — and how far.”
+
+
+What Co-Building with AI Enabled
+ Relevance
+The system reflects real classrooms because educators defined it.
+
+
+Consistency
+AI ensures shared structures across sites.
+
+
+Visibility
+Patterns that were previously difficult to detect are now clear.
+
+
+Adaptability
+The system evolves as instructional priorities change.
+
+
+Why This Matters
+AI in education is often positioned as a replacement for educator judgment.
+This model demonstrates a different use:
+AI as infrastructure for instructional improvement
+	•	not replacing educators
+	•	not generating generic recommendations
+	•	but making expertise visible and actionable at scale
+
+
+The Result
+
+
+Since August:
+	•	1,781 observations conducted
+	•	2,185 action steps assigned
+	•	+0.44 improvement in instructional practice
+
+
+No additional systems.
+No increased administrative burden.
+The system was co-built with educators — and powered by AI to sustain and scale their work.
+
+
+Conclusion
+Most coaching systems measure activity.
+This model makes instructional change observable.
+
+
+
