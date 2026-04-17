@@ -1,0 +1,149 @@
+Build a clean pricing + subscription system for explorenovapath.com with a “pay what feels right” model.
+
+Stack
+Next.js (App Router)
+Tailwind CSS
+Stripe (Checkout + subscriptions)
+Simple backend (API routes)
+1. Pricing Page UI
+
+Create /pricing page with this structure:
+
+Hero:
+
+"This system is being built and used in real classrooms—right now.
+You decide what it’s worth."
+
+Section: Pay What Feels Right
+Input field: user enters monthly price ($)
+Suggested buttons:
+$5 → “Exploring”
+$15 → “This is useful”
+$30 → “Using regularly”
+Button:
+👉 “Start Subscription”
+Section: Unlimited
+Fixed price (configurable, default $79/month)
+Button:
+👉 “Go Unlimited”
+2. Stripe Integration
+Products:
+
+Create 2 Stripe products:
+
+Flexible Plan
+Price is dynamic (use Stripe “custom amount” via Checkout)
+Recurring monthly
+Unlimited Plan
+Fixed monthly price
+API Route: /api/create-checkout-session
+
+Handles:
+
+plan type (flexible or unlimited)
+price (for flexible)
+
+Pseudo:
+
+if (plan === "flexible") {
+  create checkout session with custom price
+}
+
+if (plan === "unlimited") {
+  use fixed Stripe price ID
+}
+
+Return checkout URL.
+
+3. Usage Limits (simple version)
+
+Create user tier system:
+
+tier = "flexible" | "unlimited"
+monthlyAmount = number
+Rules:
+
+If tier === flexible:
+
+limit API usage (ex: 20 requests/day or similar)
+show “you hit your limit” message
+
+If tier === unlimited:
+
+no limits
+4. Middleware / Gate
+
+Wrap app usage routes:
+
+if (user.tier === "flexible" && usageExceeded) {
+  return limit screen
+}
+5. Limit Screen (VERY important UX)
+
+Show this when user hits limit:
+
+"You’ve hit your current usage limit.
+
+If you’re still exploring, you can come back tomorrow.
+
+If this is becoming useful, increase what you pay or go unlimited."
+
+Buttons:
+
+“Adjust what I pay”
+“Go Unlimited”
+6. Adjust Price Flow
+
+Allow users to:
+
+update subscription amount via Stripe customer portal
+OR
+cancel + resubscribe with new amount
+7. Auth (lightweight)
+
+Use:
+
+Clerk or Supabase Auth
+
+Store:
+
+user ID
+Stripe customer ID
+tier
+monthly amount
+usage count
+8. Styling
+Minimal
+Black / white / neutral
+Large type
+No gradients
+No “startup” look
+
+Think:
+Stripe / Linear / Notion
+
+9. Copy (use exactly)
+Button:
+
+“Start with what feels right”
+
+Limit screen:
+
+“If it’s not useful yet, pay less.
+If it starts changing how you work, pay more.”
+
+10. Done Definition
+User can choose price → checkout → return authenticated
+Usage is limited unless unlimited
+Upgrade path is frictionless
+No dashboards needed
+Important Constraint
+
+Do NOT overbuild:
+
+no analytics panel
+no billing complexity
+no multi-tier SaaS junk
+
+Just:
+👉 pay → use → hit limit → upgrade
