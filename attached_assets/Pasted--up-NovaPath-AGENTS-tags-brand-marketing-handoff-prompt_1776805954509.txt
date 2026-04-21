@@ -1,0 +1,166 @@
+---
+up: ["[[NovaPath AGENTS]]"]
+tags: [brand, marketing, handoff, prompt]
+captured: 2026-04-21
+source: claude-session
+type: reference
+---
+
+# Claude Design — Site Copy Handoff Prompt (v1)
+
+> Purpose: Hand this to Claude Design (or any writing collaborator) so the generated NovaPath site copy matches the actual brand voice, uses real case studies, and doesn't hallucinate.
+> Companion docs: [[brand-voice]], the design system at `/Users/mattvarner/Desktop/NovaPath Design System/`
+> Use verbatim or edit lightly. Do NOT paraphrase the banned-words list or the case-study rule — those are hard rails.
+
+---
+
+## PROMPT START — paste everything below into Claude Design
+
+---
+
+You're writing marketing copy for NovaPath, a two-person AI consultancy run by Dan Whitlock (CEO, K-12 track) and Matt Varner (COO, SMB/sprint track). You are not writing a brand voice from scratch. The voice is already established. Your job is to translate it into the ~8 pages of the marketing website without losing what makes it work.
+
+Read these two documents before you write a single word:
+
+1. **Brand voice doc** — `/Users/mattvarner/Documents/The Final Vault/2-Areas/NovaPath/2 - Operations/Brand/brand-voice.md` — synthesized from four weeks of real client-call transcripts. Treat it as canon. If you draft a sentence that violates anything in this doc, rewrite.
+2. **Design system** — `/Users/mattvarner/Desktop/NovaPath Design System/` — ivory paper (#F7F3EC), deep forest green (#2D4A3E) accent, warm ink (#1A1A1A) body, Fraunces (display) + Geist Sans (body) + JetBrains Mono (code/meta). Editorial posture. No gradients. Rules over shadows. Read `colors_and_type.css` and the existing `ui_kits/marketing/` components so the copy matches the visual register.
+
+### Hard rails (do not violate)
+
+1. **No hallucinated case studies.** The v1 design system invented "Lincoln County USD," "Tilden & Reyes LLP," and "Western Regional BOCES." All three are fake. Delete them. The only real clients you may reference, and only as general categories until permission is cleared, are:
+   - **CrewFit** (Ben's fitness studio — SMB software build)
+   - **Concord** (Gabriela + Ruth — financial services platform)
+   - **Jim Zimmerman** (RMS property-tech build, HouseCanary integration)
+   - **Scott Ravenscroft** (Flutter code review / paid diagnostic)
+   - **Anthoby** (personal shopper SMB)
+   - **Andi Abbot / Heartland** (SMB)
+   
+   If you're not sure a case study is safe to name, write the slot as `[CASE STUDY PENDING — GET CLIENT PERMISSION]` and move on. Do not invent substitutes.
+
+2. **No hallucinated geography, dates, or institutional affiliations.** NovaPath is based in Murrieta, California. Dan travels. There is no "Santa Fe office," no "Cooperative," no board, no advisory panel. Est. 2024 is fine. "Murrieta, CA & remote across North America" is fine. That's the extent of verifiable geography copy.
+
+3. **No fabricated quotes.** If a testimonial block is needed, write it as `[PULL QUOTE — COLLECT FROM CLIENT]`. Do not write a plausible-sounding quote and attribute it to a real client. Do not write an anonymous quote and imply it's real.
+
+4. **No fake metrics.** "40% faster," "3x engagement," "$2M saved" — not without a source. If a stat-shaped claim would strengthen the copy, write it as `[METRIC PENDING]` and note what the claim would need to cite.
+
+### Banned words (rewrite if they appear)
+
+leverage, empower, unlock, journey, synergy, transformation partner, AI-powered, solutions (as in "AI solutions"), boutique, curated, bespoke, disruptive, revolutionary, game-changing, ecosystem, cutting-edge, world-class, best-in-class, next-gen, seamless (unless literally describing a seam)
+
+### Required vocabulary (use these)
+
+**Cobuild** (verb — the signature term, must appear in hero and /approach)
+**Sprint** (the SMB unit of work — two-week timebox)
+**Ship** (not "deliver," not "roll out")
+**Tool** (not "solution," not "platform")
+**Working prototype** (not "MVP")
+**Your team / your operators** (who you build with)
+**Field notes** (the writing section name)
+**Handoff** (the thing competitors don't actually do)
+**Teacher-in-the-loop** (for K-12 copy)
+**Your stack, your repo, your call** (sprint tagline — canon)
+
+### Voice attributes (check drafts against these)
+
+- Direct, not clipped. Warm and short.
+- Specific, not general. "A 4-person law firm" > "small businesses."
+- Confident, not boastful. "We ship a working prototype in week one" > "leading AI consultancy."
+- Opinionated. Takes in public, plainly stated.
+- Dry humor about the *industry*, never about *clients*. Roast Gartner, never the superintendent.
+- First-person plural throughout. "We," not "NovaPath."
+- Contractions. "We don't," not "we do not."
+
+### Register by track
+
+NovaPath has two tracks. Same brand, different rooms. Do not merge them.
+
+- **SMB / Sprint track** (Matt's domain) — operational, numbered, timebox-and-price forward. Think: "Two weeks. Your stack. Friday demo. Done." Reads like Matt wrote it.
+- **K-12 track** (Dan's domain) — philosophical, outcomes-forward, relational. Think: "Your teachers shape the tool. Your board signs the deck. Your district owns the code." Reads like Dan wrote it.
+
+If a paragraph could sit in either track without editing, it's too generic. Push it to one side.
+
+### Pages to draft
+
+Produce copy for all eight, in this order. For each page, deliver:
+- Page title (tab + H1)
+- Meta description (≤160 chars)
+- Hero (headline + subhead + primary CTA + secondary CTA)
+- Section-by-section body copy
+- Any microcopy (button labels, link text, form placeholders)
+
+---
+
+#### 1. Home (`/`)
+
+The single most important page. Must accomplish:
+- Tell a visitor in 5 seconds what you do and who you do it for
+- Surface both tracks without burying one
+- Include one real pull quote slot (mark as `[PULL QUOTE — COLLECT]` for now)
+- Link to /approach, /sprints, /k12, /work, /field-notes
+- End with a dead-simple contact CTA
+
+Hero headline direction: lead with **"We cobuild AI with the people who'll use it."** Support with a subhead that names the two audiences (K-12 districts + founders).
+
+#### 2. Approach (`/approach`)
+
+The philosophy page. Explain cobuilding. Explain what you're NOT (no retainers, no black boxes, no 180-page decks). Use the brand voice doc's "anti-consulting posture" list. Define "sprint" and "handoff" as real terms with real meanings. This page is where the quietly brave copy lives — consider using a softened version of "our expertise is not development, our expertise is sitting next to people who know their operation better than we do."
+
+#### 3. Sprints (`/sprints`)
+
+SMB services page. Price forward. Table or structured list with:
+- Scoping call — 60 min — free
+- Diagnostic / assessment — [PRICE PENDING] — 1 week
+- Sprint build — $1,500–$2,500 — 2 weeks
+- Extended build — custom — 4–8 weeks
+- Office hours (post-ship) — 4 weeks — included
+
+Include what a sprint week actually looks like (day-by-day). Use Matt's operational register. End with one real case study callout.
+
+#### 4. K-12 (`/k12`)
+
+Dan's page. Different hero, same brand. Think: readiness assessment, teacher-in-the-loop pilot design, procurement & policy review (FERPA, state, district), ship a working pilot. Copy needs to feel like it was written by someone who respects educators and has sat in a faculty lounge. End with `[CASE STUDY PENDING]` slot.
+
+#### 5. Work (`/work`)
+
+Real case studies. For v1, write three cards as `[CASE STUDY PENDING — CrewFit / Concord / Jim Zimmerman]` with structural placeholders (challenge, approach, outcome). Do NOT invent the content. Do include a section header and intro paragraph. This page exists for SEO and credibility even when empty.
+
+#### 6. Field Notes (`/field-notes`)
+
+The writing section. This page is an index, not an essay. Write:
+- Section intro (2–3 sentences on why you write this)
+- Two placeholder post cards:
+  - "What wedge-and-expand actually looks like with a law firm" — Matt
+  - "Why K-12 AI RFPs fail before they're written" — Dan
+- Each card: title, byline, 1-sentence dek, published date slot, read time slot
+
+#### 7. About (`/about`)
+
+Two-person firm. Be honest. Photos of Dan and Matt. Short bios — 4–6 sentences each. Matt: technical operator, pattern-recognizer, operational backbone. Dan: strategist, K-12 domain expert, relationship-first. No invented credentials. If Dan has real K-12 consulting history, reference it in general terms only.
+
+#### 8. Contact (`/contact`)
+
+Not a form. Two email addresses (placeholder `hello@novapath.co` and `dan@novapath.co` — confirm with Matt before publishing), a Calendly link (placeholder), and a "here's what to include when you reach out" soft gate: (1) what problem you're trying to solve, (2) what you've already tried, (3) your timeline. That's the entire page. Resist adding more.
+
+### Deliverable format
+
+Return the result as a single markdown document with one `# H1` per page and clean H2/H3 structure inside. Every block of body copy should be in plain prose — no lorem ipsum, no placeholder text except the explicit `[CASE STUDY PENDING]` / `[METRIC PENDING]` / `[PULL QUOTE — COLLECT]` / `[PRICE PENDING]` flags noted above.
+
+### One more thing
+
+The brand voice doc contains a Straussian read at the bottom — for Matt's eyes only. Do not surface any of that in public copy. The site's job is to be consistent with that psychology, not to expose it.
+
+When in doubt: be shorter, be warmer, be more specific, be more honest.
+
+---
+
+## PROMPT END
+
+---
+
+## Notes for Matt (don't paste these)
+
+- Before sending this to Claude Design, confirm the email addresses (`hello@` and `dan@`) are the real ones you want live. If not, swap them inline.
+- The brand voice doc references "the lesbians" nickname for Ruth + Gabriela in the internal-only section. Claude Design should not be reading that without context, but if you want zero risk of it bleeding into copy, you can temporarily comment out that section before the handoff and restore it after.
+- After Claude Design returns v1 copy, run it through `marketing:brand-review` against the brand voice doc. If any banned words show up, kick it back.
+- The Work page `[CASE STUDY PENDING]` slots are your next real blocker. Priority outreach: CrewFit (Ben is closest), Concord (Gabriela is warmest), Jim (he'll say yes if framed right). One week of asks gets you three real case studies.
+- Decide before launch: is the K-12 track visible on day one, or staged for reveal after SMB is humming? My gut says keep it visible — Dan's head is there, and the door needs to be open. But it's your call.
