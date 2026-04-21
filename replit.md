@@ -1,27 +1,44 @@
-# NovaPath Consulting
+# NovaPath
 
 ## Overview
-This application is a single-page consulting landing page for NovaPath, targeting K-12 district leaders for AI consulting services. The homepage (/) is the NovaPath Consulting page.
+NovaPath is a two-person AI consultancy run by Dan Whitlock (CEO, K-12 track) and Matt Varner (COO, SMB/sprint track). The site is an 8-page editorial marketing site plus preserved demo tool pages. Est. 2024. Murrieta, CA & remote across North America.
 
 **Active Routes:**
-1. **NovaPath Consulting** (Homepage at `/`): Premium dark-purple single-page consulting site for K-12 AI consulting services. Dark theme (#0F0A1A background, #7C5CFF primary accent), Inter font, framer-motion animations. Section order: Sticky Nav → Hero (text-only, gradient background) → Problem Cards → Readiness CTA → About Dan → Services (6 cards with Lucide icons) → Methodology (4-step) → Results (6 tools) → Stats Bar → Testimonials (EdWeek quote only) → Pricing Tiers (3 cards, middle "Go Deeper" featured) → FAQ Accordion → Bridge CTA → Contact Form → Footer.
-2. `/consulting` → Client-side redirect to `/` (for backward compatibility)
-3. `/cobuilder` → CobuilderPage: Non-K-12 landing page targeting founders/developers with half-finished apps. Sections: Minimal Nav → Hero ("You have an app that's 60% done. Let's finish it.") → Problem Cards (3: contractor disappeared, stuck technically, won't ship) → How It Works (3-step: Assess → Cobuild → Ship) → What We Fix (6 cards with Lucide icons) → About Dan (short) → Pricing (2 tiers: Advisory $250/hr, Sprint from $2,500) → Contact Form → Footer. Submissions go to `cobuilder_inquiries` DB table.
-4. `/coachingOSdemo` → CoachingOSDemo
-5. `/navigrade` → NaviGradeDemo
-6. `/about` → AboutUs (legacy)
-7. `/*` → NotFound
+1. `/` → **HomePage**: Two-track editorial homepage. Hero: "We cobuild AI with the people who'll use it." Surfaces K-12 and Sprint tracks.
+2. `/approach` → **ApproachPage**: Philosophy page. "We don't consult. We cobuild." Defines cobuilding, sprint, handoff.
+3. `/sprints` → **SprintsPage**: SMB services. Pricing table, sprint week breakdown (day-by-day), scoping CTA.
+4. `/k12` → **K12Page**: K-12 track. Dan Whitlock's domain. Readiness assessment, teacher-in-the-loop, policy review.
+5. `/work` → **WorkPage**: Case studies (pending permission — CrewFit, Concord, Jim Zimmerman/RMS).
+6. `/field-notes` → **FieldNotesPage**: Writing index. Two placeholder posts (Matt + Dan).
+7. `/about` → **AboutPage**: Two-person firm. Dan Whitlock + Matt Varner bios.
+8. `/contact` → **ContactPage**: Email + Calendly + soft-gate (3 questions to include).
+9. `/consulting` → Redirect to `/`
+10. `/cobuilder` → **CobuilderPage**: Legacy SMB landing page (preserved, dark purple theme)
+11. `/coachingOSdemo` → **CoachingOSDemo** (preserved demo tool, dark purple theme)
+12. `/navigrade` → **NaviGradeDemo** (preserved demo tool, dark purple theme)
+13. `/*` → **NotFound**
 
 **Key Design Decisions:**
-- Hero: text-only, no headshot. Dan's photo lives in the About Dan section.
-- All cards: clean dark `#1A1425` backgrounds, `1px solid rgba(255,255,255,0.06)` borders, no colored top borders
-- Services: 6 cards in 3×2 grid with Lucide icons (Map, Hammer, FileText, BookOpen, Lightbulb, Library)
-- Testimonials: only the real EdWeek quote, no placeholder "coming soon" cards
-- Pricing: middle "Go Deeper" card featured with Most Popular badge and filled purple button
-- FAQ: minimal Radix accordion with no heavy card styling
-- Scroll: smooth scroll behavior via `html { scroll-behavior: smooth; }` in index.css
-- Calendly: all CTAs link to `https://calendly.com/novapath`
-- Nav: Services / Results / About anchor links + Newsletter (smarterbydesign.app) + AI Readiness (checklist.smarterbydesign.app) external links + "Book a Call" CTA
+- Design system: Ivory paper (#F7F3EC bg), deep forest green (#2D4A3E primary), warm ink (#1A1A1A body)
+- Typography: Fraunces (display/headlines via font-serif), Geist (body via font-sans), JetBrains Mono (labels/meta via font-mono)
+- Editorial posture: horizontal rules over shadows, no gradients, rules over cards
+- Shared components: `SiteNav.tsx`, `SiteFooter.tsx`
+- Demo pages (CoachingOSDemo, NaviGradeDemo, CobuilderPage) use hard-coded dark purple inline styles and are unaffected by CSS variable changes
+- Calendly: https://calendly.com/novapath711/30min
+- Email: Dan@explorenovapath.com (SMB email TBD — [CONFIRM WITH MATT])
+
+**Brand Voice Rules (from brand brief):**
+- Banned words: leverage, empower, unlock, journey, synergy, AI-powered, solutions, boutique, seamless, etc.
+- Required vocab: Cobuild, Sprint, Ship (not deliver), Tool (not solution), Working prototype, Handoff, Teacher-in-the-loop
+- Voice: Direct, warm, specific, first-person plural ("we"), contractions
+- K-12 track: philosophical, outcomes-forward (Dan's voice)
+- Sprint track: operational, timebox-and-price forward (Matt's voice)
+
+**Pending items (not yet published):**
+- Case studies: awaiting permission from CrewFit (Ben), Concord (Gabriela + Ruth), Jim Zimmerman
+- Pull quote on homepage: [COLLECT FROM CLIENT]
+- Matt's SMB email: [CONFIRM WITH MATT]
+- Sprint diagnostic pricing: [PRICE PENDING]
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -29,53 +46,52 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-The frontend is built with React 18, TypeScript, Vite, and Wouter for routing. UI components utilize Shadcn/ui (New York style), Radix UI primitives, and Tailwind CSS, featuring a mobile-first, dark-themed design with purple/violet gradients and the Inter font. Framer-motion is used for scroll-triggered animations. It employs a single-page application structure and a component-based architecture with path aliasing.
+React 18, TypeScript, Vite, Wouter routing. Shadcn/ui (New York style), Radix UI, Tailwind CSS. Light editorial theme — ivory paper / forest green / warm ink. Fraunces + Geist + JetBrains Mono fonts (Google Fonts). Mobile-first, no dark mode toggle needed (light-only site). Framer-motion used in legacy demo pages only.
 
 ### Backend Architecture
-The backend uses Express.js and TypeScript with ESM. It integrates Vite middleware for HMR in development and includes custom logging and error handling. Storage is abstracted via an `IStorage` interface, supporting in-memory storage and prepared for PostgreSQL using Drizzle ORM and Neon serverless. The API is RESTful, uses JSON, and leverages shared, Drizzle-Zod generated schemas for type safety and validation.
+Express.js + TypeScript + ESM. Vite middleware for HMR in development. Storage abstracted via IStorage interface with PostgreSQL (Drizzle ORM + Neon serverless). RESTful JSON API with shared Drizzle-Zod schemas.
 
 ### Database Schema
-The system uses Drizzle ORM for PostgreSQL with the following data models:
--   `Users`: For authentication.
--   `Leads`: Stores email, role, optional school, and referrer for waitlist signups.
--   `Preorders`: Stores email, name, and quantity for Science Kit pre-orders.
--   `PdInquiries`: Stores email, name, school, role, and pain point for PD inquiries.
--   `AutograderInquiries`: Stores email, name, school, role, grade level, and optional additional info for Navigator Auto-Grader demo requests.
--   `MathMovesInquiries`: Stores email, name, school, role, grade level, and optional additional info for Math Moves pilot signups.
--   `InvestorInquiries`: Stores email, name, check size, accredited investor status (boolean), and optional notes for investor interest form submissions.
--   `ConsultingInquiries`: Stores name, role, district, email, and optional challenge for consulting page inquiry form submissions.
--   `CobuilderInquiries`: Stores name, email, appDescription, stuckPoint, and optional budget for /cobuilder page form submissions.
-All tables use varchar IDs with gen_random_uuid(), type-safe schemas, and Zod validation, with schema-first development.
+- `Users`: Authentication
+- `Leads`: Email/role/school/referrer for waitlist signups
+- `Preorders`: Science Kit pre-orders
+- `PdInquiries`: Professional development inquiries
+- `AutograderInquiries`: Navigator Auto-Grader demo requests
+- `MathMovesInquiries`: Math Moves pilot signups
+- `InvestorInquiries`: Investor interest forms
+- `ConsultingInquiries`: Consulting inquiry form submissions
+- `CobuilderInquiries`: /cobuilder page form submissions
 
 ### UI/UX Decisions
-Dark theme with #0F0A1A background, #1A1425 card backgrounds, #7C5CFF primary purple, #A78BFA secondary purple, #B4B0C4 body text, #FFFFFF headlines. Inter font. Framer-motion scroll animations. Mobile-first responsive layout.
+Light theme: #F7F3EC ivory paper background, #2D4A3E forest green primary, #1A1A1A warm ink body text. Fraunces for display headlines. Geist for body. JetBrains Mono for labels and meta text. Horizontal rules as section dividers. Editorial, no gradients.
 
 ## External Dependencies
 
 ### Frontend Libraries
--   **Radix UI**: Primitive component library (Accordion for FAQ).
--   **Lucide React**: Icon library (service card icons).
--   **Tailwind CSS**: Utility-first CSS framework.
--   **React Hook Form & Zod**: Form management and validation.
--   **Wouter**: Lightweight client-side routing.
--   **TanStack Query**: Server state management.
--   **Framer Motion**: Scroll-triggered animations.
+- **Radix UI**: Primitive component library (Accordion, Tooltip, etc.)
+- **Lucide React**: Icon library
+- **Tailwind CSS**: Utility-first CSS framework
+- **React Hook Form & Zod**: Form management and validation
+- **Wouter**: Lightweight client-side routing
+- **TanStack Query**: Server state management
+- **Framer Motion**: Used in legacy demo pages
 
 ### Backend Services
--   **Neon Database**: Serverless PostgreSQL provider.
--   **Drizzle ORM**: Type-safe database toolkit.
--   **OpenAI**: AI model integration (for CoachingOS demo and NovaPath demo).
+- **Neon Database**: Serverless PostgreSQL
+- **Drizzle ORM**: Type-safe database toolkit
+- **OpenAI**: AI model integration (CoachingOS demo and NaviGrade demo)
 
-### Build Tools & Developer Experience
--   **Vite**: Frontend build tool and dev server.
--   **esbuild**: Production server bundling.
--   **TSX**: TypeScript execution for Node.js.
+### Fonts
+- **Fraunces** (display/headlines): Google Fonts
+- **Geist** (body): Google Fonts
+- **JetBrains Mono** (labels/meta): Google Fonts
 
-### Replit-Specific Integrations
--   `@replit/vite-plugin-runtime-error-modal`
--   `@replit/vite-plugin-cartographer`
--   `@replit/vite-plugin-dev-banner`
+### Build Tools
+- **Vite**: Frontend build tool and dev server
+- **esbuild**: Production server bundling
+- **TSX**: TypeScript execution for Node.js
 
-### Fonts & Assets
--   **Google Fonts (Inter)**: Primary typography.
--   **Local Assets**: Dan Whitlock presenting photo (`copyofdan_1770090391461.png`).
+### Replit-Specific
+- `@replit/vite-plugin-runtime-error-modal`
+- `@replit/vite-plugin-cartographer`
+- `@replit/vite-plugin-dev-banner`
