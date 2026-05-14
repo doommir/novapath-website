@@ -810,36 +810,80 @@ function Publications() {
 }
 
 // ─── Network / Membership ─────────────────────────────────────────────────────
+type MemberTier = "educator" | "school" | "founding";
+
+const TIER_ROLES: Record<MemberTier, string[]> = {
+  educator: ["Classroom Teacher", "Instructional Coach", "Curriculum Director", "Department Head", "Library / Media Specialist", "Ed Tech Lead", "Other"],
+  school:   ["Principal / Head of School", "Superintendent / Executive Director", "Chief Academic Officer", "Chief of Staff", "Innovation Director", "Board Member", "Other"],
+  founding: ["Superintendent / Executive Director", "Chief Academic Officer", "Executive Director (Charter)", "Innovation Director", "Chief of Staff", "Board Member", "Other"],
+};
+
+const TIERS = [
+  {
+    key: "educator" as MemberTier,
+    name: "Associate Member",
+    audience: "Individual Educators",
+    desc: "For classroom teachers, instructional coaches, curriculum leads, and ed tech practitioners ready to build, not just attend.",
+    badge: null,
+    featured: false,
+    benefits: [
+      "Monthly practitioner cohorts with active implementers",
+      "Research briefings — what's working in real schools",
+      "Full NovaPath tool library: frameworks, rubrics, templates",
+      "Live build sessions — watch systems get built in real time",
+      "Peer operator community (no vendors, no salespeople)",
+    ],
+  },
+  {
+    key: "school" as MemberTier,
+    name: "School Member",
+    audience: "Schools & Networks",
+    desc: "For schools, charter networks, and district innovation offices that want named membership, priority access, and shared infrastructure.",
+    badge: null,
+    featured: false,
+    benefits: [
+      "Named organizational membership in the network",
+      "AI use policy templates & board presentation kits",
+      "Quarterly leadership briefings for district/executive teams",
+      "Shared pilot programs across member sites",
+      "Priority access to NovaPath consulting engagements",
+      "All Associate Member benefits included",
+    ],
+  },
+  {
+    key: "founding" as MemberTier,
+    name: "Founding Member",
+    audience: "First 12 Schools Only",
+    desc: "A limited cohort of schools who will co-design the network's direction, share earliest access to every system, and shape what this becomes.",
+    badge: "12 Spots · Invitation / Application",
+    featured: true,
+    benefits: [
+      "All School Member benefits, plus:",
+      "Co-design network curriculum and research agenda",
+      "Custom AI system implementation support",
+      "Annual Founding Member Summit invitation",
+      "Recognition in all NovaPath publications & reports",
+      "Direct advisory relationship with NovaPath leadership",
+    ],
+  },
+];
+
 function NetworkSection({ onContact }: { onContact: () => void }) {
   const rm = useReducedMotion();
-  const [tier, setTier] = useState<"educator" | "school">("educator");
+  const formRef = useRef<HTMLDivElement>(null);
+  const [activeTier, setActiveTier] = useState<MemberTier | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", organization: "", role: "", building: "" });
 
-  const educatorBenefits = [
-    { label: "Practitioner cohorts", detail: "Monthly cohorts with educators actively implementing AI in real classrooms" },
-    { label: "Live build sessions", detail: "Watch systems get built in real time — and ask questions throughout" },
-    { label: "Research briefings", detail: "Monthly synthesis of what's actually working, from real schools not press releases" },
-    { label: "Tool library access", detail: "All NovaPath frameworks, rubrics, and workflow templates — yours to use" },
-    { label: "Peer operator network", detail: "A community of practitioners, not a vendor showcase" },
-  ];
-
-  const schoolBenefits = [
-    { label: "Named network membership", detail: "Your school or network listed as a member of the Education Innovation Network" },
-    { label: "Shared pilot programs", detail: "Co-develop and co-fund pilot implementations across member sites" },
-    { label: "Policy & governance frameworks", detail: "AI use policy templates, board presentation kits, and compliance scaffolding" },
-    { label: "Priority implementation support", detail: "First access to NovaPath consulting engagements and cohort programming" },
-    { label: "Leadership briefings", detail: "Quarterly briefings built for district leadership — not just instructional staff" },
-    { label: "Custom system co-design", detail: "Work directly with NovaPath to build systems shaped to your operational context" },
-  ];
-
-  const activeBenefits = tier === "educator" ? educatorBenefits : schoolBenefits;
-
-  const educatorRoles = ["Classroom Teacher", "Instructional Coach", "Curriculum Director", "Department Head", "Library / Media Specialist", "Ed Tech Lead", "Other"];
-  const schoolRoles = ["Principal / Head of School", "Superintendent / Executive Director", "Chief Academic Officer", "Chief of Staff", "Innovation Director", "Board Member", "Other"];
-  const activeRoles = tier === "educator" ? educatorRoles : schoolRoles;
+  function selectTier(t: MemberTier) {
+    setActiveTier(t);
+    setForm(f => ({ ...f, role: "" }));
+    setFormError("");
+    setSubmitted(false);
+    setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -853,14 +897,11 @@ function NetworkSection({ onContact }: { onContact: () => void }) {
       const res = await fetch("/api/network-members", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, membershipType: tier }),
+        body: JSON.stringify({ ...form, membershipType: activeTier }),
       });
       const data = await res.json();
-      if (data.success) {
-        setSubmitted(true);
-      } else {
-        setFormError("Something went wrong. Please try again.");
-      }
+      if (data.success) setSubmitted(true);
+      else setFormError("Something went wrong. Please try again.");
     } catch {
       setFormError("Something went wrong. Please try again.");
     } finally {
@@ -868,198 +909,281 @@ function NetworkSection({ onContact }: { onContact: () => void }) {
     }
   }
 
+  const activeRoles = activeTier ? TIER_ROLES[activeTier] : [];
+  const activeTierData = TIERS.find(t => t.key === activeTier);
+
   return (
     <section style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
       <div className="max-w-6xl mx-auto px-6">
 
-        {/* Header */}
-        <motion.div {...fade()} className="mb-14">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>Membership</p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
-            Education Innovation Network
-          </h2>
+        {/* ── Header ── */}
+        <motion.div {...fade()} className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{ color: C.amber, letterSpacing: "0.14em" }}>Membership</p>
+          <div className="flex flex-wrap items-end gap-x-10 gap-y-4 mb-5">
+            <h2 className="text-4xl md:text-5xl font-bold" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+              Education Innovation Network
+            </h2>
+          </div>
           <p className="text-lg max-w-2xl" style={{ color: C.muted }}>
-            Formal membership for educators and schools who are building — not waiting. Join the way charter organizations join associations: with intention, with access, and with accountability.
+            Formal membership for schools and educators who are building the next generation of AI-integrated learning environments. Join the way leading organizations join professional associations — with standing, with access, and with accountability to a shared mission.
           </p>
         </motion.div>
 
-        {/* Tier selector */}
-        <motion.div {...fade(0.05)} className="flex gap-3 mb-12">
-          {(["educator", "school"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTier(t)}
-              data-testid={`button-tier-${t}`}
-              className="px-6 py-2.5 text-sm font-semibold transition-all"
-              style={{
-                backgroundColor: tier === t ? C.amber : "transparent",
-                color: tier === t ? "#0F0F0F" : C.muted,
-                border: `1px solid ${tier === t ? C.amber : C.border}`,
-              }}
-            >
-              {t === "educator" ? "Individual Educator" : "School / Organization"}
-            </button>
+        {/* ── Principles bar ── */}
+        <motion.div {...fade(0.05)} className="flex flex-wrap gap-x-8 gap-y-3 mb-16 pt-8" style={{ borderTop: `1px solid ${C.border}` }}>
+          {["Practitioner-led", "School-controlled", "Research-grounded", "No vendors in the room"].map((p, i) => (
+            <span key={i} className="text-xs font-medium" style={{ color: C.faint }} data-testid={`network-principle-${i}`}>
+              — {p}
+            </span>
           ))}
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-
-          {/* Benefits list */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.faint, letterSpacing: "0.12em" }}>
-              {tier === "educator" ? "What educators receive" : "What schools receive"}
-            </p>
-            <div className="space-y-0">
-              {activeBenefits.map((b, i) => (
-                <motion.div
-                  key={`${tier}-${i}`}
-                  initial={rm ? {} : { opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={rm ? { duration: 0 } : { duration: 0.25, delay: i * 0.05 }}
-                  className="py-5"
-                  style={{ borderBottom: `1px solid ${C.border}` }}
-                  data-testid={`network-benefit-${i}`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ backgroundColor: C.amber }} />
-                    <div>
-                      <div className="text-sm font-semibold mb-1" style={{ color: C.white }}>{b.label}</div>
-                      <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{b.detail}</div>
-                    </div>
+        {/* ── Tier cards ── */}
+        <div className="grid md:grid-cols-3 gap-5 mb-14">
+          {TIERS.map((t, i) => (
+            <motion.div
+              key={t.key}
+              {...fade(i * 0.07)}
+              data-testid={`card-tier-${t.key}`}
+              className="flex flex-col"
+              style={{
+                border: t.featured ? `1px solid ${C.amberBorder}` : `1px solid ${C.border}`,
+                backgroundColor: t.featured ? "rgba(201,135,58,0.04)" : C.bg,
+              }}
+            >
+              {/* Card header */}
+              <div className="px-7 pt-7 pb-6" style={{ borderBottom: `1px solid ${t.featured ? C.amberBorder : C.border}` }}>
+                {t.badge && (
+                  <div className="inline-block text-xs font-semibold px-2.5 py-1 mb-4" style={{ backgroundColor: C.amberDim, color: C.amber }}>
+                    {t.badge}
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Application form */}
-          <motion.div {...fade(0.1)}>
-            <div className="p-8" style={{ border: `1px solid ${C.borderMid}`, backgroundColor: C.bg }}>
-              {submitted ? (
-                <div className="py-6 text-center">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${C.amber}22` }}>
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                      <path d="M3 9.5L7 13.5L15 5.5" stroke={C.amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <div className="text-base font-semibold mb-2" style={{ color: C.white }}>Application received</div>
-                  <p className="text-sm" style={{ color: C.muted }}>
-                    We'll review your application and follow up within two business days. Thank you for building with us.
-                  </p>
+                )}
+                <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: t.featured ? C.amber : C.faint, letterSpacing: "0.12em" }}>
+                  {t.audience}
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-5" data-testid="form-network-join">
-                  <div>
-                    <div className="text-sm font-semibold mb-1" style={{ color: C.white }}>
-                      Apply for {tier === "educator" ? "Educator" : "School / Organization"} membership
-                    </div>
-                    <p className="text-xs" style={{ color: C.faint }}>
-                      {tier === "educator"
-                        ? "For individual teachers, coaches, and instructional leads."
-                        : "For schools, charter networks, districts, and innovation offices."}
-                    </p>
-                  </div>
+                <div className="text-xl font-bold mb-3" style={{ color: C.white }}>
+                  {t.name}
+                </div>
+                <p className="text-sm leading-relaxed" style={{ color: C.muted }}>
+                  {t.desc}
+                </p>
+              </div>
 
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>Full name *</label>
-                    <input
-                      type="text"
-                      value={form.name}
-                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                      placeholder="Your name"
-                      className="w-full px-3 py-2.5 text-sm bg-transparent outline-none"
-                      style={{ border: `1px solid ${C.border}`, color: C.white }}
-                      data-testid="input-network-name"
-                    />
-                  </div>
+              {/* Benefits */}
+              <div className="px-7 py-6 flex-1">
+                <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.11em" }}>
+                  Member Benefits
+                </div>
+                <ul className="space-y-3">
+                  {t.benefits.map((b, bi) => (
+                    <li key={bi} className="flex items-start gap-3" data-testid={`benefit-${t.key}-${bi}`}>
+                      <div className="w-1 h-1 rounded-full flex-shrink-0 mt-2" style={{ backgroundColor: t.featured ? C.amber : C.muted }} />
+                      <span className="text-sm leading-snug" style={{ color: t.featured && bi === 0 ? C.muted : C.muted, fontStyle: bi === 0 && t.key === "founding" ? "italic" : "normal" }}>
+                        {b}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>Email address *</label>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                      placeholder="you@school.org"
-                      className="w-full px-3 py-2.5 text-sm bg-transparent outline-none"
-                      style={{ border: `1px solid ${C.border}`, color: C.white }}
-                      data-testid="input-network-email"
-                    />
-                  </div>
+              {/* CTA */}
+              <div className="px-7 pb-7">
+                <button
+                  onClick={() => selectTier(t.key)}
+                  data-testid={`button-apply-${t.key}`}
+                  className="w-full py-3 text-sm font-semibold transition-opacity hover:opacity-80"
+                  style={{
+                    backgroundColor: t.featured ? C.amber : "transparent",
+                    color: t.featured ? "#0F0F0F" : C.white,
+                    border: t.featured ? "none" : `1px solid ${C.borderMid}`,
+                  }}
+                >
+                  {t.key === "founding" ? "Apply for Founding Membership" : `Apply — ${t.name}`}
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>
-                      {tier === "educator" ? "School or organization *" : "School / network / district name *"}
-                    </label>
-                    <input
-                      type="text"
-                      value={form.organization}
-                      onChange={e => setForm(f => ({ ...f, organization: e.target.value }))}
-                      placeholder={tier === "educator" ? "School or district name" : "Organization name"}
-                      className="w-full px-3 py-2.5 text-sm bg-transparent outline-none"
-                      style={{ border: `1px solid ${C.border}`, color: C.white }}
-                      data-testid="input-network-organization"
-                    />
-                  </div>
+        {/* ── Application form (appears when a tier is selected) ── */}
+        {activeTier && (
+          <motion.div
+            ref={formRef}
+            initial={rm ? {} : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={rm ? { duration: 0 } : { duration: 0.35 }}
+          >
+            <div style={{ borderTop: `2px solid ${activeTierData?.featured ? C.amber : C.borderMid}`, paddingTop: "48px" }}>
 
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>Your role *</label>
-                    <select
-                      value={form.role}
-                      onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
-                      className="w-full px-3 py-2.5 text-sm outline-none"
-                      style={{ border: `1px solid ${C.border}`, color: form.role ? C.white : C.faint, backgroundColor: C.bg }}
-                      data-testid="select-network-role"
-                    >
-                      <option value="" disabled>Select your role</option>
-                      {activeRoles.map(r => <option key={r} value={r} style={{ backgroundColor: C.bgCard, color: C.white }}>{r}</option>)}
-                    </select>
-                  </div>
+              <div className="grid md:grid-cols-2 gap-16 items-start">
 
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>What are you trying to build? (optional)</label>
-                    <textarea
-                      value={form.building}
-                      onChange={e => setForm(f => ({ ...f, building: e.target.value }))}
-                      placeholder="Briefly describe the system, program, or outcome you're working toward…"
-                      rows={3}
-                      className="w-full px-3 py-2.5 text-sm bg-transparent outline-none resize-none"
-                      style={{ border: `1px solid ${C.border}`, color: C.white }}
-                      data-testid="textarea-network-building"
-                    />
-                  </div>
+                {/* Left: what you're applying for */}
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: activeTierData?.featured ? C.amber : C.faint, letterSpacing: "0.12em" }}>
+                    Membership Application
+                  </p>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: C.white }}>
+                    {activeTierData?.name}
+                  </h3>
+                  <p className="text-sm leading-relaxed mb-8" style={{ color: C.muted }}>
+                    {activeTierData?.key === "founding"
+                      ? "Founding membership is limited to 12 schools. We'll review every application personally and respond within three business days. If selected, you'll help shape the network from day one."
+                      : "We review every application and respond within two business days. Membership is open to anyone actively building in a school, network, or district context."}
+                  </p>
 
-                  {formError && (
-                    <p className="text-xs" style={{ color: "#E87070" }} data-testid="text-network-error">{formError}</p>
-                  )}
+                  <div className="space-y-0">
+                    <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.11em" }}>Included with this membership</div>
+                    {activeTierData?.benefits.map((b, i) => (
+                      <div key={i} className="flex items-start gap-3 py-3" style={{ borderBottom: `1px solid ${C.border}` }}>
+                        <div className="w-1 h-1 rounded-full flex-shrink-0 mt-2" style={{ backgroundColor: C.amber }} />
+                        <span className="text-sm" style={{ color: C.muted, fontStyle: i === 0 && activeTierData.key === "founding" ? "italic" : "normal" }}>{b}</span>
+                      </div>
+                    ))}
+                  </div>
 
                   <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
-                    style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
-                    data-testid="button-network-submit"
+                    onClick={() => setActiveTier(null)}
+                    className="mt-6 text-xs transition-opacity hover:opacity-60"
+                    style={{ color: C.faint }}
+                    data-testid="button-close-form"
                   >
-                    {submitting ? "Submitting…" : "Apply for membership"}
+                    ← Choose a different membership tier
                   </button>
-                </form>
-              )}
-            </div>
+                </div>
 
-            {/* Secondary CTA */}
-            <div className="mt-5 flex flex-col gap-2">
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-6 py-3 text-sm font-medium text-center border transition-opacity hover:opacity-70"
-                style={{ color: C.white, borderColor: C.border }}
-                data-testid="button-network-calendar"
-              >
-                Prefer a call first? Book 30 minutes
-              </a>
+                {/* Right: form */}
+                <div>
+                  <div className="p-8" style={{ border: `1px solid ${activeTierData?.featured ? C.amberBorder : C.borderMid}`, backgroundColor: C.bg }}>
+                    {submitted ? (
+                      <div className="py-8 text-center">
+                        <div className="w-10 h-10 flex items-center justify-center mx-auto mb-5" style={{ border: `1px solid ${C.amber}` }}>
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2.5 8.5L6.5 12.5L13.5 4.5" stroke={C.amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <div className="text-base font-semibold mb-2" style={{ color: C.white }}>Application received</div>
+                        <p className="text-sm leading-relaxed" style={{ color: C.muted }}>
+                          Thank you for applying. We'll review your application and follow up within {activeTierData?.key === "founding" ? "three" : "two"} business days.
+                        </p>
+                      </div>
+                    ) : (
+                      <form onSubmit={handleSubmit} className="space-y-5" data-testid="form-network-join">
+                        <div className="text-sm font-semibold mb-1" style={{ color: C.white }}>
+                          Complete your application
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>Full name *</label>
+                          <input
+                            type="text"
+                            value={form.name}
+                            onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                            placeholder="Your name"
+                            className="w-full px-3 py-2.5 text-sm bg-transparent outline-none"
+                            style={{ border: `1px solid ${C.border}`, color: C.white }}
+                            data-testid="input-network-name"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>Work email *</label>
+                          <input
+                            type="email"
+                            value={form.email}
+                            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                            placeholder="you@school.org"
+                            className="w-full px-3 py-2.5 text-sm bg-transparent outline-none"
+                            style={{ border: `1px solid ${C.border}`, color: C.white }}
+                            data-testid="input-network-email"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>
+                            {activeTierData?.key === "educator" ? "School or organization *" : "School / network / district name *"}
+                          </label>
+                          <input
+                            type="text"
+                            value={form.organization}
+                            onChange={e => setForm(f => ({ ...f, organization: e.target.value }))}
+                            placeholder={activeTierData?.key === "educator" ? "School or district name" : "Organization name"}
+                            className="w-full px-3 py-2.5 text-sm bg-transparent outline-none"
+                            style={{ border: `1px solid ${C.border}`, color: C.white }}
+                            data-testid="input-network-organization"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>Your role *</label>
+                          <select
+                            value={form.role}
+                            onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+                            className="w-full px-3 py-2.5 text-sm outline-none"
+                            style={{ border: `1px solid ${C.border}`, color: form.role ? C.white : C.faint, backgroundColor: C.bg }}
+                            data-testid="select-network-role"
+                          >
+                            <option value="" disabled>Select your role</option>
+                            {activeRoles.map(r => (
+                              <option key={r} value={r} style={{ backgroundColor: C.bgCard, color: C.white }}>{r}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium mb-1.5" style={{ color: C.muted }}>
+                            {activeTierData?.key === "founding" ? "What would you most want to build or shape within this network? *" : "What are you working to build? (optional)"}
+                          </label>
+                          <textarea
+                            value={form.building}
+                            onChange={e => setForm(f => ({ ...f, building: e.target.value }))}
+                            placeholder="Describe the system, outcome, or change you're working toward in your school or district…"
+                            rows={3}
+                            className="w-full px-3 py-2.5 text-sm bg-transparent outline-none resize-none"
+                            style={{ border: `1px solid ${C.border}`, color: C.white }}
+                            data-testid="textarea-network-building"
+                          />
+                        </div>
+
+                        {formError && (
+                          <p className="text-xs" style={{ color: "#E87070" }} data-testid="text-network-error">{formError}</p>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="w-full px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
+                          style={{ backgroundColor: activeTierData?.featured ? C.amber : C.white, color: "#0F0F0F" }}
+                          data-testid="button-network-submit"
+                        >
+                          {submitting ? "Submitting…" : "Submit application"}
+                        </button>
+
+                        <p className="text-xs text-center" style={{ color: C.faint }}>
+                          By submitting, you agree that NovaPath may contact you about your application.
+                        </p>
+                      </form>
+                    )}
+                  </div>
+
+                  <div className="mt-4">
+                    <a
+                      href={CALENDLY_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full px-6 py-3 text-sm font-medium text-center border transition-opacity hover:opacity-70"
+                      style={{ color: C.muted, borderColor: C.border }}
+                      data-testid="button-network-calendar"
+                    >
+                      Prefer a call first? Book 30 minutes →
+                    </a>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </motion.div>
-        </div>
+        )}
+
       </div>
     </section>
   );

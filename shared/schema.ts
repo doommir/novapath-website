@@ -202,7 +202,7 @@ export const insertNetworkMemberSchema = createInsertSchema(networkMembers).omit
   email: z.string().email("Please enter a valid email address"),
   organization: z.string().min(1, "Please enter your school or organization"),
   role: z.string().min(1, "Please select your role"),
-  membershipType: z.enum(["educator", "school"]),
+  membershipType: z.enum(["educator", "school", "founding"]),
   building: z.string().optional(),
 });
 
