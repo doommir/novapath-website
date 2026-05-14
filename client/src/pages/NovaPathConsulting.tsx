@@ -4,197 +4,189 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import ShaderBackground from "@/components/ui/shader-background";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Map,
-  Hammer,
-  FileText,
-  BookOpen,
-  Lightbulb,
-  Library,
-} from "lucide-react";
 import danPresenting from "@assets/copyofdan_1770090391461.png";
 
 const CALENDLY_URL = "https://calendly.com/novapath711/30min";
 
-const CARD_STYLE = {
-  backgroundColor: "#1A1425",
-  border: "1px solid rgba(255,255,255,0.06)",
-  borderRadius: "12px",
+// ─── Color tokens ────────────────────────────────────────────────────────────
+const C = {
+  bg:         "#0F0F0F",   // near-black charcoal
+  bgAlt:      "#141414",   // slightly lifted
+  bgCard:     "#1A1A1A",   // card surface
+  border:     "rgba(255,255,255,0.07)",
+  borderMid:  "rgba(255,255,255,0.12)",
+  white:      "#F5F4F0",   // off-white
+  muted:      "#9A9890",   // secondary text
+  faint:      "#5A5854",   // tertiary / labels
+  amber:      "#C9873A",   // accent
+  amberDim:   "rgba(201,135,58,0.15)",
+  amberBorder:"rgba(201,135,58,0.3)",
+  blue:       "#6B8FBD",   // muted blue
+  blueDim:    "rgba(107,143,189,0.12)",
 } as const;
 
-const CARD_HOVER_SHADOW = "0 0 24px rgba(124,92,255,0.1)";
+function fade(delay = 0) {
+  return {
+    initial: { opacity: 0, y: 18 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.55, delay },
+  };
+}
 
+// ─── Root ─────────────────────────────────────────────────────────────────────
 export default function NovaPathConsulting() {
-  const formRef = useRef<HTMLDivElement>(null);
-  const methodologyRef = useRef<HTMLDivElement>(null);
+  const formRef      = useRef<HTMLDivElement>(null);
+  const caseRef      = useRef<HTMLDivElement>(null);
+  const systemsRef   = useRef<HTMLDivElement>(null);
+  const networkRef   = useRef<HTMLDivElement>(null);
 
-  const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const scrollToMethodology = () => {
-    methodologyRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const scrollTo = (ref: React.RefObject<HTMLDivElement>) =>
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    <div className="min-h-screen font-['Inter',sans-serif]" style={{ backgroundColor: "#0F0A1A" }}>
-      <StickyNav />
-      <Hero onPrimaryClick={scrollToForm} onSecondaryClick={scrollToMethodology} />
-      <div id="problem">
-        <ProblemSection />
-      </div>
-      <ReadinessCTA />
-      <div id="results">
-        <ResultsSection />
-      </div>
-      <div id="about">
-        <AboutDan />
-      </div>
-      <div id="services">
-        <ServicesSection onCtaClick={scrollToForm} />
-      </div>
-      <div id="methodology" ref={methodologyRef}>
-        <MethodologySection />
-      </div>
-      <StatsBar />
-      <Testimonials />
+    <div className="min-h-screen" style={{ backgroundColor: C.bg, fontFamily: "'Inter', system-ui, sans-serif", color: C.white }}>
+      <StickyNav
+        onSystems={() => scrollTo(systemsRef)}
+        onCases={() => scrollTo(caseRef)}
+        onNetwork={() => scrollTo(networkRef)}
+        onContact={() => scrollTo(formRef)}
+      />
+      <Hero
+        onSystems={() => scrollTo(systemsRef)}
+        onNetwork={() => scrollTo(networkRef)}
+        onCases={() => scrollTo(caseRef)}
+      />
+      <StatRow />
+      <ProblemSection />
+      <div ref={systemsRef}><TheStack /></div>
+      <LivingLab />
+      <div ref={caseRef}><CaseStudies /></div>
+      <Publications />
+      <div ref={networkRef}><NetworkSection onContact={() => scrollTo(formRef)} /></div>
+      <AboutDan />
+      <EdWeekQuote />
       <FaqSection />
-      <BridgeCTA onInquiryClick={scrollToForm} />
-      <div id="contact" ref={formRef}>
-        <ContactForm />
-      </div>
-      <ConsultingFooter />
+      <div ref={formRef}><ContactForm /></div>
+      <SiteFooter />
     </div>
   );
 }
 
-function StickyNav() {
-  const [menuOpen, setMenuOpen] = useState(false);
+// ─── Nav ──────────────────────────────────────────────────────────────────────
+function StickyNav({
+  onSystems, onCases, onNetwork, onContact,
+}: {
+  onSystems: () => void;
+  onCases: () => void;
+  onNetwork: () => void;
+  onContact: () => void;
+}) {
+  const [open, setOpen] = useState(false);
 
-  const anchorLinks = [
-    { label: "Services", href: "#services" },
-    { label: "Results", href: "#results" },
-    { label: "About", href: "#about" },
-  ];
-
-  const externalLinks = [
-    { label: "Newsletter", href: "https://smarterbydesign.app" },
-    { label: "AI Readiness", href: "https://checklist.smarterbydesign.app" },
+  const links = [
+    { label: "Systems",    action: onSystems },
+    { label: "Case Studies", action: onCases },
+    { label: "Network",    action: onNetwork },
+    { label: "Research",   href: "https://smarterbydesign.app", external: true },
+    { label: "About",      action: onContact },
   ];
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 px-6 py-4 backdrop-blur-md"
-      style={{ backgroundColor: "rgba(15, 10, 26, 0.92)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{
+        backgroundColor: "rgba(15,15,15,0.94)",
+        borderBottom: `1px solid ${C.border}`,
+        backdropFilter: "blur(12px)",
+      }}
     >
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
         <a
           href="#"
-          className="text-xl font-bold flex-shrink-0"
-          style={{ color: "#FFFFFF" }}
+          className="text-base font-semibold tracking-tight flex-shrink-0"
+          style={{ color: C.white, letterSpacing: "-0.01em" }}
           data-testid="link-logo"
         >
           NovaPath
         </a>
 
-        <div className="hidden md:flex items-center gap-6">
-          {anchorLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm font-medium hover:opacity-80 transition-opacity"
-              style={{ color: "#B4B0C4" }}
-              data-testid={`link-nav-${link.label.toLowerCase()}`}
-            >
-              {link.label}
-            </a>
-          ))}
-          {externalLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium hover:opacity-80 transition-opacity"
-              style={{ color: "#B4B0C4" }}
-              data-testid={`link-nav-${link.label.toLowerCase().replace(" ", "-")}`}
-            >
-              {link.label}
-            </a>
-          ))}
+        <div className="hidden md:flex items-center gap-7">
+          {links.map((l) =>
+            l.href ? (
+              <a
+                key={l.label}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm hover:opacity-70 transition-opacity"
+                style={{ color: C.muted }}
+                data-testid={`link-nav-${l.label.toLowerCase()}`}
+              >
+                {l.label}
+              </a>
+            ) : (
+              <button
+                key={l.label}
+                onClick={l.action}
+                className="text-sm hover:opacity-70 transition-opacity"
+                style={{ color: C.muted }}
+                data-testid={`link-nav-${l.label.toLowerCase()}`}
+              >
+                {l.label}
+              </button>
+            )
+          )}
         </div>
 
         <div className="flex items-center gap-3">
           <Button
             asChild
-            className="text-white font-medium hidden md:inline-flex"
-            style={{ backgroundColor: "#7C5CFF" }}
+            size="sm"
+            className="hidden md:inline-flex text-sm font-medium"
+            style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
             data-testid="button-nav-cta"
           >
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
               Book a Call
             </a>
           </Button>
-
           <button
-            className="md:hidden p-2 rounded-md"
-            style={{ color: "#B4B0C4" }}
-            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-1.5"
+            style={{ color: C.muted }}
+            onClick={() => setOpen(!open)}
             data-testid="button-mobile-menu"
             aria-label="Toggle menu"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {menuOpen
-                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
+              {open
+                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />}
             </svg>
           </button>
         </div>
       </div>
 
-      {menuOpen && (
-        <div
-          className="md:hidden mt-3 pb-3 flex flex-col gap-3"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "0.75rem" }}
-        >
-          {anchorLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm font-medium px-2 py-1"
-              style={{ color: "#B4B0C4" }}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          {externalLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium px-2 py-1"
-              style={{ color: "#B4B0C4" }}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold px-2 py-1"
-            style={{ color: "#7C5CFF" }}
-          >
+      {open && (
+        <div className="md:hidden px-6 pb-5 flex flex-col gap-4" style={{ borderTop: `1px solid ${C.border}`, paddingTop: "1rem" }}>
+          {links.map((l) =>
+            l.href ? (
+              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: C.muted }} onClick={() => setOpen(false)}>
+                {l.label}
+              </a>
+            ) : (
+              <button key={l.label} onClick={() => { l.action?.(); setOpen(false); }} className="text-sm text-left" style={{ color: C.muted }}>
+                {l.label}
+              </button>
+            )
+          )}
+          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold" style={{ color: C.amber }}>
             Book a Call
           </a>
         </div>
@@ -203,107 +195,100 @@ function StickyNav() {
   );
 }
 
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero({
-  onPrimaryClick,
-  onSecondaryClick,
+  onSystems,
+  onNetwork,
+  onCases,
 }: {
-  onPrimaryClick: () => void;
-  onSecondaryClick: () => void;
+  onSystems: () => void;
+  onNetwork: () => void;
+  onCases: () => void;
 }) {
-  const reducedMotion = useReducedMotion();
-
-  const credibilityItems = [
-    "California SB 1288 AI Workgroup",
-    "Featured in Education Week",
-    "8+ AI Tools Deployed in K-12",
-    "ASU+GSV · FETC · CSDC Speaker",
-  ];
+  const rm = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden" style={{ paddingTop: "128px", paddingBottom: "80px" }}>
-      <ShaderBackground />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_1400px_900px_at_50%_-10%,rgba(124,92,255,0.25),transparent_65%)]" />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(15,10,26,0.15) 0%, rgba(15,10,26,0.5) 100%)" }} />
-      <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(124,92,255,0.3), transparent)" }} />
-
-      <div className="max-w-4xl mx-auto px-6 relative text-center">
+    <section
+      className="relative"
+      style={{ paddingTop: "160px", paddingBottom: "100px", borderBottom: `1px solid ${C.border}` }}
+    >
+      <div className="max-w-5xl mx-auto px-6">
         <motion.div
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+          initial={rm ? {} : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.5 }}
+          transition={rm ? { duration: 0 } : { duration: 0.5 }}
         >
-          <div
-            className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest"
-            style={{
-              backgroundColor: "rgba(124,92,255,0.12)",
-              color: "#A78BFA",
-              border: "1px solid rgba(124,92,255,0.25)",
-            }}
+          <p
+            className="text-xs font-semibold uppercase tracking-widest mb-8"
+            style={{ color: C.amber, letterSpacing: "0.14em" }}
           >
-            K-12 AI Systems
-          </div>
+            K-12 AI Infrastructure
+          </p>
         </motion.div>
 
         <motion.h1
-          className="text-4xl md:text-6xl font-bold leading-tight mb-6"
-          style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          className="text-5xl md:text-7xl font-bold leading-none mb-8"
+          style={{ color: C.white, letterSpacing: "-0.035em", lineHeight: 1.02 }}
+          initial={rm ? {} : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          transition={rm ? { duration: 0 } : { duration: 0.6, delay: 0.08 }}
           data-testid="text-hero-headline"
         >
-          Your teachers are already using AI.
+          Designing the Future
           <br />
-          <span style={{ color: "#A78BFA" }}>The question is whether you have a plan.</span>
+          Before It Designs Us
         </motion.h1>
 
         <motion.p
-          className="text-lg md:text-xl mb-10 mx-auto leading-relaxed"
-          style={{ color: "#B4B0C4", maxWidth: "640px" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          className="text-lg md:text-xl leading-relaxed mb-12 max-w-2xl"
+          style={{ color: C.muted }}
+          initial={rm ? {} : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
+          transition={rm ? { duration: 0 } : { duration: 0.6, delay: 0.16 }}
         >
-          NovaPath works with K-12 districts to build real AI strategy, not slide decks. We embed with your team, identify the workflows costing the most time, and cobuild working solutions in weeks, not months.
+          AI infrastructure, implementation systems, and operational intelligence for schools — built inside real classrooms and deployed at scale.
         </motion.p>
 
         <motion.div
-          className="flex flex-wrap justify-center gap-4 mb-16"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          className="flex flex-wrap gap-3"
+          initial={rm ? {} : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
+          transition={rm ? { duration: 0 } : { duration: 0.6, delay: 0.24 }}
         >
-          <Button
-            asChild
-            size="lg"
-            className="text-white font-semibold rounded-full px-8"
-            style={{ backgroundColor: "#7C5CFF" }}
-            data-testid="button-hero-primary"
-          >
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-              Schedule a Free Consultation
-            </a>
-          </Button>
           <button
-            onClick={onSecondaryClick}
-            className="text-sm font-medium hover:opacity-80 transition-opacity border rounded-full px-6 py-2.5"
-            style={{ color: "#FFFFFF", borderColor: "rgba(255,255,255,0.3)" }}
-            data-testid="button-hero-secondary"
+            onClick={onSystems}
+            className="px-6 py-3 text-sm font-semibold rounded-sm transition-opacity hover:opacity-80"
+            style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
+            data-testid="button-hero-systems"
           >
-            See How It Works
+            Explore Systems
+          </button>
+          <button
+            onClick={onNetwork}
+            className="px-6 py-3 text-sm font-medium rounded-sm border transition-opacity hover:opacity-70"
+            style={{ color: C.white, borderColor: C.borderMid }}
+            data-testid="button-hero-network"
+          >
+            Join the Network
+          </button>
+          <button
+            onClick={onCases}
+            className="px-6 py-3 text-sm font-medium rounded-sm transition-opacity hover:opacity-70"
+            style={{ color: C.muted }}
+            data-testid="button-hero-research"
+          >
+            View Case Studies
           </button>
         </motion.div>
 
         <motion.div
-          className="flex flex-wrap justify-center gap-x-8 gap-y-3"
-          initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+          className="flex flex-wrap gap-x-8 gap-y-2 mt-14"
+          initial={rm ? {} : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.5 }}
+          transition={rm ? { duration: 0 } : { duration: 0.6, delay: 0.4 }}
         >
-          {credibilityItems.map((item, index) => (
-            <span key={index} className="text-sm" style={{ color: "#6B6580" }} data-testid={`cred-item-${index}`}>
-              {item}
-            </span>
+          {["California SB 1288 AI Workgroup", "Featured in Education Week", "ASU+GSV · FETC · CSDC Speaker", "Navigator Schools"].map((c, i) => (
+            <span key={i} className="text-xs" style={{ color: C.faint }} data-testid={`cred-item-${i}`}>{c}</span>
           ))}
         </motion.div>
       </div>
@@ -311,97 +296,146 @@ function Hero({
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      className="text-xs font-semibold uppercase tracking-widest mb-3"
-      style={{ color: "#7C5CFF", letterSpacing: "0.12em" }}
-    >
-      {children}
-    </p>
-  );
-}
-
-function SectionHeader({ eyebrow, title, subtitle, centered = true }: {
-  eyebrow?: string;
-  title: string;
-  subtitle?: string;
-  centered?: boolean;
-}) {
-  const reducedMotion = useReducedMotion();
-  return (
-    <motion.div
-      className={`mb-14 ${centered ? "text-center" : ""}`}
-      initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-    >
-      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2
-        className="text-3xl md:text-4xl font-bold mb-4"
-        style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
-      >
-        {title}
-      </h2>
-      {subtitle && (
-        <p
-          className={`text-base md:text-lg leading-relaxed ${centered ? "mx-auto" : ""}`}
-          style={{ color: "#B4B0C4", maxWidth: "600px" }}
-        >
-          {subtitle}
-        </p>
-      )}
-    </motion.div>
-  );
-}
-
-function ProblemSection() {
-  const reducedMotion = useReducedMotion();
-
-  const painPoints = [
-    {
-      title: "Teachers are using AI with no guardrails",
-      body: "Half your staff is using ChatGPT with student data. The other half won't touch it. Both groups need direction, and banning AI won't work.",
-    },
-    {
-      title: "Vendors keep pitching, nothing sticks",
-      body: "Webinars, pilots, abandoned licenses. You've tried AI solutions before. They all start strong and end up collecting dust.",
-    },
-    {
-      title: "The board is asking questions we can't answer",
-      body: "You need an AI strategy but the landscape changes monthly. A position paper from February is obsolete by spring.",
-    },
+// ─── Stat Row ─────────────────────────────────────────────────────────────────
+function StatRow() {
+  const rm = useReducedMotion();
+  const stats = [
+    { n: "1,892", label: "Classroom observations analyzed" },
+    { n: "2,185", label: "Instructional action steps generated" },
+    { n: "1,014", label: "AI-graded student submissions" },
+    { n: "4",     label: "School sites in active deployment" },
   ];
 
   return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", background: "linear-gradient(180deg, #0F0A1A 0%, #130E1F 100%)" }}>
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          eyebrow="What We're Hearing"
-          title="The Problem Every District Leader Knows"
-        />
-        <div className="grid md:grid-cols-3 gap-5">
-          {painPoints.map((point, index) => (
-            <motion.div
-              key={index}
-              className="p-7 rounded-xl transition-all duration-300"
-              style={CARD_STYLE}
-              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ boxShadow: CARD_HOVER_SHADOW }}
-              data-testid={`card-problem-${index}`}
-            >
+    <div style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+        {stats.map((s, i) => (
+          <motion.div key={i} {...fade(i * 0.06)} data-testid={`hero-stat-${i}`}>
+            <div className="text-3xl md:text-4xl font-bold mb-1" style={{ color: C.white, letterSpacing: "-0.03em" }}>{s.n}</div>
+            <div className="text-sm" style={{ color: C.faint }}>{s.label}</div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Problem ──────────────────────────────────────────────────────────────────
+function ProblemSection() {
+  const rm = useReducedMotion();
+  const items = [
+    "Pilots without systems",
+    "Tools without governance",
+    "Dashboards without action",
+    "Tutoring without instructional alignment",
+    "AI adoption without operational models",
+  ];
+
+  return (
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-16 items-start">
+          <motion.div {...fade()}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
+              The Problem
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+              Schools Are Drowning in Disconnected AI Tools
+            </h2>
+            <p className="text-lg leading-relaxed" style={{ color: C.muted }}>
+              Schools do not need more AI products. They need implementation infrastructure.
+            </p>
+          </motion.div>
+
+          <motion.div {...fade(0.1)} className="space-y-1 pt-2">
+            {items.map((item, i) => (
               <div
-                className="w-8 h-8 rounded-lg mb-5 flex items-center justify-center"
-                style={{ backgroundColor: "rgba(124,92,255,0.15)" }}
+                key={i}
+                className="flex items-center gap-4 py-4"
+                style={{ borderBottom: `1px solid ${C.border}` }}
+                data-testid={`problem-item-${i}`}
               >
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#7C5CFF" }} />
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: C.amber }} />
+                <span className="text-base" style={{ color: C.muted }}>{item}</span>
               </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: "#FFFFFF", fontSize: "18px" }}>{point.title}</h3>
-              <p className="leading-relaxed" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.65" }}>{point.body}</p>
+            ))}
+            <div className="pt-6">
+              <a
+                href="https://checklist.smarterbydesign.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium hover:opacity-70 transition-opacity"
+                style={{ color: C.amber }}
+                data-testid="link-readiness-checklist"
+              >
+                Take the free AI Readiness Assessment →
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── The Stack ────────────────────────────────────────────────────────────────
+function TheStack() {
+  const rm = useReducedMotion();
+
+  const flow = ["Signals", "Decisions", "Actions", "Outcomes"];
+
+  const tools = [
+    { name: "CoachOS",          desc: "Instructional coaching documentation and pattern analysis" },
+    { name: "NaviGrade",        desc: "AI-powered writing assessment with same-day results" },
+    { name: "Readiness Systems",desc: "District-wide AI readiness audits and roadmaps" },
+    { name: "Analytics",        desc: "Dashboards that drive action, not just reports" },
+    { name: "Governance",       desc: "Policy frameworks built on real regulatory experience" },
+    { name: "AI Agents",        desc: "Custom workflow automation for high-cost repetitive tasks" },
+    { name: "PD / Cohorts",     desc: "Hands-on build sessions, not slide-deck training" },
+    { name: "Compliance Vault", desc: "Federal-ready documentation and evidence tracking" },
+  ];
+
+  return (
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
+            The Stack
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+            This is an ecosystem,<br />not random apps
+          </h2>
+        </motion.div>
+
+        {/* Signal flow */}
+        <motion.div {...fade(0.08)} className="flex flex-wrap items-center gap-3 mb-16">
+          {flow.map((f, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div
+                className="px-5 py-2.5 text-sm font-semibold rounded-sm"
+                style={{ backgroundColor: C.bgCard, border: `1px solid ${C.borderMid}`, color: C.white }}
+              >
+                {f}
+              </div>
+              {i < flow.length - 1 && (
+                <span className="text-base" style={{ color: C.faint }}>→</span>
+              )}
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Tool grid */}
+        <div className="grid md:grid-cols-4 gap-px" style={{ backgroundColor: C.border }}>
+          {tools.map((t, i) => (
+            <motion.div
+              key={i}
+              {...fade(i * 0.04)}
+              className="p-7"
+              style={{ backgroundColor: C.bgAlt }}
+              data-testid={`stack-tool-${i}`}
+            >
+              <div className="text-sm font-semibold mb-2" style={{ color: C.white }}>{t.name}</div>
+              <div className="text-sm leading-relaxed" style={{ color: C.faint }}>{t.desc}</div>
             </motion.div>
           ))}
         </div>
@@ -410,50 +444,305 @@ function ProblemSection() {
   );
 }
 
-function ReadinessCTA() {
-  const reducedMotion = useReducedMotion();
+// ─── Living Lab ───────────────────────────────────────────────────────────────
+function LivingLab() {
+  const rm = useReducedMotion();
+
+  const facts = [
+    { label: "Live deployment", body: "Systems running in active classrooms across 4 campuses, with Orange County expansion approved." },
+    { label: "Teacher feedback loops", body: "Continuous iteration based on what teachers actually report — not what administrators assume they need." },
+    { label: "Implementation cycles", body: "10-week cobuilding sprints that end with a deployed, functioning tool. Not a roadmap. A product." },
+    { label: "Operational iteration", body: "Every system is tested against real constraints: staff time, compliance requirements, student data privacy." },
+  ];
 
   return (
-    <section className="px-6" style={{ paddingTop: "40px", paddingBottom: "80px", backgroundColor: "#130E1F" }}>
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          className="p-10 rounded-2xl text-center relative overflow-hidden"
-          style={{
-            background: "linear-gradient(135deg, #1A1425 0%, #160F22 100%)",
-            border: "1px solid rgba(124,92,255,0.35)",
-            boxShadow: "0 0 40px rgba(124,92,255,0.08)",
-          }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_600px_400px_at_50%_-20%,rgba(124,92,255,0.12),transparent_70%)]" />
-          <div className="relative">
-            <Eyebrow>Free Tool</Eyebrow>
-            <h2
-              className="text-2xl md:text-3xl font-bold mt-1 mb-4"
-              style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
-            >
-              Find out where your district actually stands.
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-20 items-start">
+          <motion.div {...fade()}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
+              Living Laboratory
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+              Built Inside<br />Real Schools
             </h2>
-            <p className="mx-auto mb-8 leading-relaxed" style={{ color: "#B4B0C4", maxWidth: "520px", fontSize: "15px" }}>
-              Before we talk, take the free K-12 AI Readiness Checklist. 29 items across 6 dimensions of readiness: policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision.
+            <p className="text-lg leading-relaxed mb-10" style={{ color: C.muted }}>
+              Most people talk AI. We build in public. Every system we offer was first built, tested, and iterated inside an actual school with actual teachers and actual students.
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="font-semibold text-white rounded-full px-8"
-              style={{ backgroundColor: "#7C5CFF" }}
-              data-testid="button-readiness-cta"
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold hover:opacity-70 transition-opacity"
+              style={{ color: C.amber }}
+              data-testid="link-lab-cta"
             >
-              <a href="https://checklist.smarterbydesign.app" target="_blank" rel="noopener noreferrer">
-                Take the Free Assessment
-              </a>
-            </Button>
-            <p className="text-xs mt-4" style={{ color: "#6B6580" }}>
-              Free · 10 minutes · No login required
-            </p>
+              Watch us solve this in real time →
+            </a>
+          </motion.div>
+
+          <div className="space-y-0">
+            {facts.map((f, i) => (
+              <motion.div
+                key={i}
+                {...fade(i * 0.08)}
+                className="py-7"
+                style={{ borderBottom: i < facts.length - 1 ? `1px solid ${C.border}` : "none" }}
+                data-testid={`lab-fact-${i}`}
+              >
+                <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: C.blue, letterSpacing: "0.1em" }}>
+                  {f.label}
+                </div>
+                <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{f.body}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Case Studies ─────────────────────────────────────────────────────────────
+function CaseStudies() {
+  const rm = useReducedMotion();
+
+  return (
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
+            Case Studies
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+            What This Looks Like in Practice
+          </h2>
+          <p className="text-lg" style={{ color: C.muted }}>Real engagements. Real data. Real classrooms.</p>
+        </motion.div>
+
+        {/* CS 01 — CoachOS */}
+        <motion.div
+          {...fade(0.05)}
+          className="mb-px"
+          style={{ border: `1px solid ${C.border}`, backgroundColor: C.bg }}
+          data-testid="card-case-study"
+        >
+          <div style={{ height: "2px", backgroundColor: C.amber }} />
+          <div className="grid md:grid-cols-3">
+            {/* Label col */}
+            <div className="p-10 md:border-r" style={{ borderColor: C.border }}>
+              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>
+                Case Study 01
+              </div>
+              <h3 className="text-2xl font-bold mb-2" style={{ color: C.white, letterSpacing: "-0.02em" }}>CoachOS</h3>
+              <p className="text-sm mb-6" style={{ color: C.muted }}>Turning Instructional Coaching Into a System</p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {["K–8 Charter Network", "California", "Aug 2025 – Mar 2026"].map((t) => (
+                  <span key={t} className="text-xs px-2.5 py-1" style={{ border: `1px solid ${C.border}`, color: C.faint, borderRadius: "2px" }}>{t}</span>
+                ))}
+              </div>
+              <div className="text-6xl font-bold leading-none mb-2" style={{ color: C.white, letterSpacing: "-0.04em" }}>+19%</div>
+              <div className="text-xs" style={{ color: C.faint }}>Improvement in instructional practice, network-wide, one school year</div>
+            </div>
+
+            {/* Stats + findings col */}
+            <div className="md:col-span-2 p-10">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                {[
+                  { n: "1,892", l: "Classroom observations" },
+                  { n: "2,185", l: "Targeted action steps" },
+                  { n: "244",   l: "Teachers supported" },
+                  { n: "44",    l: "Coaches engaged" },
+                ].map((s, i) => (
+                  <div key={i} className="py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <div className="text-2xl font-bold mb-1" style={{ color: C.white }}>{s.n}</div>
+                    <div className="text-xs" style={{ color: C.faint }}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                {[
+                  { n: "01", title: "Observation volume isn't the lever", body: "Some campuses conducted more observations but did not outperform others. How coaching was executed mattered more than frequency." },
+                  { n: "02", title: "Practice improved at every campus", body: "Every site showed upward movement. Some improved by nearly half a point. Others reached or approached proficiency benchmarks." },
+                  { n: "03", title: "Consistency drives results", body: "Strongest campuses shared a pattern: stable score growth, less variability, more consistent instructional expectations across classrooms." },
+                  { n: "04", title: "Data use is not automatic", body: "Having the system doesn't guarantee use. Adoption varied significantly. Implementation determines impact." },
+                ].map((item, i) => (
+                  <div key={i} data-testid={`cs1-finding-${i}`}>
+                    <div className="text-xs mb-2" style={{ color: C.amber }}>{item.n}</div>
+                    <div className="text-sm font-semibold mb-1.5" style={{ color: C.white }}>{item.title}</div>
+                    <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{item.body}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex gap-4 items-start pt-6" style={{ borderTop: `1px solid ${C.border}` }}>
+                <div className="text-4xl leading-none flex-shrink-0" style={{ color: C.amber, opacity: 0.4, fontFamily: "Georgia, serif" }}>"</div>
+                <div>
+                  <p className="text-sm font-medium leading-relaxed mb-1" style={{ color: C.white }}>Where is instruction improving? Where is it not — and why?</p>
+                  <p className="text-xs" style={{ color: C.faint }}>Leaders moved from guessing to answering that question with real data.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CS 02 — NaviGrade */}
+        <motion.div
+          {...fade(0.1)}
+          className="mb-px mt-4"
+          style={{ border: `1px solid ${C.border}`, backgroundColor: C.bg }}
+          data-testid="card-case-study-2"
+        >
+          <div style={{ height: "2px", backgroundColor: C.blue }} />
+          <div className="grid md:grid-cols-3">
+            <div className="p-10 md:border-r" style={{ borderColor: C.border }}>
+              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>Case Study 02</div>
+              <h3 className="text-2xl font-bold mb-2" style={{ color: C.white, letterSpacing: "-0.02em" }}>NaviGrade</h3>
+              <p className="text-sm mb-6" style={{ color: C.muted }}>From First Use to Classroom Routine</p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {["AI Writing Assessment", "Multiple Classrooms", "Jan – Apr 2026"].map((t) => (
+                  <span key={t} className="text-xs px-2.5 py-1" style={{ border: `1px solid ${C.border}`, color: C.faint, borderRadius: "2px" }}>{t}</span>
+                ))}
+              </div>
+              <div className="text-6xl font-bold leading-none mb-2" style={{ color: C.white, letterSpacing: "-0.04em" }}>1,014</div>
+              <div className="text-xs" style={{ color: C.faint }}>Student writing responses analyzed in 90 days</div>
+            </div>
+
+            <div className="md:col-span-2 p-10">
+              <div className="grid grid-cols-3 gap-4 mb-10">
+                {[
+                  { n: "90", l: "Days from pilot to routine" },
+                  { n: "2.13→3.31", l: "Avg score growth (Jan to Apr)" },
+                  { n: "Same day", l: "Results available to teachers" },
+                ].map((s, i) => (
+                  <div key={i} className="py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <div className="text-xl font-bold mb-1" style={{ color: C.white }}>{s.n}</div>
+                    <div className="text-xs" style={{ color: C.faint }}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-10 mb-8">
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>Adoption by month</div>
+                  <div className="space-y-3">
+                    {[
+                      { month: "January",  subs: 238, max: 457, score: "2.13" },
+                      { month: "February", subs: 457, max: 457, score: "2.75" },
+                      { month: "March",    subs: 296, max: 457, score: "2.46" },
+                      { month: "April",    subs: 23,  max: 457, score: "3.31", note: "partial" },
+                    ].map((row, i) => (
+                      <div key={i}>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs" style={{ color: C.muted }}>
+                            {row.month}{row.note && <span style={{ color: C.faint }}> ({row.note})</span>}
+                          </span>
+                          <span className="text-xs font-semibold" style={{ color: C.white }}>{row.score}</span>
+                        </div>
+                        <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+                          <div className="h-full" style={{ width: `${(row.subs / row.max) * 100}%`, backgroundColor: C.blue }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>What teachers saw immediately</div>
+                  <div className="space-y-2.5">
+                    {["Who is meeting expectations", "Who is close", "Who is not there yet", "Exactly why"].map((item, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: C.blue }} />
+                        <span className="text-sm" style={{ color: C.muted }}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start pt-6" style={{ borderTop: `1px solid ${C.border}` }}>
+                <div className="text-4xl leading-none flex-shrink-0" style={{ color: C.blue, opacity: 0.4, fontFamily: "Georgia, serif" }}>"</div>
+                <div>
+                  <p className="text-sm font-medium leading-relaxed mb-1" style={{ color: C.white }}>Not weeks later. Not after grading at home. In the moment.</p>
+                  <p className="text-xs" style={{ color: C.faint }}>Teachers adjusted instruction the next day and could see what worked right away.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CS 03 — Early Childhood Compliance */}
+        <motion.div
+          {...fade(0.15)}
+          className="mt-4"
+          style={{ border: `1px solid ${C.border}`, backgroundColor: C.bg }}
+          data-testid="card-case-study-3"
+        >
+          <div style={{ height: "2px", backgroundColor: C.muted }} />
+          <div className="grid md:grid-cols-3">
+            <div className="p-10 md:border-r" style={{ borderColor: C.border }}>
+              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>Case Study 03 · CoachOS</div>
+              <h3 className="text-2xl font-bold mb-2" style={{ color: C.white, letterSpacing: "-0.02em" }}>Workforce Compliance, Rebuilt</h3>
+              <p className="text-sm mb-6" style={{ color: C.muted }}>Federal Head Start Compliance Training Platform</p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {["Early Childhood Program", "Multi-Site", "Early 2026"].map((t) => (
+                  <span key={t} className="text-xs px-2.5 py-1" style={{ border: `1px solid ${C.border}`, color: C.faint, borderRadius: "2px" }}>{t}</span>
+                ))}
+              </div>
+              <div className="text-6xl font-bold leading-none mb-2" style={{ color: C.white, letterSpacing: "-0.04em" }}>2,000+</div>
+              <div className="text-xs" style={{ color: C.faint }}>Compliance artifacts generated, fully tagged, audit-ready — in six weeks</div>
+            </div>
+
+            <div className="md:col-span-2 p-10">
+              <div className="grid grid-cols-3 gap-4 mb-10">
+                {[
+                  { n: "600+", l: "Digital sign-ins across training events" },
+                  { n: "200+", l: "Certificates issued across required domains" },
+                  { n: "50+",  l: "Artifact types mapped to CFR requirements" },
+                ].map((s, i) => (
+                  <div key={i} className="py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <div className="text-xl font-bold mb-1" style={{ color: C.white }}>{s.n}</div>
+                    <div className="text-xs" style={{ color: C.faint }}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-10 mb-8">
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>What it replaced</div>
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: C.muted }}>
+                    Head Start programs operate under strict federal mandates. Without centralized systems, programs rely on paper sign-ins and fragmented spreadsheets. When reviews are announced, teams scramble to assemble documentation that should already exist.
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: C.muted }}>
+                    Large-scale training days that previously required paper sign-in sheets were replaced entirely with digital signatures — creating immediate audit-ready records.
+                  </p>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>What it delivers now</div>
+                  <div className="space-y-4">
+                    {[
+                      { who: "Staff", what: "Mobile-accessible training record with completed hours, certifications, and progress across required domains." },
+                      { who: "Administrators", what: "Real-time compliance dashboard — Compliant / At Risk / Non-Compliant — with automated certificates and one-click audit export." },
+                      { who: "Reviewers", what: "Structured compliance packages with training matrices, hours verification, and CFR-referenced artifacts. Available instantly." },
+                    ].map((item, i) => (
+                      <div key={i}>
+                        <div className="text-xs font-semibold mb-1" style={{ color: C.white }}>{item.who}</div>
+                        <div className="text-sm" style={{ color: C.muted }}>{item.what}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start pt-6" style={{ borderTop: `1px solid ${C.border}` }}>
+                <div className="text-4xl leading-none flex-shrink-0" style={{ color: C.muted, opacity: 0.4, fontFamily: "Georgia, serif" }}>"</div>
+                <div>
+                  <p className="text-sm font-medium leading-relaxed mb-1" style={{ color: C.white }}>Compliance stopped being a last-minute fire drill and became ambient.</p>
+                  <p className="text-xs" style={{ color: C.faint }}>The system doesn't help you get ready for review. It makes you already ready.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -461,59 +750,183 @@ function ReadinessCTA() {
   );
 }
 
-function AboutDan() {
-  const reducedMotion = useReducedMotion();
-
-  const credentials = [
-    "SB 1288 AI Workgroup",
-    "Education Week",
-    "ASU+GSV Speaker",
-    "Navigator Schools",
+// ─── Publications ─────────────────────────────────────────────────────────────
+function Publications() {
+  const rm = useReducedMotion();
+  const pubs = [
+    { type: "Implementation Report", title: "CoachOS Year-One Study", desc: "Analysis of 1,892 classroom observations across a K-8 charter network — what drove improvement and what didn't.", date: "Mar 2026" },
+    { type: "Whitepaper", title: "K-12 AI Readiness Framework", desc: "29-item assessment across six dimensions: policy, privacy, teacher readiness, student AI, tool governance, and leadership vision.", date: "Jan 2026" },
+    { type: "Governance Framework", title: "District AI Policy Playbook", desc: "Built on California SB 1288 workgroup participation. Covers acceptable use, data privacy, and faculty expectations.", date: "Nov 2025" },
+    { type: "Case Study", title: "Head Start Compliance Platform", desc: "Federal-ready workforce training system deployed across a multi-site early childhood program in six weeks.", date: "Apr 2026" },
+    { type: "Adoption Playbook", title: "From Pilot to System", desc: "Why most AI pilots stall at 10% adoption and the operational conditions required to move from tool to infrastructure.", date: "Feb 2026" },
+    { type: "Benchmark Study", title: "NaviGrade Writing Assessment Data", desc: "1,014 student responses, four months, one signal that appeared in every classroom: evidence construction is the gap.", date: "Apr 2026" },
   ];
 
   return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
-      <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>Research + Publications</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+            The work, documented
+          </h2>
+          <p className="text-lg" style={{ color: C.muted }}>Implementation reports, governance frameworks, and benchmark studies from real deployments.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-px" style={{ backgroundColor: C.border }}>
+          {pubs.map((p, i) => (
+            <motion.div
+              key={i}
+              {...fade(i * 0.05)}
+              className="p-8"
+              style={{ backgroundColor: C.bg }}
+              data-testid={`pub-card-${i}`}
+            >
+              <div className="flex items-start justify-between gap-2 mb-4">
+                <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: C.amber, letterSpacing: "0.1em" }}>{p.type}</span>
+                <span className="text-xs flex-shrink-0" style={{ color: C.faint }}>{p.date}</span>
+              </div>
+              <div className="text-base font-semibold mb-3" style={{ color: C.white, lineHeight: 1.35 }}>{p.title}</div>
+              <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{p.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div {...fade(0.2)} className="mt-10">
+          <a
+            href="https://smarterbydesign.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
+            style={{ color: C.amber }}
+            data-testid="link-publications-newsletter"
+          >
+            Read the full research newsletter →
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Network / Membership ─────────────────────────────────────────────────────
+function NetworkSection({ onContact }: { onContact: () => void }) {
+  const rm = useReducedMotion();
+  const benefits = [
+    "Implementation cohorts with active practitioners",
+    "Monthly briefings on what's working in real schools",
+    "Live build sessions — watch the work happen",
+    "Governance templates and policy frameworks",
+    "Shared pilots across member districts",
+    "Operator community — not a Slack group full of vendors",
+  ];
+
+  return (
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-5xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>Cohorts / Membership</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
+            Education Innovation Network
+          </h2>
+          <p className="text-lg max-w-2xl" style={{ color: C.muted }}>
+            For school leaders, charter networks, innovation directors, and instructional teams who are building — not waiting. This shifts you from vendor relationship to network node.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-16 items-start">
+          <div className="space-y-0">
+            {benefits.map((b, i) => (
+              <motion.div
+                key={i}
+                {...fade(i * 0.06)}
+                className="flex items-start gap-4 py-5"
+                style={{ borderBottom: `1px solid ${C.border}` }}
+                data-testid={`network-benefit-${i}`}
+              >
+                <div className="w-1 h-1 rounded-full flex-shrink-0 mt-2" style={{ backgroundColor: C.amber }} />
+                <span className="text-base" style={{ color: C.muted }}>{b}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div {...fade(0.1)}>
+            <div
+              className="p-10"
+              style={{ border: `1px solid ${C.borderMid}`, backgroundColor: C.bg }}
+            >
+              <div className="text-sm font-semibold mb-2" style={{ color: C.white }}>Join the network</div>
+              <p className="text-sm leading-relaxed mb-8" style={{ color: C.muted }}>
+                Start with a conversation. Tell us where you are and what you're trying to build. We'll tell you honestly whether the network is the right fit.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={onContact}
+                  className="w-full px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-80"
+                  style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
+                  data-testid="button-network-contact"
+                >
+                  Send an inquiry
+                </button>
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full px-6 py-3 text-sm font-medium text-center border transition-opacity hover:opacity-70"
+                  style={{ color: C.white, borderColor: C.border }}
+                  data-testid="button-network-calendar"
+                >
+                  Book a 30-minute call
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── About Dan ────────────────────────────────────────────────────────────────
+function AboutDan() {
+  const rm = useReducedMotion();
+  const credentials = ["SB 1288 AI Workgroup", "Education Week", "ASU+GSV Speaker", "Navigator Schools"];
+
+  return (
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-20 items-start">
           <motion.div
-            className="relative"
-            initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+            initial={rm ? {} : { opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
+            transition={rm ? { duration: 0 } : { duration: 0.6 }}
           >
-            <div
-              className="absolute -inset-4 rounded-2xl blur-2xl"
-              style={{ background: "radial-gradient(circle, rgba(124,92,255,0.15), transparent 70%)" }}
-            />
             <img
               src={danPresenting}
               alt="Dan Whitlock presenting"
-              className="relative w-full rounded-xl"
-              style={{ maxWidth: "400px", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 20px 60px rgba(0,0,0,0.4)" }}
+              className="w-full"
+              style={{ maxWidth: "440px", border: `1px solid ${C.border}` }}
               loading="lazy"
               data-testid="img-dan-bio"
             />
           </motion.div>
 
           <motion.div
-            initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+            initial={rm ? {} : { opacity: 0, x: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+            transition={rm ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
           >
-            <h2
-              className="text-3xl md:text-4xl font-bold mb-1"
-              style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
-              data-testid="text-dan-name"
-            >
+            <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>About</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-1" style={{ color: C.white, letterSpacing: "-0.02em" }} data-testid="text-dan-name">
               Dan Whitlock
             </h2>
-            <p className="text-sm font-medium mb-7" style={{ color: "#6B6580" }}>
+            <p className="text-sm mb-8" style={{ color: C.faint }}>
               Founder, NovaPath · Technology Innovation Lead, Navigator Schools
             </p>
 
-            <div className="space-y-4 mb-8" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.7" }}>
+            <div className="space-y-5 mb-10" style={{ color: C.muted, fontSize: "15px", lineHeight: "1.75" }}>
               <p>
                 Dan doesn't advise from the outside. He's the Technology Innovation Lead at Navigator Schools, a 4-campus charter network serving 1,900+ students, with an approved expansion to Orange County. He's in classrooms every week building AI tools alongside the teachers who use them.
               </p>
@@ -525,14 +938,10 @@ function AboutDan() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-7">
-              {credentials.map((cred, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 rounded-full text-xs font-medium"
-                  style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}
-                >
-                  {cred}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {credentials.map((c, i) => (
+                <span key={i} className="text-xs px-3 py-1.5" style={{ border: `1px solid ${C.border}`, color: C.muted }}>
+                  {c}
                 </span>
               ))}
             </div>
@@ -541,11 +950,11 @@ function AboutDan() {
               href="https://smarterbydesign.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium hover:underline"
-              style={{ color: "#7C5CFF" }}
+              className="text-sm font-medium hover:opacity-70 transition-opacity"
+              style={{ color: C.amber }}
               data-testid="link-newsletter-bio"
             >
-              Read the newsletter
+              Read the newsletter →
             </a>
           </motion.div>
         </div>
@@ -554,642 +963,77 @@ function AboutDan() {
   );
 }
 
-const SERVICE_ICONS = [Map, Hammer, FileText, BookOpen, Lightbulb, Library];
-
-function ServicesSection({ onCtaClick }: { onCtaClick: () => void }) {
-  const reducedMotion = useReducedMotion();
-
-  const services = [
-    {
-      title: "District AI Systems",
-      body: "Readiness audits, strategic roadmaps, and implementation support. We assess where your district stands on AI and build a plan to move forward.",
-      bestFor: "Superintendents, tech directors, curriculum leads",
-    },
-    {
-      title: "Cobuilding Engagements",
-      body: "Our signature offering. We embed with your teachers, identify the workflows costing the most time, and cobuild custom AI tools in 10-week sprints.",
-      bestFor: "Districts ready to build, not just plan",
-    },
-    {
-      title: "AI Policy Development",
-      body: "Create AI use policies teachers will actually follow. Built on Dan's experience with California's SB 1288 AI workgroup.",
-      bestFor: "Districts with no or outdated AI policies",
-    },
-    {
-      title: "Professional Development",
-      body: "Hands-on AI literacy through cobuilding, not slide decks. Your team leaves with a working app and the skills to build more.",
-      bestFor: "Schools wanting real AI training for staff",
-    },
-    {
-      title: "Product Advisory",
-      body: "Educator-informed product strategy for edtech companies. We ensure your AI product reflects how teachers and leaders actually work.",
-      bestFor: "EdTech founders and product teams",
-    },
-    {
-      title: "Frameworks & Resources",
-      body: "Explore our library of instructional frameworks for AI product design. MTSS alignment, funding stream positioning, evidence requirements, and more.",
-      bestFor: "Self-serve exploration, product teams, researchers",
-      cta: { label: "Explore the IP Library", href: "#" },
-    },
-  ];
-
+// ─── EdWeek Quote ─────────────────────────────────────────────────────────────
+function EdWeekQuote() {
+  const rm = useReducedMotion();
   return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#130E1F" }}>
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          eyebrow="Services"
-          title="How We Work With You"
-          subtitle="Every engagement starts with understanding where you are."
-        />
-
-        <div className="grid md:grid-cols-3 gap-5 mb-10">
-          {services.map((service, index) => {
-            const Icon = SERVICE_ICONS[index];
-            return (
-              <motion.div
-                key={index}
-                className="p-7 rounded-xl flex flex-col gap-4 transition-all duration-300"
-                style={CARD_STYLE}
-                initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: (index % 3) * 0.08 }}
-                whileHover={{ boxShadow: CARD_HOVER_SHADOW }}
-                data-testid={`card-service-${index}`}
-              >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: "rgba(124,92,255,0.12)" }}
-                >
-                  <Icon className="w-5 h-5" style={{ color: "#7C5CFF" }} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold mb-2" style={{ color: "#FFFFFF", fontSize: "18px" }}>{service.title}</h3>
-                  <p className="leading-relaxed" style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.65" }}>{service.body}</p>
-                </div>
-                <p className="text-xs italic" style={{ color: "#A78BFA" }}>
-                  Best for: {service.bestFor}
-                </p>
-                {service.cta && (
-                  <a
-                    href={service.cta.href}
-                    className="text-sm font-medium hover:underline"
-                    style={{ color: "#7C5CFF" }}
-                    data-testid="link-ip-library"
-                  >
-                    {service.cta.label} →
-                  </a>
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
-
-        <motion.div
-          className="text-center"
-          initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <p className="text-sm mb-4" style={{ color: "#6B6580" }}>Can't find what you're looking for?</p>
-          <Button
-            asChild
-            className="text-white font-semibold rounded-full px-8"
-            style={{ backgroundColor: "#7C5CFF" }}
-            data-testid="button-services-cta"
+    <section style={{ paddingTop: "80px", paddingBottom: "80px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-4xl mx-auto px-6">
+        <motion.div {...fade()} className="text-center">
+          <div className="text-6xl leading-none mb-6" style={{ color: C.amber, opacity: 0.3, fontFamily: "Georgia, serif" }}>"</div>
+          <blockquote
+            className="text-xl md:text-2xl font-medium leading-relaxed mb-8"
+            style={{ color: C.white, letterSpacing: "-0.01em" }}
+            data-testid="text-edweek-quote"
           >
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-              Book a Free Consultation
-            </a>
-          </Button>
+            The best professional development I've had in 20 years of education.
+          </blockquote>
+          <p className="text-sm" style={{ color: C.faint }}>Educator quoted in Education Week</p>
         </motion.div>
       </div>
     </section>
   );
 }
 
-function MethodologySection() {
-  const reducedMotion = useReducedMotion();
-
-  const steps = [
-    {
-      num: 1,
-      title: "Identify the Pain Point",
-      body: "We start by discussing the workflow that frustrates your team most. Attendance tracking? Coaching documentation? Parent communication? Pick the problem that costs you the most time.",
-    },
-    {
-      num: 2,
-      title: "Design the Solution Together",
-      body: "Your team defines what a good solution looks like. We facilitate the design process, ensuring the app fits your actual workflow, not a generic template.",
-    },
-    {
-      num: 3,
-      title: "Cobuild with AI",
-      body: "Using AI coding agents, we build the app together. Your team sees how prompts become code, how to debug, how to iterate. This is where real AI literacy develops.",
-    },
-    {
-      num: 4,
-      title: "Deploy and Keep Building",
-      body: "By the end, your app is live. Your team can use it that afternoon. More importantly, they've developed the AI literacy to tackle future challenges independently.",
-    },
-  ];
-
-  return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          title="How a Cobuilding Engagement Works"
-          subtitle="Four phases. Real tools. Real classrooms. Your team keeps building."
-        />
-        <div className="grid md:grid-cols-4 gap-5">
-          {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              className="relative"
-              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
-              data-testid={`step-${index}`}
-            >
-              {index < steps.length - 1 && (
-                <div
-                  className="hidden md:block absolute top-6 left-[calc(50%+24px)] right-[-50%] h-px"
-                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
-                />
-              )}
-              <div className="p-6 rounded-xl" style={CARD_STYLE}>
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mb-5"
-                  style={{ backgroundColor: "#7C5CFF", color: "#FFFFFF" }}
-                >
-                  {step.num}
-                </div>
-                <h3 className="font-semibold mb-3" style={{ color: "#FFFFFF", fontSize: "17px" }}>{step.title}</h3>
-                <p style={{ color: "#B4B0C4", fontSize: "14px", lineHeight: "1.65" }}>{step.body}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ResultsSection() {
-  const reducedMotion = useReducedMotion();
-
-  return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#130E1F" }}>
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          eyebrow="Case Studies"
-          title="What This Looks Like in Practice"
-          subtitle="Real engagements, real data, real classrooms."
-        />
-
-        {/* Case Study 1 — CoachOS */}
-        <motion.div
-          className="mt-12 rounded-2xl overflow-hidden"
-          style={{ border: "1px solid rgba(124,92,255,0.2)", backgroundColor: "#0E0A1C" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-          data-testid="card-case-study"
-        >
-          {/* Top accent line */}
-          <div style={{ height: "3px", background: "linear-gradient(90deg, #7C5CFF, #A78BFA, transparent)" }} />
-
-          {/* Header */}
-          <div className="px-8 pt-8 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study 01</span>
-                <h3 className="text-3xl font-bold mt-2" style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}>CoachOS</h3>
-                <p className="text-sm mt-1" style={{ color: "#B4B0C4" }}>Turning Instructional Coaching Into a System &nbsp;·&nbsp; Aug 2025 – Mar 2026</p>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>K–8 Charter Network</span>
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>~1,900 Students</span>
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>California</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero stat + supporting row */}
-          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-              <div className="flex-shrink-0">
-                <div className="text-7xl font-bold leading-none" style={{ color: "#A78BFA", letterSpacing: "-0.03em" }}>+19%</div>
-                <div className="text-sm mt-2 max-w-xs" style={{ color: "#FFFFFF" }}>Improvement in instructional practice — network-wide, in one school year</div>
-              </div>
-              <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                  { number: "1,892", label: "Classroom observations" },
-                  { number: "2,185", label: "Targeted action steps" },
-                  { number: "244", label: "Teachers supported" },
-                  { number: "44", label: "Coaches engaged" },
-                ].map((s, i) => (
-                  <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <div className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{s.number}</div>
-                    <div className="text-xs mt-0.5 leading-snug" style={{ color: "#6B6580" }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Findings */}
-          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: "#7C5CFF" }}>What the data showed</p>
-            <div className="grid md:grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
-              {[
-                { n: "01", title: "Observation volume isn't the lever", body: "Some campuses conducted more observations but did not outperform others. How coaching was executed mattered more than how often it happened." },
-                { n: "02", title: "Instructional practice improved over time", body: "Every campus showed upward movement in scores. Some sites improved by nearly half a point over the year. Others reached or approached proficiency benchmarks." },
-                { n: "03", title: "Consistency drives results", body: "The strongest campuses shared a pattern: stable score growth, less variability across classrooms, more consistent instructional expectations." },
-                { n: "04", title: "Data use is not automatic", body: "Having a system doesn't guarantee use. Adoption varied significantly across campuses. Implementation determines impact." },
-              ].map((item, i) => (
-                <div key={i} className="p-6" style={{ backgroundColor: "#0E0A1C" }}>
-                  <div className="text-xs font-bold mb-3" style={{ color: "rgba(124,92,255,0.5)" }}>{item.n}</div>
-                  <div className="text-sm font-semibold mb-2" style={{ color: "#FFFFFF" }}>{item.title}</div>
-                  <div className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>{item.body}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Pull quote */}
-          <div className="px-8 py-7 flex gap-5 items-start">
-            <div className="text-5xl leading-none font-serif flex-shrink-0 mt-1" style={{ color: "#7C5CFF", opacity: 0.4 }}>"</div>
-            <div>
-              <p className="text-base font-medium leading-relaxed" style={{ color: "#FFFFFF" }}>Where is instruction improving? Where is it not — and why?</p>
-              <p className="text-sm mt-2" style={{ color: "#6B6580" }}>Leaders moved from "are we coaching enough?" to answering that question with real data.</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Case Study 2 — NaviGrade */}
-        <motion.div
-          className="mt-8 rounded-2xl overflow-hidden"
-          style={{ border: "1px solid rgba(124,92,255,0.2)", backgroundColor: "#0E0A1C" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
-          data-testid="card-case-study-2"
-        >
-          {/* Top accent line */}
-          <div style={{ height: "3px", background: "linear-gradient(90deg, #A78BFA, #7C5CFF, transparent)" }} />
-
-          {/* Header */}
-          <div className="px-8 pt-8 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study 02</span>
-                <h3 className="text-3xl font-bold mt-2" style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}>NaviGrade</h3>
-                <p className="text-sm mt-1" style={{ color: "#B4B0C4" }}>From First Use to Classroom Routine &nbsp;·&nbsp; Jan – Apr 2026</p>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>AI Writing Assessment</span>
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>Multiple Classrooms</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero stat + supporting row */}
-          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-              <div className="flex-shrink-0">
-                <div className="text-7xl font-bold leading-none" style={{ color: "#A78BFA", letterSpacing: "-0.03em" }}>1,014</div>
-                <div className="text-sm mt-2 max-w-xs" style={{ color: "#FFFFFF" }}>Student writing responses analyzed — in 90 days</div>
-              </div>
-              <div className="flex-1 grid grid-cols-3 gap-3">
-                {[
-                  { number: "90", label: "Days from pilot to routine" },
-                  { number: "2.13→3.31", label: "Avg score growth (Jan to Apr)" },
-                  { number: "Same day", label: "Results available to teachers" },
-                ].map((s, i) => (
-                  <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <div className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{s.number}</div>
-                    <div className="text-xs mt-0.5 leading-snug" style={{ color: "#6B6580" }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Table + insight */}
-          <div className="grid md:grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            {/* Table */}
-            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>Adoption by month</p>
-              <div className="space-y-2">
-                {[
-                  { month: "January", subs: 238, max: 457, score: "2.13" },
-                  { month: "February", subs: 457, max: 457, score: "2.75" },
-                  { month: "March", subs: 296, max: 457, score: "2.46" },
-                  { month: "April", subs: 23, max: 457, score: "3.31", note: "partial" },
-                ].map((row, i) => (
-                  <div key={i}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm" style={{ color: "#FFFFFF" }}>{row.month}{row.note && <span className="text-xs ml-1" style={{ color: "#6B6580" }}>({row.note})</span>}</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-xs" style={{ color: "#6B6580" }}>{row.subs} submissions</span>
-                        <span className="text-sm font-semibold w-8 text-right" style={{ color: "#A78BFA" }}>{row.score}</span>
-                      </div>
-                    </div>
-                    <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
-                      <div className="h-full rounded-full" style={{ width: `${(row.subs / row.max) * 100}%`, background: "linear-gradient(90deg, #7C5CFF, #A78BFA)" }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="text-xs mt-4 leading-relaxed" style={{ color: "#6B6580" }}>February marked peak adoption. By March, usage stabilized as a repeatable classroom workflow — not a one-time activity.</p>
-            </div>
-
-            {/* Insight */}
-            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>The signal that showed up everywhere</p>
-              <p className="text-sm leading-relaxed mb-6" style={{ color: "#B4B0C4" }}>
-                Across every classroom, one pattern appeared consistently: students can answer the question — but they struggle to support their answer with evidence. Not isolated to a grade, a teacher, or a rubric. System-wide.
-              </p>
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#FFFFFF" }}>What teachers saw, immediately:</p>
-                {["Who is meeting expectations", "Who is close", "Who is not there yet", "Exactly why"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#7C5CFF" }} />
-                    <span className="text-sm" style={{ color: "#B4B0C4" }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Pull quote */}
-          <div className="px-8 py-7 flex gap-5 items-start">
-            <div className="text-5xl leading-none font-serif flex-shrink-0 mt-1" style={{ color: "#7C5CFF", opacity: 0.4 }}>"</div>
-            <div>
-              <p className="text-base font-medium leading-relaxed" style={{ color: "#FFFFFF" }}>Not weeks later. Not after grading at home. In the moment.</p>
-              <p className="text-sm mt-2" style={{ color: "#6B6580" }}>Teachers adjusted instruction the next day — and could see what worked right away.</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Case Study 3 — CoachOS: Early Childhood Compliance */}
-        <motion.div
-          className="mt-8 rounded-2xl overflow-hidden"
-          style={{ border: "1px solid rgba(124,92,255,0.2)", backgroundColor: "#0E0A1C" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
-          data-testid="card-case-study-3"
-        >
-          {/* Top accent line */}
-          <div style={{ height: "3px", background: "linear-gradient(90deg, #7C5CFF, #A78BFA, transparent)" }} />
-
-          {/* Header */}
-          <div className="px-8 pt-8 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7C5CFF" }}>Case Study 03 &nbsp;·&nbsp; CoachOS</span>
-                <h3 className="text-3xl font-bold mt-2" style={{ color: "#FFFFFF", letterSpacing: "-0.02em" }}>Workforce Compliance, Rebuilt</h3>
-                <p className="text-sm mt-1" style={{ color: "#B4B0C4" }}>Federal Head Start Compliance Training Platform &nbsp;·&nbsp; Early 2026</p>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>Early Childhood Program</span>
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>Multi-Site</span>
-                <span className="text-xs px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(124,92,255,0.1)", color: "#A78BFA", border: "1px solid rgba(124,92,255,0.2)" }}>100+ Staff</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero stat + supporting row */}
-          <div className="px-8 py-8" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-              <div className="flex-shrink-0">
-                <div className="text-7xl font-bold leading-none" style={{ color: "#A78BFA", letterSpacing: "-0.03em" }}>2,000+</div>
-                <div className="text-sm mt-2 max-w-xs" style={{ color: "#FFFFFF" }}>Compliance artifacts generated — fully tagged, audit-ready, in six weeks</div>
-              </div>
-              <div className="flex-1 grid grid-cols-3 gap-3">
-                {[
-                  { number: "600+", label: "Digital sign-ins across training events" },
-                  { number: "200+", label: "Certificates issued across required domains" },
-                  { number: "50+", label: "Artifact types mapped to CFR requirements" },
-                ].map((s, i) => (
-                  <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <div className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{s.number}</div>
-                    <div className="text-xs mt-0.5 leading-snug" style={{ color: "#6B6580" }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* What it replaced + what it delivers */}
-          <div className="grid md:grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>What it replaced</p>
-              <p className="text-sm leading-relaxed mb-5" style={{ color: "#B4B0C4" }}>
-                Head Start programs operate under strict federal mandates: verified training hours, signed attendance records, evidence artifacts, individual development plans — all required for monitoring reviews. Without centralized systems, programs rely on paper sign-ins and fragmented spreadsheets.
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: "#B4B0C4" }}>
-                When reviews are announced, teams scramble to assemble documentation that should already exist. Large-scale training days that previously used paper sign-in sheets were replaced entirely — with digital signatures creating immediate audit-ready records.
-              </p>
-            </div>
-
-            <div className="p-8" style={{ backgroundColor: "#0E0A1C" }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#7C5CFF" }}>What it delivers now</p>
-              <div className="space-y-4">
-                {[
-                  { who: "For staff", what: "A mobile-accessible training record with completed hours, certifications, and progress across required domains." },
-                  { who: "For administrators", what: "A real-time compliance dashboard — Compliant / At Risk / Non-Compliant — with automated certificates and one-click audit export." },
-                  { who: "For reviewers", what: "Structured compliance packages with training matrices, hours verification, standards alignment, and CFR-referenced artifacts. Available instantly." },
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2" style={{ backgroundColor: "#7C5CFF" }} />
-                    <div>
-                      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#FFFFFF" }}>{item.who} — </span>
-                      <span className="text-sm" style={{ color: "#B4B0C4" }}>{item.what}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Pull quote */}
-          <div className="px-8 py-7 flex gap-5 items-start">
-            <div className="text-5xl leading-none font-serif flex-shrink-0 mt-1" style={{ color: "#7C5CFF", opacity: 0.4 }}>"</div>
-            <div>
-              <p className="text-base font-medium leading-relaxed" style={{ color: "#FFFFFF" }}>Compliance stopped being a last-minute fire drill and became ambient.</p>
-              <p className="text-sm mt-2" style={{ color: "#6B6580" }}>The system doesn't help you get ready for review. It makes you already ready.</p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function StatsBar() {
-  const reducedMotion = useReducedMotion();
-
-  const stats = [
-    { number: "1,900+", label: "students across Navigator Schools" },
-    { number: "8+", label: "AI tools deployed in real classrooms" },
-    { number: "4", label: "campuses, with Orange County expansion approved" },
-  ];
-
-  return (
-    <section
-      className="px-6"
-      style={{
-        paddingTop: "96px",
-        paddingBottom: "96px",
-        background: "linear-gradient(135deg, #0D0919 0%, #130E22 40%, #0D0919 100%)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse 800px 500px at 50% 50%, rgba(124,92,255,0.08), transparent)" }}
-      />
-      <div className="max-w-5xl mx-auto relative">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-16"
-          style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          Built in Classrooms, Not Conference Rooms
-        </motion.h2>
-
-        <div className="grid md:grid-cols-3 gap-8 text-center">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
-              data-testid={`stat-${index}`}
-            >
-              <div
-                className="text-5xl md:text-7xl font-bold mb-3 leading-none"
-                style={{ color: "#FFFFFF", letterSpacing: "-0.03em" }}
-              >
-                {stat.number}
-              </div>
-              <div className="text-base" style={{ color: "#6B6580" }}>{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Testimonials() {
-  const reducedMotion = useReducedMotion();
-
-  return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
-      <div className="max-w-3xl mx-auto">
-        <motion.p
-          className="text-xs font-semibold uppercase tracking-widest text-center mb-12"
-          style={{ color: "#6B6580", letterSpacing: "0.12em" }}
-          initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          What Educators Are Saying
-        </motion.p>
-
-        <motion.div
-          className="p-8 rounded-2xl"
-          style={{
-            ...CARD_STYLE,
-            borderLeft: "3px solid #7C5CFF",
-            paddingLeft: "2.5rem",
-          }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-          data-testid="quote-edweek"
-        >
-          <p
-            className="font-medium leading-relaxed mb-6 italic"
-            style={{ color: "#FFFFFF", fontSize: "20px", lineHeight: "1.7" }}
-          >
-            "The AI tool that Whitlock developed turned a 45-minute documentation process into 3 minutes, freeing teachers to focus on actually supporting students."
-          </p>
-          <p className="text-sm" style={{ color: "#6B6580" }}>— Education Week, August 2025</p>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
+// ─── FAQ ─────────────────────────────────────────────────────────────────────
 function FaqSection() {
-  const reducedMotion = useReducedMotion();
-
+  const rm = useReducedMotion();
   const faqs = [
     {
-      q: "What's a cobuilding engagement?",
-      a: "Instead of buying an off-the-shelf AI tool, we build one with your team. Dan works alongside your teachers to identify a painful workflow, then we prototype and deploy a custom AI solution in a 10-week sprint. Your team learns AI literacy through the process of building something real.",
+      q: "Who is this for?",
+      a: "District leaders, technology directors, curriculum leads, and charter network operators who are ready to move from scattered AI pilots to operational infrastructure. Also edtech founders who want educator-informed product strategy.",
     },
     {
-      q: "Do you work with charter schools and traditional districts?",
-      a: "Yes, both. Navigator Schools is a charter network, but the methodology works for any K-12 organization. The common thread is leadership that's ready to move past vendor pitches and build something real.",
+      q: "What does a cobuilding engagement actually involve?",
+      a: "We embed with your team for a 10-week sprint. We identify the workflow costing the most time, design the solution together, cobuild it using AI tools, and deploy it into real classrooms by the end of the engagement. Your team develops real AI literacy in the process.",
     },
     {
-      q: "How is this different from hiring an AI consultant?",
-      a: "Most AI consultants deliver a report. We deliver working tools. Dan is in classrooms every week at Navigator Schools building and iterating AI tools with teachers. That practitioner credibility is what makes our recommendations actionable, not theoretical.",
+      q: "How is this different from a consultant giving us a plan?",
+      a: "We don't hand you a slide deck. We build working software alongside your team. Dan is the Technology Innovation Lead at an active charter network — he deploys these tools in his own schools first.",
     },
     {
-      q: "What about data privacy and FERPA?",
-      a: "Every tool we build follows a core architecture principle: the AI never knows who the student is. Student identity stays in the local database and never enters AI API calls. We architect the data flow so identity and AI processing never share the same pipe.",
+      q: "What does the AI Readiness Assessment tell me?",
+      a: "It covers 29 items across six dimensions: policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision. It takes about 10 minutes and gives you a clear picture of where your district actually stands before any conversation about next steps.",
     },
     {
-      q: "What does a free readiness review look like?",
-      a: "It's a 30-minute conversation where we assess where your district stands on AI readiness. We'll identify your biggest gaps and map a path forward. No pitch, no pressure. Most district leaders say it's the most useful 30 minutes they've spent on AI strategy.",
-    },
-    {
-      q: "Do you work with edtech companies?",
-      a: "Yes. We offer product advisory for edtech companies building AI-powered tools. We bring the educator lens: product positioning, workflow design, classroom fit diagnostics, and prototype-to-production cobuilding. Details at the bottom of our Services section.",
+      q: "What's the Education Innovation Network?",
+      a: "A practitioner network for school leaders who are actively building. Monthly briefings, implementation cohorts, live build sessions, governance templates, and shared pilots across member organizations. Not a vendor community — an operator community.",
     },
   ];
 
   return (
-    <section className="px-6" style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}>
-      <div className="max-w-3xl mx-auto">
-        <SectionHeader title="Common Questions" />
-        <Accordion type="single" collapsible className="space-y-0">
-          {faqs.map((faq, index) => (
+    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-3xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>FAQ</p>
+          <h2 className="text-4xl font-bold" style={{ color: C.white, letterSpacing: "-0.025em" }}>Common questions</h2>
+        </motion.div>
+
+        <Accordion type="single" collapsible>
+          {faqs.map((faq, i) => (
             <AccordionItem
-              key={index}
-              value={`faq-${index}`}
-              className="border-b"
-              style={{ borderColor: "rgba(255,255,255,0.06)" }}
-              data-testid={`faq-item-${index}`}
+              key={i}
+              value={`faq-${i}`}
+              style={{ borderBottom: `1px solid ${C.border}` }}
+              data-testid={`faq-item-${i}`}
             >
               <AccordionTrigger
-                className="text-left hover:no-underline py-5 text-base font-medium"
-                style={{ color: "#FFFFFF" }}
+                className="text-left py-6 text-base font-medium hover:no-underline hover:opacity-70 transition-opacity"
+                style={{ color: C.white }}
               >
                 {faq.q}
               </AccordionTrigger>
-              <AccordionContent
-                className="pb-5 text-base leading-relaxed"
-                style={{ color: "#B4B0C4" }}
-              >
+              <AccordionContent className="pb-6 text-sm leading-relaxed" style={{ color: C.muted }}>
                 {faq.a}
               </AccordionContent>
             </AccordionItem>
@@ -1200,84 +1044,17 @@ function FaqSection() {
   );
 }
 
-function BridgeCTA({ onInquiryClick }: { onInquiryClick: () => void }) {
-  const reducedMotion = useReducedMotion();
-
-  return (
-    <section className="px-6" style={{ paddingTop: "40px", paddingBottom: "80px", backgroundColor: "#130E1F" }}>
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          className="p-10 rounded-2xl text-center relative overflow-hidden"
-          style={{
-            background: "linear-gradient(135deg, #1D1530 0%, #16102A 100%)",
-            border: "1px solid rgba(124,92,255,0.3)",
-          }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_600px_400px_at_50%_0%,rgba(124,92,255,0.12),transparent_70%)]" />
-          <div className="relative">
-            <h2
-              className="text-3xl md:text-4xl font-bold mb-4"
-              style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}
-            >
-              Ready to Figure Out AI for Your District?
-            </h2>
-            <p className="mx-auto mb-8" style={{ color: "#B4B0C4", maxWidth: "480px", fontSize: "16px", lineHeight: "1.65" }}>
-              Start with a free 30-minute AI Readiness Review. We'll assess where you are, identify your biggest gaps, and map a path forward.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="text-white font-semibold rounded-full px-8"
-                style={{ backgroundColor: "#7C5CFF" }}
-                data-testid="button-bridge-primary"
-              >
-                <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-                  Schedule a Free Consultation
-                </a>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="font-semibold rounded-full"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#FFFFFF" }}
-                onClick={onInquiryClick}
-                data-testid="button-bridge-secondary"
-              >
-                Or send us an inquiry
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
+// ─── Contact Form ─────────────────────────────────────────────────────────────
 function ContactForm() {
-  const reducedMotion = useReducedMotion();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "",
-    role: "",
-    district: "",
-    email: "",
-    challenge: "",
+    name: "", role: "", district: "", email: "", challenge: "",
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      return apiRequest("POST", "/api/consulting-inquiries", data);
-    },
+    mutationFn: async (data: typeof formData) => apiRequest("POST", "/api/consulting-inquiries", data),
     onSuccess: () => {
-      toast({
-        title: "Thank you!",
-        description: "We'll be in touch within 24 hours.",
-      });
+      toast({ title: "Thank you!", description: "We'll be in touch within 24 hours." });
       setFormData({ name: "", role: "", district: "", email: "", challenge: "" });
     },
     onError: () => {
@@ -1289,146 +1066,75 @@ function ContactForm() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    mutation.mutate(formData);
-  };
-
-  const roleOptions = [
-    "Superintendent",
-    "Asst. Superintendent",
-    "Technology Director",
-    "Curriculum Director",
-    "Principal",
-    "Instructional Coach",
-    "EdTech Company",
-    "Other",
-  ];
+  const roleOptions = ["Superintendent", "Asst. Superintendent", "Technology Director", "Curriculum Director", "Principal", "Instructional Coach", "EdTech Company", "Other"];
 
   const inputStyle = {
-    backgroundColor: "#1A1425",
-    border: "1px solid rgba(255,255,255,0.08)",
-    color: "#F5F3FF",
-    borderRadius: "8px",
+    backgroundColor: C.bgCard,
+    border: `1px solid ${C.border}`,
+    color: C.white,
+    borderRadius: "2px",
+    outline: "none",
+    width: "100%",
+    padding: "12px 16px",
+    fontSize: "14px",
   };
 
   return (
-    <section
-      className="px-6"
-      style={{ paddingTop: "80px", paddingBottom: "96px", backgroundColor: "#0F0A1A" }}
-    >
-      <div className="max-w-2xl mx-auto">
-        <motion.div
-          className="text-center mb-10"
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <h2 className="text-3xl font-bold mb-3" style={{ color: "#FFFFFF", letterSpacing: "-0.01em" }}>
-            Send Us a Note
-          </h2>
-          <p style={{ color: "#B4B0C4", fontSize: "16px" }}>
-            Tell us about your district and we'll be in touch within 24 hours.
-          </p>
+    <section style={{ paddingTop: "96px", paddingBottom: "120px" }}>
+      <div className="max-w-2xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-12">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>Contact</p>
+          <h2 className="text-4xl font-bold mb-3" style={{ color: C.white, letterSpacing: "-0.025em" }}>Send us a note</h2>
+          <p style={{ color: C.muted, fontSize: "15px" }}>Tell us about your district and we'll be in touch within 24 hours.</p>
         </motion.div>
 
         <motion.form
-          onSubmit={handleSubmit}
-          className="p-8 rounded-2xl space-y-6"
-          style={{ backgroundColor: "#1A1425", border: "1px solid rgba(255,255,255,0.06)" }}
-          initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          {...fade(0.1)}
+          onSubmit={(e) => { e.preventDefault(); mutation.mutate(formData); }}
+          className="space-y-5"
         >
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>Your Name</label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
-                style={inputStyle}
-                data-testid="input-name"
-              />
+              <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: C.faint }}>Name</label>
+              <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} style={inputStyle} data-testid="input-name" />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>Your Role</label>
-              <select
-                required
-                value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
-                style={{ ...inputStyle, color: formData.role ? "#F5F3FF" : "#6B6580" }}
-                data-testid="select-role"
-              >
+              <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: C.faint }}>Role</label>
+              <select required value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value })} style={{ ...inputStyle, color: formData.role ? C.white : C.faint }} data-testid="select-role">
                 <option value="" disabled>Select your role</option>
-                {roleOptions.map((option) => (
-                  <option key={option} value={option} style={{ backgroundColor: "#1A1425", color: "#F5F3FF" }}>
-                    {option}
-                  </option>
-                ))}
+                {roleOptions.map((o) => <option key={o} value={o} style={{ backgroundColor: C.bgCard, color: C.white }}>{o}</option>)}
               </select>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>District / Organization</label>
-              <input
-                type="text"
-                required
-                value={formData.district}
-                onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
-                style={inputStyle}
-                data-testid="input-district"
-              />
+              <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: C.faint }}>District / Organization</label>
+              <input type="text" required value={formData.district} onChange={(e) => setFormData({ ...formData, district: e.target.value })} style={inputStyle} data-testid="input-district" />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>Email</label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
-                style={inputStyle}
-                data-testid="input-email"
-              />
+              <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: C.faint }}>Email</label>
+              <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} style={inputStyle} data-testid="input-email" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "#B4B0C4" }}>
-              What's your biggest challenge with AI right now?
-            </label>
-            <textarea
-              rows={4}
-              value={formData.challenge}
-              onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
-              className="w-full px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 resize-none transition-shadow"
-              style={inputStyle}
-              data-testid="input-challenge"
-            />
+            <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: C.faint }}>What's your biggest challenge with AI right now?</label>
+            <textarea rows={4} value={formData.challenge} onChange={(e) => setFormData({ ...formData, challenge: e.target.value })} style={{ ...inputStyle, resize: "none" }} data-testid="input-challenge" />
           </div>
 
-          <Button
+          <button
             type="submit"
             disabled={mutation.isPending}
-            size="lg"
-            className="w-full font-semibold text-white"
-            style={{ backgroundColor: "#7C5CFF" }}
+            className="w-full py-4 text-sm font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
+            style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
             data-testid="button-submit-consultation"
           >
-            {mutation.isPending ? "Submitting..." : "Schedule a Free Consultation"}
-          </Button>
+            {mutation.isPending ? "Submitting..." : "Send inquiry"}
+          </button>
 
-          <p className="text-center text-xs" style={{ color: "#6B6580" }}>
-            No pitch. No pressure. Just a conversation about what's possible for your district.
+          <p className="text-center text-xs" style={{ color: C.faint }}>
+            No pitch. No pressure. Just a conversation about what's possible.
           </p>
         </motion.form>
       </div>
@@ -1436,91 +1142,55 @@ function ContactForm() {
   );
 }
 
-function ConsultingFooter() {
+// ─── Footer ───────────────────────────────────────────────────────────────────
+function SiteFooter() {
   const [email, setEmail] = useState("");
 
-  const handleNewsletter = (e: React.FormEvent) => {
-    e.preventDefault();
-    window.open("https://smarterbydesign.app", "_blank", "noopener,noreferrer");
-    setEmail("");
-  };
-
   return (
-    <footer
-      className="px-6 py-12"
-      style={{ backgroundColor: "#080512", borderTop: "1px solid rgba(255,255,255,0.05)" }}
-    >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10">
+    <footer style={{ borderTop: `1px solid ${C.border}`, backgroundColor: C.bgAlt }}>
+      <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-3 gap-12">
         <div>
-          <p className="text-base font-semibold mb-2" style={{ color: "#FFFFFF" }}>NovaPath Systems</p>
-          <a
-            href="mailto:Dan@explorenovapath.com"
-            className="text-sm hover:opacity-80 block mb-1"
-            style={{ color: "#6B6580" }}
-            data-testid="link-footer-email"
-          >
+          <p className="text-sm font-semibold mb-3" style={{ color: C.white }}>NovaPath Systems</p>
+          <a href="mailto:Dan@explorenovapath.com" className="text-sm hover:opacity-70 transition-opacity block mb-1" style={{ color: C.faint }} data-testid="link-footer-email">
             Dan@explorenovapath.com
           </a>
-          <p className="text-sm mt-4" style={{ color: "#6B6580" }}>© 2026 NovaPath Systems</p>
+          <p className="text-xs mt-5" style={{ color: C.faint }}>© 2026 NovaPath Systems</p>
         </div>
 
         <div className="flex flex-col gap-3">
-          <a
-            href="https://smarterbydesign.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm hover:opacity-80"
-            style={{ color: "#6B6580" }}
-            data-testid="link-footer-newsletter"
-          >
-            Newsletter
-          </a>
-          <a
-            href="https://checklist.smarterbydesign.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm hover:opacity-80"
-            style={{ color: "#6B6580" }}
-            data-testid="link-footer-checklist"
-          >
-            AI Readiness Checklist
-          </a>
-          <a
-            href="https://www.linkedin.com/in/danwhitlock/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm hover:opacity-80"
-            style={{ color: "#6B6580" }}
-            data-testid="link-footer-linkedin"
-          >
-            LinkedIn
-          </a>
+          {[
+            { label: "Newsletter", href: "https://smarterbydesign.app" },
+            { label: "AI Readiness Checklist", href: "https://checklist.smarterbydesign.app" },
+            { label: "LinkedIn", href: "https://www.linkedin.com/in/danwhitlock/" },
+            { label: "Book a Call", href: CALENDLY_URL },
+          ].map((l) => (
+            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm hover:opacity-70 transition-opacity" style={{ color: C.faint }} data-testid={`link-footer-${l.label.toLowerCase().replace(/\s+/g, '-')}`}>
+              {l.label}
+            </a>
+          ))}
         </div>
 
         <div>
-          <p className="text-sm font-medium mb-3" style={{ color: "#B4B0C4" }}>
-            Get the Smarter by Design newsletter
-          </p>
-          <form onSubmit={handleNewsletter} className="flex gap-2">
+          <p className="text-sm font-medium mb-4" style={{ color: C.muted }}>Get the Smarter by Design newsletter</p>
+          <form onSubmit={(e) => { e.preventDefault(); window.open("https://smarterbydesign.app", "_blank", "noopener,noreferrer"); setEmail(""); }} className="flex gap-2">
             <input
               type="email"
               required
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-500 rounded-lg placeholder:text-gray-600"
-              style={{ backgroundColor: "#1A1425", border: "1px solid rgba(255,255,255,0.06)", color: "#F5F3FF" }}
+              className="flex-1 px-3 py-2 text-sm outline-none"
+              style={{ backgroundColor: C.bgCard, border: `1px solid ${C.border}`, color: C.white, borderRadius: "2px" }}
               data-testid="input-footer-email"
             />
-            <Button
+            <button
               type="submit"
-              size="sm"
-              className="text-white font-medium flex-shrink-0"
-              style={{ backgroundColor: "#7C5CFF" }}
+              className="px-4 py-2 text-xs font-semibold flex-shrink-0 transition-opacity hover:opacity-80"
+              style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
               data-testid="button-footer-subscribe"
             >
               Subscribe
-            </Button>
+            </button>
           </form>
         </div>
       </div>
