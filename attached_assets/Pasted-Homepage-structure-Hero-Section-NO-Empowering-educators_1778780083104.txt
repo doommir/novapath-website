@@ -1,0 +1,248 @@
+Homepage structure
+Hero Section
+
+NO:
+
+“Empowering educators through innovation”
+
+Instant psychic damage.
+
+Instead:
+
+Designing the Future Before It Designs Us
+AI infrastructure, implementation systems, and operational intelligence for schools.
+
+Then:
+
+real metrics
+real deployments
+real screenshots
+
+Example stat row:
+
+1,781 classroom observations analyzed
+2,185 instructional action steps generated
+1,024 AI-graded student submissions
+4 school sites in active deployment
+
+This immediately separates you from keynote goblins.
+
+CTA buttons:
+
+Explore Systems
+Join the Network
+View Research
+Section 2 — The Problem
+
+Not generic AI panic.
+
+More operationally grounded.
+
+Example:
+
+Schools Are Drowning in Disconnected AI Tools
+pilots without systems
+tools without governance
+dashboards without action
+tutoring without instructional alignment
+AI adoption without operational models
+
+Then:
+
+Schools do not need more AI products.
+They need implementation infrastructure.
+
+That line matters.
+
+Section 3 — The Stack
+
+Visual ecosystem map.
+
+Not just product cards.
+
+Something like:
+
+Signals → Decisions → Actions → Outcomes
+
+Under it:
+
+CoachingOS
+IDE
+Autograder
+Readiness Systems
+Analytics
+Governance
+AI Agents
+PD/Cohorts
+
+This is where people realize:
+
+oh… this is an ecosystem, not random apps
+
+Section 4 — Living Laboratory
+
+This part is CRITICAL.
+
+Built Inside Real Schools
+
+Feature:
+
+Talk about:
+
+live deployment
+teacher feedback loops
+implementation cycles
+actual classrooms
+operational iteration
+
+Photos should be:
+
+whiteboards
+leadership meetings
+real classrooms
+dashboards
+workshops
+
+NOT:
+
+fake corporate diversity photos from 2014
+Section 5 — Research + Publications
+
+This is what upgrades perceived legitimacy.
+
+Have:
+
+whitepapers
+implementation reports
+governance frameworks
+AI readiness reports
+benchmark studies
+adoption playbooks
+
+Visually this should feel almost academic/journalistic.
+
+People trust PDFs irrationally. Civilization runs on PDF hallucinations.
+
+Section 6 — Cohorts / Membership
+
+THIS is where recurring revenue becomes visible.
+
+Example:
+
+Education Innovation Network
+
+For:
+
+school leaders
+charter networks
+innovation directors
+instructional teams
+
+Benefits:
+
+implementation cohorts
+monthly briefings
+live build sessions
+governance templates
+shared pilots
+operator community
+
+This shifts you from vendor → network node.
+
+Section 7 — Live Build / Events
+
+Honestly your weirdest differentiator.
+
+Most people TALK AI.
+
+You BUILD in public.
+
+That should be front-and-center:
+
+webinars
+live coding sessions
+operator labs
+conference clips
+“watch us solve this in real time”
+
+Very anti-polished.
+Controlled chaos energy.
+
+That reads as authentic now.
+
+Section 8 — Case Studies
+
+Not testimonials.
+
+CASE STUDIES.
+
+Structure:
+
+problem
+implementation
+workflow
+metrics
+screenshots
+lessons learned
+
+This is where you murder generic edtech sites.
+
+Navigation
+
+Top nav should feel institutional:
+
+Systems
+Research
+Network
+Events
+Case Studies
+About
+Membership
+
+NOT:
+
+Solutions
+Features
+Pricing
+Blog
+
+That screams SaaS prison.
+
+Visual language
+Colors
+charcoal
+off-white
+muted blue
+subtle amber accent
+
+Avoid:
+
+neon AI gradients
+“cyberpunk education”
+purple vaporwave nonsense
+
+You’re selling institutional trust.
+
+Typography
+
+Use serious typography.
+
+Think:
+
+Inter
+Geist
+IBM Plex Sans
+maybe Fraunces for editorial headings
+
+Big whitespace.
+Big confidence.
+
+Most important thing
+
+The site should make people feel:
+
+“These people are already 3 years into the future operationally.”
+
+NOT:
+
+“Please buy our AI product.”

@@ -1,0 +1,57 @@
+Upgrade this website to meet WCAG 2.1 AA accessibility standards and improve overall usability without changing the core design or content.
+
+Focus on the following:
+
+1. SEMANTIC HTML
+- Replace non-semantic divs with proper elements (header, nav, main, section, article, footer, button).
+- Ensure all interactive elements use correct tags (no divs acting like buttons).
+- Add proper heading hierarchy (h1 → h2 → h3, no skipping levels).
+
+2. KEYBOARD NAVIGATION
+- Ensure all interactive elements are reachable and usable via keyboard (Tab, Enter, Space).
+- Add visible focus states for all links, buttons, and inputs.
+- Add a “Skip to Content” link at the top of the page.
+
+3. FORMS (CRITICAL)
+- Add <label> elements for every input field.
+- Ensure labels are explicitly associated (for/id).
+- Add accessible error handling (clear messages, not just color).
+- Ensure form validation works with screen readers.
+
+4. COLOR & CONTRAST
+- Update text and UI colors to meet minimum contrast ratio (4.5:1 for normal text).
+- Avoid relying on color alone to convey meaning.
+
+5. IMAGES & MEDIA
+- Add descriptive alt text to all images.
+- Mark decorative images with empty alt="".
+- Add captions or transcripts for any video/audio.
+
+6. ACCESSIBILITY ATTRIBUTES
+- Add ARIA roles only where necessary (navigation landmarks, modals, etc).
+- Ensure modals/triggers have aria-expanded, aria-controls where appropriate.
+- Prevent misuse of ARIA (do not replace semantic HTML).
+
+7. RESPONSIVENESS & TEXT SCALING
+- Ensure layout does not break when zoomed to 200%.
+- Use relative units (rem/em) instead of fixed px where possible.
+
+8. MOTION & AUTO-PLAY
+- Remove or disable autoplay media.
+- Respect prefers-reduced-motion for animations.
+
+9. ERROR PREVENTION
+- Prevent keyboard traps (users must be able to exit modals).
+- Add confirmation for critical actions (payments, submissions).
+
+10. ACCESSIBILITY STATEMENT
+- Create a new page: /accessibility
+- Include a basic accessibility statement describing WCAG 2.1 AA compliance and a contact email for issues.
+
+11. TESTING HOOKS
+- Ensure compatibility with screen readers (VoiceOver, NVDA).
+- Ensure Lighthouse accessibility score is 90+.
+
+Do NOT redesign the UI. Improve accessibility within the existing design system.
+
+Output clean, production-ready code.
