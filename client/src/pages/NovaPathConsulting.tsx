@@ -16,19 +16,19 @@ const CALENDLY_URL = "https://calendly.com/novapath711/30min";
 
 // ─── Color tokens ────────────────────────────────────────────────────────────
 const C = {
-  bg:         "#0F0F0F",   // near-black charcoal
-  bgAlt:      "#141414",   // slightly lifted
-  bgCard:     "#1A1A1A",   // card surface
-  border:     "rgba(255,255,255,0.07)",
-  borderMid:  "rgba(255,255,255,0.12)",
-  white:      "#F5F4F0",   // off-white
-  muted:      "#9A9890",   // secondary text
-  faint:      "#5A5854",   // tertiary / labels
+  bg:         "#F8F7F4",   // warm off-white
+  bgAlt:      "#F0EFE9",   // slightly deeper
+  bgCard:     "#FFFFFF",   // card surface
+  border:     "rgba(0,0,0,0.09)",
+  borderMid:  "rgba(0,0,0,0.16)",
+  white:      "#1C1B18",   // primary text (dark)
+  muted:      "#6B6760",   // secondary text
+  faint:      "#9A9890",   // tertiary / labels
   amber:      "#C9873A",   // accent
-  amberDim:   "rgba(201,135,58,0.15)",
-  amberBorder:"rgba(201,135,58,0.3)",
-  blue:       "#6B8FBD",   // muted blue
-  blueDim:    "rgba(107,143,189,0.12)",
+  amberDim:   "rgba(201,135,58,0.10)",
+  amberBorder:"rgba(201,135,58,0.35)",
+  blue:       "#3D6494",   // muted blue (deepened for light bg)
+  blueDim:    "rgba(61,100,148,0.10)",
 } as const;
 
 function fade(delay = 0) {
@@ -102,7 +102,7 @@ function StickyNav({
     <nav
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        backgroundColor: "rgba(15,15,15,0.94)",
+        backgroundColor: "rgba(248,247,244,0.95)",
         borderBottom: `1px solid ${C.border}`,
         backdropFilter: "blur(12px)",
       }}
@@ -640,7 +640,7 @@ function CaseStudies() {
                           </span>
                           <span className="text-xs font-semibold" style={{ color: C.white }}>{row.score}</span>
                         </div>
-                        <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+                        <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(0,0,0,0.08)" }}>
                           <div className="h-full" style={{ width: `${(row.subs / row.max) * 100}%`, backgroundColor: C.blue }} />
                         </div>
                       </div>
@@ -1152,7 +1152,7 @@ function NetworkSection({ onContact }: { onContact: () => void }) {
                           type="submit"
                           disabled={submitting}
                           className="w-full px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
-                          style={{ backgroundColor: activeTierData?.featured ? C.amber : C.white, color: "#0F0F0F" }}
+                          style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
                           data-testid="button-network-submit"
                         >
                           {submitting ? "Submitting…" : "Submit application"}
