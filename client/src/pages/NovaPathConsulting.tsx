@@ -3,13 +3,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import danPresenting from "@assets/copyofdan_1770090391461.png";
 
 const CALENDLY_URL = "https://calendly.com/novapath711/30min";
@@ -42,10 +35,9 @@ function fade(delay = 0) {
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function NovaPathConsulting() {
-  const formRef      = useRef<HTMLDivElement>(null);
-  const caseRef      = useRef<HTMLDivElement>(null);
-  const systemsRef   = useRef<HTMLDivElement>(null);
-  const networkRef   = useRef<HTMLDivElement>(null);
+  const formRef    = useRef<HTMLDivElement>(null);
+  const caseRef    = useRef<HTMLDivElement>(null);
+  const networkRef = useRef<HTMLDivElement>(null);
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) =>
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -53,26 +45,18 @@ export default function NovaPathConsulting() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: C.bg, fontFamily: "'Inter', system-ui, sans-serif", color: C.white }}>
       <StickyNav
-        onSystems={() => scrollTo(systemsRef)}
         onCases={() => scrollTo(caseRef)}
         onNetwork={() => scrollTo(networkRef)}
         onContact={() => scrollTo(formRef)}
       />
       <Hero
-        onSystems={() => scrollTo(systemsRef)}
         onNetwork={() => scrollTo(networkRef)}
         onCases={() => scrollTo(caseRef)}
+        onContact={() => scrollTo(formRef)}
       />
-      <StatRow />
-      <ProblemSection />
-      <div ref={systemsRef}><TheStack /></div>
-      <LivingLab />
       <div ref={caseRef}><CaseStudies /></div>
-      <Publications />
       <div ref={networkRef}><NetworkSection onContact={() => scrollTo(formRef)} /></div>
       <AboutDan />
-      <EdWeekQuote />
-      <FaqSection />
       <div ref={formRef}><ContactForm /></div>
       <SiteFooter />
     </div>
@@ -81,9 +65,8 @@ export default function NovaPathConsulting() {
 
 // ─── Nav ──────────────────────────────────────────────────────────────────────
 function StickyNav({
-  onSystems, onCases, onNetwork, onContact,
+  onCases, onNetwork, onContact,
 }: {
-  onSystems: () => void;
   onCases: () => void;
   onNetwork: () => void;
   onContact: () => void;
@@ -91,11 +74,10 @@ function StickyNav({
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Systems",    action: onSystems },
-    { label: "Case Studies", action: onCases },
+    { label: "Work",       action: onCases },
     { label: "Network",    action: onNetwork },
-    { label: "Research",   href: "https://smarterbydesign.app", external: true },
     { label: "About",      action: onContact },
+    { label: "Research",   href: "https://smarterbydesign.app", external: true },
   ];
 
   return (
@@ -146,17 +128,16 @@ function StickyNav({
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            asChild
-            size="sm"
-            className="hidden md:inline-flex text-sm font-medium"
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex px-4 py-1.5 text-sm font-semibold rounded-sm transition-opacity hover:opacity-80"
             style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
             data-testid="button-nav-cta"
           >
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-              Book a Call
-            </a>
-          </Button>
+            Book a Call
+          </a>
           <button
             className="md:hidden p-1.5"
             style={{ color: C.muted }}
@@ -197,13 +178,13 @@ function StickyNav({
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero({
-  onSystems,
   onNetwork,
   onCases,
+  onContact,
 }: {
-  onSystems: () => void;
   onNetwork: () => void;
   onCases: () => void;
+  onContact: () => void;
 }) {
   const rm = useReducedMotion();
 
@@ -256,28 +237,28 @@ function Hero({
           transition={rm ? { duration: 0 } : { duration: 0.6, delay: 0.24 }}
         >
           <button
-            onClick={onSystems}
+            onClick={onNetwork}
             className="px-6 py-3 text-sm font-semibold rounded-sm transition-opacity hover:opacity-80"
             style={{ backgroundColor: C.amber, color: "#0F0F0F" }}
-            data-testid="button-hero-systems"
-          >
-            Explore Systems
-          </button>
-          <button
-            onClick={onNetwork}
-            className="px-6 py-3 text-sm font-medium rounded-sm border transition-opacity hover:opacity-70"
-            style={{ color: C.white, borderColor: C.borderMid }}
             data-testid="button-hero-network"
           >
             Join the Network
           </button>
           <button
             onClick={onCases}
+            className="px-6 py-3 text-sm font-medium rounded-sm border transition-opacity hover:opacity-70"
+            style={{ color: C.white, borderColor: C.borderMid }}
+            data-testid="button-hero-cases"
+          >
+            See Our Work
+          </button>
+          <button
+            onClick={onContact}
             className="px-6 py-3 text-sm font-medium rounded-sm transition-opacity hover:opacity-70"
             style={{ color: C.muted }}
-            data-testid="button-hero-research"
+            data-testid="button-hero-contact"
           >
-            View Case Studies
+            Get in touch
           </button>
         </motion.div>
 
@@ -296,514 +277,73 @@ function Hero({
   );
 }
 
-// ─── Stat Row ─────────────────────────────────────────────────────────────────
-function StatRow() {
-  const rm = useReducedMotion();
-  const stats = [
-    { n: "1,892", label: "Classroom observations analyzed" },
-    { n: "2,185", label: "Instructional action steps generated" },
-    { n: "1,014", label: "AI-graded student submissions" },
-    { n: "4",     label: "School sites in active deployment" },
-  ];
-
-  return (
-    <div style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
-        {stats.map((s, i) => (
-          <motion.div key={i} {...fade(i * 0.06)} data-testid={`hero-stat-${i}`}>
-            <div className="text-3xl md:text-4xl font-bold mb-1" style={{ color: C.white, letterSpacing: "-0.03em" }}>{s.n}</div>
-            <div className="text-sm" style={{ color: C.faint }}>{s.label}</div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── Problem ──────────────────────────────────────────────────────────────────
-function ProblemSection() {
-  const rm = useReducedMotion();
-  const items = [
-    "Pilots without systems",
-    "Tools without governance",
-    "Dashboards without action",
-    "Tutoring without instructional alignment",
-    "AI adoption without operational models",
-  ];
-
-  return (
-    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          <motion.div {...fade()}>
-            <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
-              The Problem
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
-              Schools Are Drowning in Disconnected AI Tools
-            </h2>
-            <p className="text-lg leading-relaxed" style={{ color: C.muted }}>
-              Schools do not need more AI products. They need implementation infrastructure.
-            </p>
-          </motion.div>
-
-          <motion.div {...fade(0.1)} className="space-y-1 pt-2">
-            {items.map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-4 py-4"
-                style={{ borderBottom: `1px solid ${C.border}` }}
-                data-testid={`problem-item-${i}`}
-              >
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: C.amber }} />
-                <span className="text-base" style={{ color: C.muted }}>{item}</span>
-              </div>
-            ))}
-            <div className="pt-6">
-              <a
-                href="https://checklist.smarterbydesign.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium hover:opacity-70 transition-opacity"
-                style={{ color: C.amber }}
-                data-testid="link-readiness-checklist"
-              >
-                Take the free AI Readiness Assessment →
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── The Stack ────────────────────────────────────────────────────────────────
-function TheStack() {
-  const rm = useReducedMotion();
-
-  const flow = ["Signals", "Decisions", "Actions", "Outcomes"];
-
-  const tools = [
-    { name: "CoachOS",          desc: "Instructional coaching documentation and pattern analysis" },
-    { name: "NaviGrade",        desc: "AI-powered writing assessment with same-day results" },
-    { name: "Readiness Systems",desc: "District-wide AI readiness audits and roadmaps" },
-    { name: "Analytics",        desc: "Dashboards that drive action, not just reports" },
-    { name: "Governance",       desc: "Policy frameworks built on real regulatory experience" },
-    { name: "AI Agents",        desc: "Custom workflow automation for high-cost repetitive tasks" },
-    { name: "PD / Cohorts",     desc: "Hands-on build sessions, not slide-deck training" },
-    { name: "Compliance Vault", desc: "Federal-ready documentation and evidence tracking" },
-  ];
-
-  return (
-    <section style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div {...fade()} className="mb-14">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
-            The Stack
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
-            This is an ecosystem,<br />not random apps
-          </h2>
-        </motion.div>
-
-        {/* Signal flow */}
-        <motion.div {...fade(0.08)} className="flex flex-wrap items-center gap-3 mb-16">
-          {flow.map((f, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <div
-                className="px-5 py-2.5 text-sm font-semibold rounded-sm"
-                style={{ backgroundColor: C.bgCard, border: `1px solid ${C.borderMid}`, color: C.white }}
-              >
-                {f}
-              </div>
-              {i < flow.length - 1 && (
-                <span className="text-base" style={{ color: C.faint }}>→</span>
-              )}
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Tool grid */}
-        <div className="grid md:grid-cols-4 gap-px" style={{ backgroundColor: C.border }}>
-          {tools.map((t, i) => (
-            <motion.div
-              key={i}
-              {...fade(i * 0.04)}
-              className="p-7"
-              style={{ backgroundColor: C.bgAlt }}
-              data-testid={`stack-tool-${i}`}
-            >
-              <div className="text-sm font-semibold mb-2" style={{ color: C.white }}>{t.name}</div>
-              <div className="text-sm leading-relaxed" style={{ color: C.faint }}>{t.desc}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Living Lab ───────────────────────────────────────────────────────────────
-function LivingLab() {
-  const rm = useReducedMotion();
-
-  const facts = [
-    { label: "Live deployment", body: "Systems running in active classrooms across 4 campuses, with Orange County expansion approved." },
-    { label: "Teacher feedback loops", body: "Continuous iteration based on what teachers actually report — not what administrators assume they need." },
-    { label: "Implementation cycles", body: "10-week cobuilding sprints that end with a deployed, functioning tool. Not a roadmap. A product." },
-    { label: "Operational iteration", body: "Every system is tested against real constraints: staff time, compliance requirements, student data privacy." },
-  ];
-
-  return (
-    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-20 items-start">
-          <motion.div {...fade()}>
-            <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
-              Living Laboratory
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
-              Built Inside<br />Real Schools
-            </h2>
-            <p className="text-lg leading-relaxed mb-10" style={{ color: C.muted }}>
-              Most people talk AI. We build in public. Every system we offer was first built, tested, and iterated inside an actual school with actual teachers and actual students.
-            </p>
-            <a
-              href={CALENDLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold hover:opacity-70 transition-opacity"
-              style={{ color: C.amber }}
-              data-testid="link-lab-cta"
-            >
-              Watch us solve this in real time →
-            </a>
-          </motion.div>
-
-          <div className="space-y-0">
-            {facts.map((f, i) => (
-              <motion.div
-                key={i}
-                {...fade(i * 0.08)}
-                className="py-7"
-                style={{ borderBottom: i < facts.length - 1 ? `1px solid ${C.border}` : "none" }}
-                data-testid={`lab-fact-${i}`}
-              >
-                <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: C.blue, letterSpacing: "0.1em" }}>
-                  {f.label}
-                </div>
-                <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{f.body}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ─── Case Studies ─────────────────────────────────────────────────────────────
 function CaseStudies() {
   const rm = useReducedMotion();
 
-  return (
-    <section style={{ paddingTop: "96px", paddingBottom: "96px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div {...fade()} className="mb-14">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>
-            Case Studies
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
-            What This Looks Like in Practice
-          </h2>
-          <p className="text-lg" style={{ color: C.muted }}>Real engagements. Real data. Real classrooms.</p>
-        </motion.div>
-
-        {/* CS 01 — CoachOS */}
-        <motion.div
-          {...fade(0.05)}
-          className="mb-px"
-          style={{ border: `1px solid ${C.border}`, backgroundColor: C.bg }}
-          data-testid="card-case-study"
-        >
-          <div style={{ height: "2px", backgroundColor: C.amber }} />
-          <div className="grid md:grid-cols-3">
-            {/* Label col */}
-            <div className="p-10 md:border-r" style={{ borderColor: C.border }}>
-              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>
-                Case Study 01
-              </div>
-              <h3 className="text-2xl font-bold mb-2" style={{ color: C.white, letterSpacing: "-0.02em" }}>CoachOS</h3>
-              <p className="text-sm mb-6" style={{ color: C.muted }}>Turning Instructional Coaching Into a System</p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {["K–8 Charter Network", "California", "Aug 2025 – Mar 2026"].map((t) => (
-                  <span key={t} className="text-xs px-2.5 py-1" style={{ border: `1px solid ${C.border}`, color: C.faint, borderRadius: "2px" }}>{t}</span>
-                ))}
-              </div>
-              <div className="text-6xl font-bold leading-none mb-2" style={{ color: C.white, letterSpacing: "-0.04em" }}>+19%</div>
-              <div className="text-xs" style={{ color: C.faint }}>Improvement in instructional practice, network-wide, one school year</div>
-            </div>
-
-            {/* Stats + findings col */}
-            <div className="md:col-span-2 p-10">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                {[
-                  { n: "1,892", l: "Classroom observations" },
-                  { n: "2,185", l: "Targeted action steps" },
-                  { n: "244",   l: "Teachers supported" },
-                  { n: "44",    l: "Coaches engaged" },
-                ].map((s, i) => (
-                  <div key={i} className="py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
-                    <div className="text-2xl font-bold mb-1" style={{ color: C.white }}>{s.n}</div>
-                    <div className="text-xs" style={{ color: C.faint }}>{s.l}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                {[
-                  { n: "01", title: "Observation volume isn't the lever", body: "Some campuses conducted more observations but did not outperform others. How coaching was executed mattered more than frequency." },
-                  { n: "02", title: "Practice improved at every campus", body: "Every site showed upward movement. Some improved by nearly half a point. Others reached or approached proficiency benchmarks." },
-                  { n: "03", title: "Consistency drives results", body: "Strongest campuses shared a pattern: stable score growth, less variability, more consistent instructional expectations across classrooms." },
-                  { n: "04", title: "Data use is not automatic", body: "Having the system doesn't guarantee use. Adoption varied significantly. Implementation determines impact." },
-                ].map((item, i) => (
-                  <div key={i} data-testid={`cs1-finding-${i}`}>
-                    <div className="text-xs mb-2" style={{ color: C.amber }}>{item.n}</div>
-                    <div className="text-sm font-semibold mb-1.5" style={{ color: C.white }}>{item.title}</div>
-                    <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{item.body}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-4 items-start pt-6" style={{ borderTop: `1px solid ${C.border}` }}>
-                <div className="text-4xl leading-none flex-shrink-0" style={{ color: C.amber, opacity: 0.4, fontFamily: "Georgia, serif" }}>"</div>
-                <div>
-                  <p className="text-sm font-medium leading-relaxed mb-1" style={{ color: C.white }}>Where is instruction improving? Where is it not — and why?</p>
-                  <p className="text-xs" style={{ color: C.faint }}>Leaders moved from guessing to answering that question with real data.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* CS 02 — NaviGrade */}
-        <motion.div
-          {...fade(0.1)}
-          className="mb-px mt-4"
-          style={{ border: `1px solid ${C.border}`, backgroundColor: C.bg }}
-          data-testid="card-case-study-2"
-        >
-          <div style={{ height: "2px", backgroundColor: C.blue }} />
-          <div className="grid md:grid-cols-3">
-            <div className="p-10 md:border-r" style={{ borderColor: C.border }}>
-              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>Case Study 02</div>
-              <h3 className="text-2xl font-bold mb-2" style={{ color: C.white, letterSpacing: "-0.02em" }}>NaviGrade</h3>
-              <p className="text-sm mb-6" style={{ color: C.muted }}>From First Use to Classroom Routine</p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {["AI Writing Assessment", "Multiple Classrooms", "Jan – Apr 2026"].map((t) => (
-                  <span key={t} className="text-xs px-2.5 py-1" style={{ border: `1px solid ${C.border}`, color: C.faint, borderRadius: "2px" }}>{t}</span>
-                ))}
-              </div>
-              <div className="text-6xl font-bold leading-none mb-2" style={{ color: C.white, letterSpacing: "-0.04em" }}>1,014</div>
-              <div className="text-xs" style={{ color: C.faint }}>Student writing responses analyzed in 90 days</div>
-            </div>
-
-            <div className="md:col-span-2 p-10">
-              <div className="grid grid-cols-3 gap-4 mb-10">
-                {[
-                  { n: "90", l: "Days from pilot to routine" },
-                  { n: "2.13→3.31", l: "Avg score growth (Jan to Apr)" },
-                  { n: "Same day", l: "Results available to teachers" },
-                ].map((s, i) => (
-                  <div key={i} className="py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
-                    <div className="text-xl font-bold mb-1" style={{ color: C.white }}>{s.n}</div>
-                    <div className="text-xs" style={{ color: C.faint }}>{s.l}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-10 mb-8">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>Adoption by month</div>
-                  <div className="space-y-3">
-                    {[
-                      { month: "January",  subs: 238, max: 457, score: "2.13" },
-                      { month: "February", subs: 457, max: 457, score: "2.75" },
-                      { month: "March",    subs: 296, max: 457, score: "2.46" },
-                      { month: "April",    subs: 23,  max: 457, score: "3.31", note: "partial" },
-                    ].map((row, i) => (
-                      <div key={i}>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xs" style={{ color: C.muted }}>
-                            {row.month}{row.note && <span style={{ color: C.faint }}> ({row.note})</span>}
-                          </span>
-                          <span className="text-xs font-semibold" style={{ color: C.white }}>{row.score}</span>
-                        </div>
-                        <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(0,0,0,0.08)" }}>
-                          <div className="h-full" style={{ width: `${(row.subs / row.max) * 100}%`, backgroundColor: C.blue }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>What teachers saw immediately</div>
-                  <div className="space-y-2.5">
-                    {["Who is meeting expectations", "Who is close", "Who is not there yet", "Exactly why"].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: C.blue }} />
-                        <span className="text-sm" style={{ color: C.muted }}>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start pt-6" style={{ borderTop: `1px solid ${C.border}` }}>
-                <div className="text-4xl leading-none flex-shrink-0" style={{ color: C.blue, opacity: 0.4, fontFamily: "Georgia, serif" }}>"</div>
-                <div>
-                  <p className="text-sm font-medium leading-relaxed mb-1" style={{ color: C.white }}>Not weeks later. Not after grading at home. In the moment.</p>
-                  <p className="text-xs" style={{ color: C.faint }}>Teachers adjusted instruction the next day and could see what worked right away.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* CS 03 — Early Childhood Compliance */}
-        <motion.div
-          {...fade(0.15)}
-          className="mt-4"
-          style={{ border: `1px solid ${C.border}`, backgroundColor: C.bg }}
-          data-testid="card-case-study-3"
-        >
-          <div style={{ height: "2px", backgroundColor: C.muted }} />
-          <div className="grid md:grid-cols-3">
-            <div className="p-10 md:border-r" style={{ borderColor: C.border }}>
-              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>Case Study 03 · CoachOS</div>
-              <h3 className="text-2xl font-bold mb-2" style={{ color: C.white, letterSpacing: "-0.02em" }}>Workforce Compliance, Rebuilt</h3>
-              <p className="text-sm mb-6" style={{ color: C.muted }}>Federal Head Start Compliance Training Platform</p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {["Early Childhood Program", "Multi-Site", "Early 2026"].map((t) => (
-                  <span key={t} className="text-xs px-2.5 py-1" style={{ border: `1px solid ${C.border}`, color: C.faint, borderRadius: "2px" }}>{t}</span>
-                ))}
-              </div>
-              <div className="text-6xl font-bold leading-none mb-2" style={{ color: C.white, letterSpacing: "-0.04em" }}>2,000+</div>
-              <div className="text-xs" style={{ color: C.faint }}>Compliance artifacts generated, fully tagged, audit-ready — in six weeks</div>
-            </div>
-
-            <div className="md:col-span-2 p-10">
-              <div className="grid grid-cols-3 gap-4 mb-10">
-                {[
-                  { n: "600+", l: "Digital sign-ins across training events" },
-                  { n: "200+", l: "Certificates issued across required domains" },
-                  { n: "50+",  l: "Artifact types mapped to CFR requirements" },
-                ].map((s, i) => (
-                  <div key={i} className="py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
-                    <div className="text-xl font-bold mb-1" style={{ color: C.white }}>{s.n}</div>
-                    <div className="text-xs" style={{ color: C.faint }}>{s.l}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-10 mb-8">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>What it replaced</div>
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: C.muted }}>
-                    Head Start programs operate under strict federal mandates. Without centralized systems, programs rely on paper sign-ins and fragmented spreadsheets. When reviews are announced, teams scramble to assemble documentation that should already exist.
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: C.muted }}>
-                    Large-scale training days that previously required paper sign-in sheets were replaced entirely with digital signatures — creating immediate audit-ready records.
-                  </p>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.faint, letterSpacing: "0.1em" }}>What it delivers now</div>
-                  <div className="space-y-4">
-                    {[
-                      { who: "Staff", what: "Mobile-accessible training record with completed hours, certifications, and progress across required domains." },
-                      { who: "Administrators", what: "Real-time compliance dashboard — Compliant / At Risk / Non-Compliant — with automated certificates and one-click audit export." },
-                      { who: "Reviewers", what: "Structured compliance packages with training matrices, hours verification, and CFR-referenced artifacts. Available instantly." },
-                    ].map((item, i) => (
-                      <div key={i}>
-                        <div className="text-xs font-semibold mb-1" style={{ color: C.white }}>{item.who}</div>
-                        <div className="text-sm" style={{ color: C.muted }}>{item.what}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start pt-6" style={{ borderTop: `1px solid ${C.border}` }}>
-                <div className="text-4xl leading-none flex-shrink-0" style={{ color: C.muted, opacity: 0.4, fontFamily: "Georgia, serif" }}>"</div>
-                <div>
-                  <p className="text-sm font-medium leading-relaxed mb-1" style={{ color: C.white }}>Compliance stopped being a last-minute fire drill and became ambient.</p>
-                  <p className="text-xs" style={{ color: C.faint }}>The system doesn't help you get ready for review. It makes you already ready.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Publications ─────────────────────────────────────────────────────────────
-function Publications() {
-  const rm = useReducedMotion();
-  const pubs = [
-    { type: "Implementation Report", title: "CoachOS Year-One Study", desc: "Analysis of 1,892 classroom observations across a K-8 charter network — what drove improvement and what didn't.", date: "Mar 2026" },
-    { type: "Whitepaper", title: "K-12 AI Readiness Framework", desc: "29-item assessment across six dimensions: policy, privacy, teacher readiness, student AI, tool governance, and leadership vision.", date: "Jan 2026" },
-    { type: "Governance Framework", title: "District AI Policy Playbook", desc: "Built on California SB 1288 workgroup participation. Covers acceptable use, data privacy, and faculty expectations.", date: "Nov 2025" },
-    { type: "Case Study", title: "Head Start Compliance Platform", desc: "Federal-ready workforce training system deployed across a multi-site early childhood program in six weeks.", date: "Apr 2026" },
-    { type: "Adoption Playbook", title: "From Pilot to System", desc: "Why most AI pilots stall at 10% adoption and the operational conditions required to move from tool to infrastructure.", date: "Feb 2026" },
-    { type: "Benchmark Study", title: "NaviGrade Writing Assessment Data", desc: "1,014 student responses, four months, one signal that appeared in every classroom: evidence construction is the gap.", date: "Apr 2026" },
+  const cases = [
+    {
+      label: "Case Study 01",
+      name: "CoachOS",
+      context: "K–8 Charter Network · California",
+      metric: "+19%",
+      metricLabel: "Instructional practice improvement, network-wide, one school year",
+      body: "1,892 classroom observations. 2,185 targeted action steps. Leaders moved from guessing to answering in real time.",
+      accent: C.amber,
+    },
+    {
+      label: "Case Study 02",
+      name: "NaviGrade",
+      context: "AI Writing Assessment · Multiple Classrooms",
+      metric: "1,014",
+      metricLabel: "Student writing responses analyzed in 90 days",
+      body: "Average score climbed from 2.13 to 3.31. Teachers adjusted instruction the next day — not weeks later.",
+      accent: C.blue,
+    },
+    {
+      label: "Case Study 03",
+      name: "Head Start Compliance",
+      context: "Early Childhood Program · Multi-Site",
+      metric: "2,000+",
+      metricLabel: "Compliance artifacts generated, audit-ready, in six weeks",
+      body: "Replaced paper sign-ins and fragmented spreadsheets with a live dashboard. Compliant before the review is announced.",
+      accent: C.muted,
+    },
   ];
 
   return (
-    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div {...fade()} className="mb-14">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>Research + Publications</p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: C.white, letterSpacing: "-0.025em", lineHeight: 1.08 }}>
-            The work, documented
+    <section style={{ paddingTop: "80px", paddingBottom: "80px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
+      <div className="max-w-6xl mx-auto px-6">
+        <motion.div {...fade()} className="mb-10">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: C.amber, letterSpacing: "0.14em" }}>
+            Work
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold" style={{ color: C.white, letterSpacing: "-0.025em" }}>
+            Real engagements. Real data.
           </h2>
-          <p className="text-lg" style={{ color: C.muted }}>Implementation reports, governance frameworks, and benchmark studies from real deployments.</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-px" style={{ backgroundColor: C.border }}>
-          {pubs.map((p, i) => (
+        <div className="grid md:grid-cols-3 gap-5">
+          {cases.map((c, i) => (
             <motion.div
               key={i}
-              {...fade(i * 0.05)}
-              className="p-8"
-              style={{ backgroundColor: C.bg }}
-              data-testid={`pub-card-${i}`}
+              {...fade(i * 0.07)}
+              className="p-7"
+              style={{ backgroundColor: C.bg, border: `1px solid ${C.border}` }}
+              data-testid={`card-case-study-${i}`}
             >
-              <div className="flex items-start justify-between gap-2 mb-4">
-                <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: C.amber, letterSpacing: "0.1em" }}>{p.type}</span>
-                <span className="text-xs flex-shrink-0" style={{ color: C.faint }}>{p.date}</span>
+              <div style={{ height: "2px", backgroundColor: c.accent, marginBottom: "24px" }} />
+              <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: C.faint, letterSpacing: "0.12em" }}>
+                {c.label}
               </div>
-              <div className="text-base font-semibold mb-3" style={{ color: C.white, lineHeight: 1.35 }}>{p.title}</div>
-              <div className="text-sm leading-relaxed" style={{ color: C.muted }}>{p.desc}</div>
+              <div className="text-xl font-bold mb-1" style={{ color: C.white }}>{c.name}</div>
+              <div className="text-xs mb-6" style={{ color: C.faint }}>{c.context}</div>
+              <div className="text-5xl font-bold mb-1" style={{ color: C.white, letterSpacing: "-0.04em" }}>{c.metric}</div>
+              <div className="text-xs mb-6" style={{ color: C.faint }}>{c.metricLabel}</div>
+              <p className="text-sm leading-relaxed" style={{ color: C.muted }}>{c.body}</p>
             </motion.div>
           ))}
         </div>
-
-        <motion.div {...fade(0.2)} className="mt-10">
-          <a
-            href="https://smarterbydesign.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium hover:opacity-70 transition-opacity"
-            style={{ color: C.amber }}
-            data-testid="link-publications-newsletter"
-          >
-            Read the full research newsletter →
-          </a>
-        </motion.div>
       </div>
     </section>
   );
@@ -1258,89 +798,20 @@ function AboutDan() {
             >
               Read the newsletter →
             </a>
+
+            <div className="mt-10 pt-8" style={{ borderTop: `1px solid ${C.border}` }}>
+              <div className="text-4xl leading-none mb-4" style={{ color: C.amber, opacity: 0.35, fontFamily: "Georgia, serif" }}>"</div>
+              <blockquote
+                className="text-lg font-medium leading-relaxed mb-3"
+                style={{ color: C.white, letterSpacing: "-0.01em" }}
+                data-testid="text-edweek-quote"
+              >
+                The best professional development I've had in 20 years of education.
+              </blockquote>
+              <p className="text-xs" style={{ color: C.faint }}>Educator quoted in Education Week</p>
+            </div>
           </motion.div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── EdWeek Quote ─────────────────────────────────────────────────────────────
-function EdWeekQuote() {
-  const rm = useReducedMotion();
-  return (
-    <section style={{ paddingTop: "80px", paddingBottom: "80px", backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-4xl mx-auto px-6">
-        <motion.div {...fade()} className="text-center">
-          <div className="text-6xl leading-none mb-6" style={{ color: C.amber, opacity: 0.3, fontFamily: "Georgia, serif" }}>"</div>
-          <blockquote
-            className="text-xl md:text-2xl font-medium leading-relaxed mb-8"
-            style={{ color: C.white, letterSpacing: "-0.01em" }}
-            data-testid="text-edweek-quote"
-          >
-            The best professional development I've had in 20 years of education.
-          </blockquote>
-          <p className="text-sm" style={{ color: C.faint }}>Educator quoted in Education Week</p>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// ─── FAQ ─────────────────────────────────────────────────────────────────────
-function FaqSection() {
-  const rm = useReducedMotion();
-  const faqs = [
-    {
-      q: "Who is this for?",
-      a: "District leaders, technology directors, curriculum leads, and charter network operators who are ready to move from scattered AI pilots to operational infrastructure. Also edtech founders who want educator-informed product strategy.",
-    },
-    {
-      q: "What does a cobuilding engagement actually involve?",
-      a: "We embed with your team for a 10-week sprint. We identify the workflow costing the most time, design the solution together, cobuild it using AI tools, and deploy it into real classrooms by the end of the engagement. Your team develops real AI literacy in the process.",
-    },
-    {
-      q: "How is this different from a consultant giving us a plan?",
-      a: "We don't hand you a slide deck. We build working software alongside your team. Dan is the Technology Innovation Lead at an active charter network — he deploys these tools in his own schools first.",
-    },
-    {
-      q: "What does the AI Readiness Assessment tell me?",
-      a: "It covers 29 items across six dimensions: policy, privacy, teacher readiness, student-facing AI, tool governance, and leadership vision. It takes about 10 minutes and gives you a clear picture of where your district actually stands before any conversation about next steps.",
-    },
-    {
-      q: "What's the Education Innovation Network?",
-      a: "A practitioner network for school leaders who are actively building. Monthly briefings, implementation cohorts, live build sessions, governance templates, and shared pilots across member organizations. Not a vendor community — an operator community.",
-    },
-  ];
-
-  return (
-    <section style={{ paddingTop: "96px", paddingBottom: "96px", borderBottom: `1px solid ${C.border}` }}>
-      <div className="max-w-3xl mx-auto px-6">
-        <motion.div {...fade()} className="mb-14">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: C.amber, letterSpacing: "0.14em" }}>FAQ</p>
-          <h2 className="text-4xl font-bold" style={{ color: C.white, letterSpacing: "-0.025em" }}>Common questions</h2>
-        </motion.div>
-
-        <Accordion type="single" collapsible>
-          {faqs.map((faq, i) => (
-            <AccordionItem
-              key={i}
-              value={`faq-${i}`}
-              style={{ borderBottom: `1px solid ${C.border}` }}
-              data-testid={`faq-item-${i}`}
-            >
-              <AccordionTrigger
-                className="text-left py-6 text-base font-medium hover:no-underline hover:opacity-70 transition-opacity"
-                style={{ color: C.white }}
-              >
-                {faq.q}
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 text-sm leading-relaxed" style={{ color: C.muted }}>
-                {faq.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </div>
     </section>
   );
