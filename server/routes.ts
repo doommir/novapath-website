@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertLeadSchema, insertPreorderSchema, insertPdInquirySchema, insertAutograderInquirySchema, insertMathMovesInquirySchema, insertInvestorInquirySchema, insertConsultingInquirySchema, insertCobuilderInquirySchema } from "@shared/schema";
+import { insertLeadSchema, insertPreorderSchema, insertPdInquirySchema, insertAutograderInquirySchema, insertMathMovesInquirySchema, insertInvestorInquirySchema, insertConsultingInquirySchema, insertCobuilderInquirySchema, insertNetworkMemberSchema } from "@shared/schema";
 import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage, generateSpeech } from "./lib/openai";
 import { setupRealtimeWebSocket } from "./lib/realtime";
 
@@ -288,6 +288,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error generating speech:", error);
       res.status(500).json({ error: "Failed to generate speech" });
+    }
+  });
+
+  // POST /api/network-members - Join the Education Innovation Network
+  app.post("/api/network-members", async (req, res) => {
+    try {
+      const validatedData = insertNetworkMemberSchema.parse(req.body);
+      const member = await storage.createNetworkMember(validatedData);
+      res.json({ success: true, member });
+    } catch (error) {
+      console.error("Error creating network member:", error instanceof Error ? error.message : "Unknown error");
+      if (error instanceof Error && error.name === "ZodError") {
+        return res.status(400).json({ success: false, error: "Invalid form data" });
+      }
+      res.status(500).json({ success: false, error: "Failed to save application" });
     }
   });
 

@@ -183,6 +183,32 @@ export const insertConsultingInquirySchema = createInsertSchema(consultingInquir
 export type InsertConsultingInquiry = z.infer<typeof insertConsultingInquirySchema>;
 export type ConsultingInquiry = typeof consultingInquiries.$inferSelect;
 
+export const networkMembers = pgTable("network_members", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  organization: text("organization").notNull(),
+  role: text("role").notNull(),
+  membershipType: text("membership_type").notNull(), // "educator" | "school"
+  building: text("building"),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+});
+
+export const insertNetworkMemberSchema = createInsertSchema(networkMembers).omit({
+  id: true,
+  submittedAt: true,
+}).extend({
+  name: z.string().min(1, "Please enter your name"),
+  email: z.string().email("Please enter a valid email address"),
+  organization: z.string().min(1, "Please enter your school or organization"),
+  role: z.string().min(1, "Please select your role"),
+  membershipType: z.enum(["educator", "school"]),
+  building: z.string().optional(),
+});
+
+export type InsertNetworkMember = z.infer<typeof insertNetworkMemberSchema>;
+export type NetworkMember = typeof networkMembers.$inferSelect;
+
 export const cobuilderInquiries = pgTable("cobuilder_inquiries", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),

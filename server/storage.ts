@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, type InvestorInquiry, type InsertInvestorInquiry, type ConsultingInquiry, type InsertConsultingInquiry, type CobuilderInquiry, type InsertCobuilderInquiry, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries, investorInquiries, consultingInquiries, cobuilderInquiries } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Preorder, type InsertPreorder, type PdInquiry, type InsertPdInquiry, type AutograderInquiry, type InsertAutograderInquiry, type MathMovesInquiry, type InsertMathMovesInquiry, type InvestorInquiry, type InsertInvestorInquiry, type ConsultingInquiry, type InsertConsultingInquiry, type CobuilderInquiry, type InsertCobuilderInquiry, type NetworkMember, type InsertNetworkMember, users, leads, preorders, pdInquiries, autograderInquiries, mathMovesInquiries, investorInquiries, consultingInquiries, cobuilderInquiries, networkMembers } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -15,6 +15,7 @@ export interface IStorage {
   createInvestorInquiry(inquiry: InsertInvestorInquiry): Promise<InvestorInquiry>;
   createConsultingInquiry(inquiry: InsertConsultingInquiry): Promise<ConsultingInquiry>;
   createCobuilderInquiry(inquiry: InsertCobuilderInquiry): Promise<CobuilderInquiry>;
+  createNetworkMember(member: InsertNetworkMember): Promise<NetworkMember>;
 }
 
 export class MemStorage implements IStorage {
@@ -27,6 +28,7 @@ export class MemStorage implements IStorage {
   private investorInquiries: Map<string, InvestorInquiry>;
   private consultingInquiries: Map<string, ConsultingInquiry>;
   private cobuilderInquiries: Map<string, CobuilderInquiry>;
+  private networkMembers: Map<string, NetworkMember>;
 
   constructor() {
     this.users = new Map();
@@ -38,6 +40,7 @@ export class MemStorage implements IStorage {
     this.investorInquiries = new Map();
     this.consultingInquiries = new Map();
     this.cobuilderInquiries = new Map();
+    this.networkMembers = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -175,6 +178,22 @@ export class MemStorage implements IStorage {
     this.cobuilderInquiries.set(id, cobuilderInquiry);
     return cobuilderInquiry;
   }
+
+  async createNetworkMember(insert: InsertNetworkMember): Promise<NetworkMember> {
+    const id = randomUUID();
+    const member: NetworkMember = {
+      id,
+      name: insert.name,
+      email: insert.email,
+      organization: insert.organization,
+      role: insert.role,
+      membershipType: insert.membershipType,
+      building: insert.building ?? null,
+      submittedAt: new Date()
+    };
+    this.networkMembers.set(id, member);
+    return member;
+  }
 }
 
 export class DbStorage implements IStorage {
@@ -278,6 +297,18 @@ export class DbStorage implements IStorage {
       budget: insertCobuilderInquiry.budget ?? null,
     }).returning();
     return cobuilderInquiry;
+  }
+
+  async createNetworkMember(insert: InsertNetworkMember): Promise<NetworkMember> {
+    const [member] = await db.insert(networkMembers).values({
+      name: insert.name,
+      email: insert.email,
+      organization: insert.organization,
+      role: insert.role,
+      membershipType: insert.membershipType,
+      building: insert.building ?? null,
+    }).returning();
+    return member;
   }
 }
 
