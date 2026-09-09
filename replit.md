@@ -65,6 +65,14 @@ Dark theme with #0F0A1A background, #1A1425 card backgrounds, #7C5CFF primary pu
 -   **Neon Database**: Serverless PostgreSQL provider.
 -   **Drizzle ORM**: Type-safe database toolkit.
 -   **OpenAI**: AI model integration (for CoachingOS demo and NovaPath demo).
+-   **Resend**: Team notification for Education inquiry forms. Destination is `CONTACT_TO_EMAIL` / `CONTACT_TO`, defaulting to `hello@explorenovapath.com` (Google Group). Credentials come from `RESEND_API_KEY` or the Replit Resend connector. Optional `CONTACT_FROM_EMAIL` overrides the sender (default `NovaPath Education <hello@novapath.dev>`, the verified novapath.dev identity). Inquiry rows are still saved if email delivery fails.
+
+### Inquiry delivery (Replit Secrets / Connectors)
+Set these on the Education Replit before republishing, then submit a labeled test inquiry:
+
+1. Connect **Resend** in Replit (same account that sends novapath.dev mail) **or** set `RESEND_API_KEY`.
+2. `CONTACT_TO_EMAIL` (optional) — defaults to `hello@explorenovapath.com`. Set only to override the Google Group destination.
+3. `CONTACT_FROM_EMAIL` (optional) — defaults to `NovaPath Education <hello@novapath.dev>`. Change this after `explorenovapath.com` is verified in Resend if you want Education mail to send from that domain.
 
 ### Build Tools & Developer Experience
 -   **Vite**: Frontend build tool and dev server.
