@@ -42,7 +42,7 @@
   outline: 2px solid #a78444;
   outline-offset: 5px;
 }
-.edu-site :is(section, main, #about, #contact, #results) {
+.edu-site :is(section, main, #about, #contact, #results, article) {
   scroll-margin-top: 104px;
 }
 .edu-site :is(h1, h2, h3) {
@@ -162,7 +162,8 @@
 .edu-desktop-nav a {
   color: inherit;
 }
-.edu-desktop-nav a:hover {
+.edu-desktop-nav a:hover,
+.edu-desktop-nav a[aria-current="page"] {
   color: #755c32;
 }
 .edu-nav-cta {
@@ -648,6 +649,160 @@
   align-items: center;
   color: inherit;
 }
+.edu-footer-legal-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+.edu-blog-hero {
+  padding: 126px 0 56px;
+  background: #302230;
+  color: #f8f6f1;
+}
+.edu-blog-hero-kicker {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #ffffff26;
+  padding-bottom: 23px;
+  margin-bottom: 36px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #d5bd8d;
+}
+.edu-blog-hero-kicker a {
+  color: inherit;
+}
+.edu-blog-hero-kicker a:hover {
+  color: #dac8a3;
+}
+.edu-blog-hero h1 {
+  font-size: clamp(2.7rem, 4.6vw, 4.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin: 0 0 24px;
+  max-width: 16ch;
+}
+.edu-blog-hero h1 em {
+  color: #ddcba6;
+}
+.edu-blog-hero-intro {
+  max-width: 540px;
+  font-size: 17px;
+  color: #d3c8d0;
+  line-height: 1.8;
+  margin: 0;
+}
+.edu-blog-hero-post h1 {
+  max-width: 22ch;
+}
+.edu-blog-index {
+  padding: 80px 0 110px;
+}
+.edu-blog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.edu-blog-card {
+  border-top: 1px solid #c6beb1;
+  padding: 36px 0;
+}
+.edu-blog-card:last-child {
+  border-bottom: 1px solid #c6beb1;
+}
+.edu-blog-card-meta {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #766039;
+  margin-bottom: 16px;
+}
+.edu-blog-card h2 {
+  font-size: clamp(1.85rem, 3vw, 2.4rem);
+  margin: 0 0 16px;
+  max-width: 20ch;
+}
+.edu-blog-card h2 a {
+  color: inherit;
+}
+.edu-blog-card h2 a:hover {
+  color: #755c32;
+}
+.edu-blog-card p {
+  max-width: 620px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #625960;
+  margin: 0 0 22px;
+}
+.edu-blog-article {
+  padding: 64px 0 110px;
+}
+.edu-prose {
+  max-width: 680px;
+}
+.edu-prose > *:first-child {
+  margin-top: 0;
+}
+.edu-prose p,
+.edu-prose li {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #3d363c;
+}
+.edu-prose p {
+  margin: 0 0 1.25em;
+}
+.edu-prose a {
+  color: #48283f;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: #dac8a3;
+}
+.edu-prose a:hover {
+  color: #755c32;
+}
+.edu-prose h2 {
+  font-size: clamp(1.7rem, 2.6vw, 2.15rem);
+  margin: 2.1em 0 0.7em;
+  color: #302230;
+}
+.edu-prose h3 {
+  font-size: 1.35rem;
+  margin: 1.8em 0 0.55em;
+}
+.edu-prose ul,
+.edu-prose ol {
+  margin: 0 0 1.35em;
+  padding-left: 1.25em;
+}
+.edu-prose li + li {
+  margin-top: 0.45em;
+}
+.edu-prose strong {
+  font-weight: 600;
+  color: #302230;
+}
+.edu-prose blockquote {
+  margin: 1.6em 0;
+  padding: 0 0 0 22px;
+  border-left: 2px solid #dac8a3;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  color: #302230;
+}
+.edu-blog-article-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid #dad4c9;
+  max-width: 680px;
+}
 @media (min-width: 1101px) {
   .edu-mobile-nav {
     display: none;
@@ -778,6 +933,19 @@
   .edu-footer-top p:not(.edu-eyebrow) {
     max-width: 450px;
   }
+  .edu-blog-hero {
+    padding-top: 118px;
+    padding-bottom: 44px;
+  }
+  .edu-blog-index {
+    padding: 56px 0 80px;
+  }
+  .edu-blog-article {
+    padding: 44px 0 80px;
+  }
+  .edu-blog-card {
+    padding: 28px 0;
+  }
 }
 @media (max-width: 600px) {
   .edu-header-row {
@@ -814,6 +982,9 @@
   .edu-preview {
     padding-top: 110px;
     padding-bottom: 64px;
+  }
+  .edu-blog-hero {
+    padding-top: 103px;
   }
   .edu-preview-panel {
     padding: 28px 22px;
@@ -874,8 +1045,27 @@
   .edu-footer {
     padding-top: 50px;
   }
-  .edu-site :is(section, main, #about, #contact, #results) {
+  .edu-site :is(section, main, #about, #contact, #results, article) {
     scroll-margin-top: 92px;
+  }
+  .edu-blog-hero {
+    padding-top: 110px;
+    padding-bottom: 40px;
+  }
+  .edu-blog-index,
+  .edu-blog-article {
+    padding-bottom: 72px;
+  }
+  .edu-blog-article {
+    padding-top: 40px;
+  }
+  .edu-blog-hero h1,
+  .edu-blog-card h2 {
+    max-width: none;
+  }
+  .edu-prose p,
+  .edu-prose li {
+    font-size: 16px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
