@@ -5,6 +5,7 @@ import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
+import { applyRouteSeo, seoForRequestUrl } from "./lib/blog-seo";
 
 const viteLogger = createLogger();
 
@@ -24,6 +25,11 @@ export async function setupVite(app: Express, server: Server) {
     middlewareMode: true,
     hmr: { server },
     allowedHosts: true as const,
+    fs: {
+      strict: true,
+      allow: [path.resolve(import.meta.dirname, "..")],
+      deny: ["**/.*"],
+    },
   };
 
   const vite = await createViteServer({
@@ -54,6 +60,10 @@ export async function setupVite(app: Express, server: Server) {
 
       // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
+      const seo = seoForRequestUrl(url);
+      if (seo) {
+        template = applyRouteSeo(template, seo);
+      }
       template = template.replace(
         `src="/src/main.tsx"`,
         `src="/src/main.tsx?v=${nanoid()}"`,
@@ -79,7 +89,14 @@ export function serveStatic(app: Express) {
   app.use(express.static(distPath));
 
   // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  app.use("*", (req, res) => {
+    const indexPath = path.resolve(distPath, "index.html");
+    const seo = seoForRequestUrl(req.originalUrl);
+    if (!seo) {
+      res.sendFile(indexPath);
+      return;
+    }
+    const html = applyRouteSeo(fs.readFileSync(indexPath, "utf-8"), seo);
+    res.status(200).set({ "Content-Type": "text/html" }).end(html);
   });
 }

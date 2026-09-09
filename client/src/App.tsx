@@ -9,6 +9,8 @@ import NaviGradeDemo from "@/pages/NaviGradeDemo";
 import AboutUs from "@/pages/AboutUs";
 import NovaPathConsulting from "@/pages/NovaPathConsulting";
 import CobuilderPage from "@/pages/CobuilderPage";
+import BlogIndex from "@/pages/BlogIndex";
+import BlogPostPage from "@/pages/BlogPost";
 import NotFound from "@/pages/not-found";
 
 function ConsultingRedirect() {
@@ -27,6 +29,8 @@ function Router() {
       <Route path="/navigrade" component={NaviGradeDemo} />
       <Route path="/about" component={AboutUs} />
       <Route path="/cobuilder" component={CobuilderPage} />
+      <Route path="/blog/:slug" component={BlogPostPage} />
+      <Route path="/blog" component={BlogIndex} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Link, useLocation } from "wouter";
 import { PUBLIC_INQUIRY_EMAIL } from "@shared/contact";
 
 export function BrandIdentity() {
@@ -27,6 +28,8 @@ export function EducationHeader({
   onHomePage?: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const [location] = useLocation();
+  const onBlog = location.startsWith("/blog");
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -52,7 +55,7 @@ export function EducationHeader({
           <BrandIdentity />
         </a>
         <nav className="edu-audience" aria-label="NovaPath audiences">
-          <a href={homeHref} aria-current="page">
+          <a href={homeHref} aria-current={onBlog ? undefined : "page"}>
             Education
           </a>
           <a href="https://novapath.dev/">
@@ -65,6 +68,9 @@ export function EducationHeader({
               {l.label}
             </a>
           ))}
+          <Link href="/blog" aria-current={onBlog ? "page" : undefined}>
+            Blog
+          </Link>
           <a className="edu-nav-cta" href={contactHref}>
             Let's talk <ArrowUpRight size={16} />
           </a>
@@ -92,6 +98,10 @@ export function EducationHeader({
               <ArrowUpRight size={18} />
             </a>
           ))}
+          <Link href="/blog" onClick={() => setOpen(false)} aria-current={onBlog ? "page" : undefined}>
+            Blog
+            <ArrowUpRight size={18} />
+          </Link>
           <a href={contactHref} onClick={() => setOpen(false)}>
             Let's talk <ArrowUpRight size={18} />
           </a>
@@ -121,6 +131,9 @@ export function EducationFooter({
               and a clear way forward.
             </p>
             <a href={`mailto:${PUBLIC_INQUIRY_EMAIL}`}>{PUBLIC_INQUIRY_EMAIL}</a>
+            <Link className="edu-footer-resource" href="/blog">
+              Blog <ArrowUpRight size={16} />
+            </Link>
           </div>
           <div>
             <p className="edu-eyebrow">Ideas for your school</p>
@@ -157,13 +170,16 @@ export function EducationFooter({
         <div className="edu-footer-bottom">
           <small>© {new Date().getFullYear()} NovaPath</small>
           <p>Practical software. Built around people.</p>
-          <a
-            href="https://www.linkedin.com/in/danwhitlock/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn <ArrowUpRight size={14} />
-          </a>
+          <div className="edu-footer-legal-links">
+            <Link href="/blog">Blog</Link>
+            <a
+              href="https://www.linkedin.com/in/danwhitlock/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn <ArrowUpRight size={14} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
