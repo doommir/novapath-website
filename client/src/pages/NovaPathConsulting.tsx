@@ -194,6 +194,12 @@ function Services() {
       body: "Explore whether a tool such as CoachingOS fits your needs, then work through how it will support your people and practices.",
       detail: "Fit assessment · Introduction · Ongoing learning",
     },
+    {
+      number: "04",
+      title: "Wage & compensation studies",
+      body: "Plan competitive pay with clear salary and benefits comparisons for Head Start programs, schools, and nonprofits. Documented findings and practical recommendations support your next compensation decision.",
+      detail: "Position matching · Market benchmarks · Leadership reports",
+    },
   ];
   return (
     <section id="services" className="edu-services">
@@ -215,7 +221,13 @@ function Services() {
         </div>
         <div>
           {services.map((service) => (
-            <a key={service.number} href="#contact" className="edu-engagement">
+            <a
+              key={service.number}
+              href="#contact"
+              className="edu-engagement"
+              id={service.number === "04" ? "wage-compensation-studies" : undefined}
+              aria-label={service.number === "04" ? "Inquire about wage and compensation studies" : undefined}
+            >
               <span>{service.number}</span>
               <div>
                 <h3>{service.title}</h3>
@@ -513,6 +525,9 @@ function ContactForm() {
     "Principal",
     "Instructional Coach",
     "EdTech Company",
+    "Head Start / Early Head Start Director",
+    "Human Resources / Finance Leader",
+    "Nonprofit Executive",
     "Other",
   ];
 
@@ -541,7 +556,7 @@ function ContactForm() {
             className="text-4xl font-bold mb-3"
             style={{ color: C.white, letterSpacing: "-0.025em" }}
           >
-            Let’s start with your school.
+            Let’s start with your organization.
           </h2>
           <p style={{ color: C.muted, fontSize: "15px" }}>
             Tell us about your school, district, or organization and what you
@@ -697,4 +712,3 @@ function ContactForm() {
     </section>
   );
 }
-
