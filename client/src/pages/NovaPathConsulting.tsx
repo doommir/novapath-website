@@ -11,6 +11,7 @@ import {
 
 import { ArrowUpRight, ArrowDown } from "lucide-react";
 import "@/education.css";
+import { PUBLIC_INQUIRY_EMAIL } from "@shared/contact";
 
 const CALENDLY_URL = "https://calendly.com/novapath711/30min";
 
@@ -512,7 +513,7 @@ function ContactForm() {
         variant: "destructive",
         title: "Something went wrong",
         description:
-          "Please try again or email Dan@explorenovapath.com directly.",
+          `Please try again or email ${PUBLIC_INQUIRY_EMAIL} directly.`,
       });
     },
   });

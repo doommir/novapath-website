@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { PUBLIC_INQUIRY_EMAIL } from "@shared/contact";
 
 export function BrandIdentity() {
   return (
@@ -119,7 +120,7 @@ export function EducationFooter({
               <br />
               and a clear way forward.
             </p>
-            <a href="mailto:Dan@explorenovapath.com">Dan@explorenovapath.com</a>
+            <a href={`mailto:${PUBLIC_INQUIRY_EMAIL}`}>{PUBLIC_INQUIRY_EMAIL}</a>
           </div>
           <div>
             <p className="edu-eyebrow">Ideas for your school</p>

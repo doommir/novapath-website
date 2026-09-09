@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertLeadSchema, insertPreorderSchema, insertPdInquirySchema, insertAutograderInquirySchema, insertMathMovesInquirySchema, insertInvestorInquirySchema, insertConsultingInquirySchema, insertCobuilderInquirySchema, insertNetworkMemberSchema } from "@shared/schema";
 import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro, generateReviewMessage, generateSpeech } from "./lib/openai";
 import { setupRealtimeWebSocket } from "./lib/realtime";
+import { notifyTeamInquiry } from "./lib/inquiry-notify";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/leads - Create a new lead (waitlist signup)
@@ -156,6 +157,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertConsultingInquirySchema.parse(req.body);
       const consultingInquiry = await storage.createConsultingInquiry(validatedData);
+      await notifyTeamInquiry({
+        source: "consulting",
+        subject: `Education inquiry from ${validatedData.name}`,
+        replyTo: validatedData.email,
+        fields: {
+          Name: validatedData.name,
+          Role: validatedData.role,
+          "District / Organization": validatedData.district,
+          Email: validatedData.email,
+          Challenge: validatedData.challenge,
+        },
+      });
       res.json({ success: true, consultingInquiry });
     } catch (error) {
       console.error("Error creating consulting inquiry:", error instanceof Error ? error.message : "Unknown error");
@@ -179,6 +192,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertCobuilderInquirySchema.parse(req.body);
       const cobuilderInquiry = await storage.createCobuilderInquiry(validatedData);
+      await notifyTeamInquiry({
+        source: "cobuilder",
+        subject: `Education cobuilder inquiry from ${validatedData.name}`,
+        replyTo: validatedData.email,
+        fields: {
+          Name: validatedData.name,
+          Email: validatedData.email,
+          "App description": validatedData.appDescription,
+          "Stuck point": validatedData.stuckPoint,
+          Budget: validatedData.budget,
+        },
+      });
       res.json({ success: true, cobuilderInquiry });
     } catch (error) {
       console.error("Error creating cobuilder inquiry:", error instanceof Error ? error.message : "Unknown error");

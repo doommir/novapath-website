@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Wrench, Server, ShieldCheck, Sparkles, Rocket, Compass } from "lucide-react";
 import danPresenting from "@assets/copyofdan_1770090391461.png";
+import { PUBLIC_INQUIRY_EMAIL } from "@shared/contact";
 
 const CALENDLY_URL = "https://calendly.com/novapath711/30min";
 
@@ -708,7 +709,7 @@ function CobuilderForm() {
       toast({
         variant: "destructive",
         title: "Something went wrong",
-        description: "Please try again or email Dan@explorenovapath.com directly.",
+        description: `Please try again or email ${PUBLIC_INQUIRY_EMAIL} directly.`,
       });
     },
   });
@@ -880,12 +881,12 @@ function CobuilderFooter() {
         <div>
           <p className="text-base font-semibold mb-2" style={{ color: "#FFFFFF" }}>NovaPath</p>
           <a
-            href="mailto:Dan@explorenovapath.com"
+            href={`mailto:${PUBLIC_INQUIRY_EMAIL}`}
             className="text-sm hover:opacity-80 block mb-1"
             style={{ color: "#6B6580" }}
             data-testid="link-cobuilder-footer-email"
           >
-            Dan@explorenovapath.com
+            {PUBLIC_INQUIRY_EMAIL}
           </a>
           <p className="text-sm mt-3" style={{ color: "#6B6580" }}>© 2026 NovaPath</p>
         </div>
