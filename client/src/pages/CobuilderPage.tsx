@@ -490,7 +490,7 @@ function AboutDanShort({ onCtaClick }: { onCtaClick: () => void }) {
               Dan Whitlock
             </h2>
             <p className="text-sm mb-6" style={{ color: "#6B6580" }}>
-              Founder, NovaPath · Technology Innovation Lead, Navigator Schools
+              Founder, NovaPath · Former Technology Innovation Lead, Navigator Schools
             </p>
 
             <div
@@ -498,7 +498,7 @@ function AboutDanShort({ onCtaClick }: { onCtaClick: () => void }) {
               style={{ color: "#B4B0C4", fontSize: "15px", lineHeight: "1.7" }}
             >
               <p>
-                Dan has built and shipped 8+ AI-powered apps in real-world settings — not demos, but tools that run daily in schools with 1,900+ students. He uses the same AI-assisted cobuilding approach for every project, which means he moves fast and he teaches as he goes.
+                Dan has built and shipped 8+ AI-powered apps in real-world K-12 settings — not demos, but tools used by teachers and school leaders. He uses the same AI-assisted cobuilding approach for every project, which means he moves fast and he teaches as he goes.
               </p>
               <p>
                 If your app is stuck, he's probably seen that problem before. He can assess your codebase, identify what's blocking you, and help you ship it — faster than starting over and without the usual consultant runaround.
