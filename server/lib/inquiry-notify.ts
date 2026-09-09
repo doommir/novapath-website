@@ -9,6 +9,7 @@ export type InquiryNotifyInput = {
   source: string;
   subject: string;
   replyTo: string;
+  visitorName: string;
   fields: Record<string, string | null | undefined>;
 };
 
@@ -78,6 +79,35 @@ export function buildInquiryEmail(input: InquiryNotifyInput): {
   return { html, text };
 }
 
+export function visitorConfirmationSubject(visitorName: string): string {
+  return `We received your inquiry, ${visitorName.trim()}`;
+}
+
+export function buildVisitorConfirmationEmail(visitorName: string): {
+  html: string;
+  text: string;
+} {
+  const name = visitorName.trim();
+  const text = [
+    `Hi ${name},`,
+    "",
+    "We received your inquiry and will follow up shortly.",
+    "",
+    "If you have anything else to add, reply to this email.",
+    "",
+    "NovaPath Education",
+  ].join("\n");
+
+  const html = [
+    `<p>Hi ${escapeHtml(name)},</p>`,
+    "<p>We received your inquiry and will follow up shortly.</p>",
+    "<p>If you have anything else to add, reply to this email.</p>",
+    "<p>NovaPath Education</p>",
+  ].join("");
+
+  return { html, text };
+}
+
 async function getResendApiKey(): Promise<string> {
   const fromEnv = process.env.RESEND_API_KEY?.trim();
   if (fromEnv) {
@@ -122,6 +152,39 @@ async function getResendApiKey(): Promise<string> {
   return apiKey;
 }
 
+async function sendInquiryEmail(params: {
+  to: string;
+  from: string;
+  replyTo: string;
+  subject: string;
+  html: string;
+  text: string;
+  failureLabel: string;
+}): Promise<boolean> {
+  try {
+    const apiKey = await getResendApiKey();
+    const client = new Resend(apiKey);
+    const { error } = await client.emails.send({
+      from: params.from,
+      to: [params.to],
+      replyTo: params.replyTo,
+      subject: params.subject,
+      html: params.html,
+      text: params.text,
+    });
+    if (error) {
+      throw new Error(error.message || error.name || "Resend send failed");
+    }
+    return true;
+  } catch (error) {
+    console.error(
+      params.failureLabel,
+      error instanceof Error ? error.message : "Unknown error",
+    );
+    return false;
+  }
+}
+
 /**
  * Sends a team notification after an inquiry is saved.
  * Failures are logged and do not reject the visitor's successful save.
@@ -133,26 +196,45 @@ export async function notifyTeamInquiry(
   const from = inquiryFromEmail();
   const { html, text } = buildInquiryEmail(input);
 
-  try {
-    const apiKey = await getResendApiKey();
-    const client = new Resend(apiKey);
-    const { error } = await client.emails.send({
-      from,
-      to: [to],
-      replyTo: input.replyTo,
-      subject: input.subject,
-      html,
-      text,
-    });
-    if (error) {
-      throw new Error(error.message || error.name || "Resend send failed");
-    }
-    return true;
-  } catch (error) {
-    console.error(
-      `Failed to notify ${to} for ${input.source} inquiry:`,
-      error instanceof Error ? error.message : "Unknown error",
-    );
-    return false;
-  }
+  return sendInquiryEmail({
+    to,
+    from,
+    replyTo: input.replyTo,
+    subject: input.subject,
+    html,
+    text,
+    failureLabel: `Failed to notify ${to} for ${input.source} inquiry:`,
+  });
+}
+
+/**
+ * Sends a visitor confirmation after an inquiry is saved.
+ * To = visitor, Reply-To = team inquiry address. Failures do not roll back the save.
+ */
+export async function notifyVisitorInquiry(
+  input: InquiryNotifyInput,
+): Promise<boolean> {
+  const team = inquiryToEmail();
+  const from = inquiryFromEmail();
+  const { html, text } = buildVisitorConfirmationEmail(input.visitorName);
+
+  return sendInquiryEmail({
+    to: input.replyTo,
+    from,
+    replyTo: team,
+    subject: visitorConfirmationSubject(input.visitorName),
+    html,
+    text,
+    failureLabel: `Failed to confirm ${input.source} inquiry to visitor:`,
+  });
+}
+
+/**
+ * Sends both the team notification and the visitor confirmation.
+ * Each send is independent; failures are logged and do not reject the save.
+ */
+export async function notifyInquiry(
+  input: InquiryNotifyInput,
+): Promise<void> {
+  await Promise.all([notifyTeamInquiry(input), notifyVisitorInquiry(input)]);
 }
