@@ -556,6 +556,40 @@
 .edu-site #contact .max-w-2xl {
   max-width: 760px;
 }
+.edu-preview {
+  padding: 140px 0 96px;
+  min-height: calc(100vh - 220px);
+}
+.edu-preview-panel {
+  max-width: 640px;
+  background: #ffffff;
+  border: 1px solid var(--edu-border);
+  padding: 48px;
+}
+.edu-preview-product {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--edu-muted);
+}
+.edu-preview h1 {
+  margin: 0 0 22px;
+  font-size: clamp(2.3rem, 4vw, 3.35rem);
+}
+.edu-preview p {
+  margin: 0 0 16px;
+  color: var(--edu-muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.edu-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  margin-top: 28px;
+}
 .edu-footer {
   padding: 42px 0 24px;
   background: #302230;
@@ -776,6 +810,13 @@
   .edu-site .max-w-7xl,
   .edu-site .max-w-6xl {
     width: calc(100% - 40px);
+  }
+  .edu-preview {
+    padding-top: 110px;
+    padding-bottom: 64px;
+  }
+  .edu-preview-panel {
+    padding: 28px 22px;
   }
   .edu-hero {
     padding-top: 103px;

@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion, MotionConfig } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import danPresenting from "@assets/copyofdan_1770090391461.png";
+import {
+  EducationFooter,
+  EducationHeader,
+} from "@/components/EducationChrome";
 
-import { ArrowUpRight, ArrowRight, ArrowDown, Menu, X } from "lucide-react";
+import { ArrowUpRight, ArrowDown } from "lucide-react";
 import "@/education.css";
 
 const CALENDLY_URL = "https://calendly.com/novapath711/30min";
@@ -36,15 +40,6 @@ function fade(delay = 0) {
   };
 }
 
-function BrandIdentity() {
-  return (
-    <>
-      <span className="edu-mark" aria-hidden="true" />
-      NovaPath
-    </>
-  );
-}
-
 export default function NovaPathConsulting() {
   return (
     <MotionConfig reducedMotion="user">
@@ -52,7 +47,7 @@ export default function NovaPathConsulting() {
         <a className="edu-skip" href="#main">
           Skip to content
         </a>
-        <StickyNav />
+        <EducationHeader onHomePage />
         <main id="main" tabIndex={-1}>
           <Hero />
           <div id="about">
@@ -66,86 +61,9 @@ export default function NovaPathConsulting() {
             <ContactForm />
           </div>
         </main>
-        <SiteFooter />
+        <EducationFooter onHomePage />
       </div>
     </MotionConfig>
-  );
-}
-
-function StickyNav() {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        document.getElementById("education-menu-toggle")?.focus();
-      }
-    };
-    document.addEventListener("keydown", closeOnEscape);
-    return () => document.removeEventListener("keydown", closeOnEscape);
-  }, []);
-  const links = [
-    { label: "Our approach", href: "#about" },
-    { label: "Selected work", href: "#results" },
-    { label: "Work with us", href: "#services" },
-  ];
-  return (
-    <header className="edu-header">
-      <div className="edu-container edu-header-row">
-        <a
-          href="#hero"
-          className="edu-brand"
-          aria-label="NovaPath Education home"
-        >
-          <BrandIdentity />
-        </a>
-        <nav className="edu-audience" aria-label="NovaPath audiences">
-          <a href="#hero" aria-current="page">
-            Education
-          </a>
-          <a href="https://novapath.dev/">
-            Business <ArrowUpRight size={12} />
-          </a>
-        </nav>
-        <nav className="edu-desktop-nav" aria-label="Main navigation">
-          {links.map((l) => (
-            <a key={l.href} href={l.href}>
-              {l.label}
-            </a>
-          ))}
-          <a className="edu-nav-cta" href="#contact">
-            Let's talk <ArrowUpRight size={16} />
-          </a>
-        </nav>
-        <button
-          className="edu-menu-toggle"
-          id="education-menu-toggle"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          aria-controls="education-mobile-nav"
-          aria-label={open ? "Close navigation" : "Open navigation"}
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-      {open && (
-        <nav
-          className="edu-mobile-nav"
-          id="education-mobile-nav"
-          aria-label="Mobile navigation"
-        >
-          {links.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
-              {l.label}
-              <ArrowUpRight size={18} />
-            </a>
-          ))}
-          <a href="#contact" onClick={() => setOpen(false)}>
-            Let's talk <ArrowUpRight size={18} />
-          </a>
-        </nav>
-      )}
-    </header>
   );
 }
 
@@ -468,7 +386,7 @@ function AboutDan() {
             <p className="text-sm mb-8" style={{ color: C.faint }}>
               Dan Whitlock · Founder, NovaPath
               <br />
-              Technology Innovation Lead, Navigator Schools
+              Former Technology Innovation Lead, Navigator Schools
             </p>
 
             <div
@@ -477,8 +395,8 @@ function AboutDan() {
             >
               <p>
                 Dan brings an educator's perspective to NovaPath's work. As
-                Technology Innovation Lead at Navigator Schools, he builds tools
-                alongside the teachers and school leaders who use them.
+                Technology Innovation Lead at Navigator Schools, he built tools
+                alongside the teachers and school leaders who used them.
               </p>
               <p>
                 He's built and deployed 8+ AI-powered tools in real K-12
@@ -780,67 +698,3 @@ function ContactForm() {
   );
 }
 
-// ─── Footer ───────────────────────────────────────────────────────────────────
-function SiteFooter() {
-  return (
-    <footer className="edu-footer">
-      <div className="edu-container">
-        <div className="edu-footer-top">
-          <div>
-            <a href="#hero" className="edu-brand">
-              <BrandIdentity />
-            </a>
-            <p>
-              K–12 consulting, custom software,
-              <br />
-              and a clear way forward.
-            </p>
-            <a href="mailto:Dan@explorenovapath.com">Dan@explorenovapath.com</a>
-          </div>
-          <div>
-            <p className="edu-eyebrow">Ideas for your school</p>
-            <h3>Smarter by Design</h3>
-            <p>Explore Dan's newsletter on AI and the work of education.</p>
-            <a
-              className="edu-text-link"
-              href="https://smarterbydesign.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Read the newsletter <ArrowUpRight size={16} />
-            </a>
-            <a
-              className="edu-footer-resource"
-              href="https://checklist.smarterbydesign.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Take the AI readiness assessment <ArrowUpRight size={16} />
-            </a>
-          </div>
-          <div>
-            <p className="edu-eyebrow">One team. Two areas of focus.</p>
-            <h3>Building for a business?</h3>
-            <p>
-              Explore our websites, apps, and workflow tools for businesses.
-            </p>
-            <a className="edu-text-link" href="https://novapath.dev/">
-              NovaPath for Business <ArrowUpRight size={16} />
-            </a>
-          </div>
-        </div>
-        <div className="edu-footer-bottom">
-          <small>© {new Date().getFullYear()} NovaPath Systems</small>
-          <p>Practical software. Built around people.</p>
-          <a
-            href="https://www.linkedin.com/in/danwhitlock/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn <ArrowUpRight size={14} />
-          </a>
-        </div>
-      </div>
-    </footer>
-  );
-}
