@@ -7,16 +7,17 @@ let openai: OpenAI | null = null;
 
 function getOpenAIClient(): OpenAI | null {
   if (openai) return openai;
-  
+
+  const apiKey =
+    process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
   const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
-  const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
-  
-  if (!baseURL || !apiKey) {
+
+  if (!apiKey) {
     console.warn("OpenAI integration not configured. Using fallback responses.");
     return null;
   }
-  
-  openai = new OpenAI({ baseURL, apiKey });
+
+  openai = new OpenAI(baseURL ? { baseURL, apiKey } : { apiKey });
   return openai;
 }
 
