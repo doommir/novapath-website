@@ -65,7 +65,7 @@ function listen() {
 // other routes so the catch-all route doesn't interfere with the other routes.
 if (process.env.VERCEL) {
   serveStatic(app);
-} else if (app.get("env") === "development") {
+} else if (process.env.NODE_ENV === "development") {
   void import("./vite").then(async ({ setupVite }) => {
     await setupVite(app, server);
     listen();
