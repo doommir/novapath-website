@@ -1,14 +1,19 @@
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import * as schema from "@shared/schema";
 
+// DATABASE_URL must be the Supabase Transaction pooler URI
+// (Dashboard → Connect → Transaction pooler, typically port 6543).
+// That mode is required for Vercel serverless; session/direct URLs
+// can exhaust Postgres connections under bursty function traffic.
 function createDb() {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL environment variable is not set");
   }
 
-  const sql = neon(process.env.DATABASE_URL);
-  return drizzle(sql, { schema });
+  // PgBouncer transaction mode does not support prepared statements.
+  const client = postgres(process.env.DATABASE_URL, { prepare: false });
+  return drizzle(client, { schema });
 }
 
 type Database = ReturnType<typeof createDb>;
