@@ -6,7 +6,7 @@ import { generatePeerPrompts, generateEmotionalValidation, generateResultsIntro,
 import { setupRealtimeWebSocket } from "./lib/realtime";
 import { notifyInquiry } from "./lib/inquiry-notify";
 
-export async function registerRoutes(app: Express): Promise<Server> {
+export function registerRoutes(app: Express): Server {
   // POST /api/leads - Create a new lead (waitlist signup)
   app.post("/api/leads", async (req, res) => {
     try {
