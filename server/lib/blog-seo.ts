@@ -47,6 +47,11 @@ function pathnameFromUrl(url: string): string {
 
 export function seoForRequestUrl(url: string): RouteSeo | null {
   const pathname = pathnameFromUrl(url);
+  const pages: Record<string, { title: string; description: string }> = {
+    "/about": { title: "About NovaPath | Schools, Head Start & Nonprofits", description: "Learn about NovaPath and its work supporting educators and program leaders." },
+    "/cobuilder": { title: "Build with NovaPath | Custom Software", description: "Discuss a custom software project with NovaPath." },
+  };
+  if (pages[pathname]) return { ...pages[pathname], url: `${SITE_ORIGIN}${pathname}` };
   if (pathname === "/blog") {
     return {
       ...BLOG_INDEX_SEO,
@@ -87,7 +92,7 @@ function replaceMeta(
 ): string {
   const escaped = escapeAttribute(content);
   const pattern = new RegExp(
-    `<meta\\s+${attr}="${key}"\\s+content="[^"]*"\\s*/>`,
+    `<meta\\s+${attr}="${key}"\\s+content="[^"]*"\\s*/?>`,
     "i",
   );
   if (pattern.test(html)) {
@@ -111,5 +116,9 @@ export function applyRouteSeo(html: string, seo: RouteSeo): string {
   next = replaceMeta(next, "name", "twitter:title", seo.title);
   next = replaceMeta(next, "name", "twitter:description", seo.description);
   next = replaceMeta(next, "property", "og:url", seo.url);
+  const canonical = `<link rel="canonical" href="${escapeAttribute(seo.url)}" />`;
+  next = /<link\s+rel="canonical"[^>]*>/i.test(next)
+    ? next.replace(/<link\s+rel="canonical"[^>]*>/i, canonical)
+    : next.replace("</head>", canonical + "</head>");
   return next;
 }

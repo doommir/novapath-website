@@ -44,7 +44,16 @@ export function serveStatic(app: Express) {
   // fall through to index.html if the file doesn't exist
   app.use("*", (req, res) => {
     const indexPath = path.resolve(distPath, "index.html");
+    const pathname = req.originalUrl.split("?")[0].replace(/\/$/, "") || "/";
+    const renderedPath = path.resolve(distPath, "rendered-pages.json");
+    const rendered = fs.existsSync(renderedPath)
+      ? JSON.parse(fs.readFileSync(renderedPath, "utf-8")) as Record<string, string>
+      : {};
     const seo = seoForRequestUrl(req.originalUrl);
+    if (rendered[pathname]) {
+      res.status(200).type("html").send(seo ? applyRouteSeo(rendered[pathname], seo) : rendered[pathname]);
+      return;
+    }
     if (!seo) {
       res.sendFile(indexPath);
       return;

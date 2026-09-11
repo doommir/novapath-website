@@ -146,7 +146,7 @@ function Services() {
       title: "CoachingOS",
       body: "Give your coaching team one place to capture observations, identify a focus, and follow through on next steps. Implementation support connects the platform to your instructional model.",
       detail: "Classroom observations · Coaching cycles · Follow-through",
-      href: "#contact",
+      href: "/coachingos/",
     },
     {
       id: "wage-compensation-studies",
@@ -160,7 +160,7 @@ function Services() {
       title: "Training & compliance courses",
       body: "Prepare staff for the work they need to do with training and compliance courses built around your program’s needs. Start with the topics, audience, and requirements you need to address.",
       detail: "Staff training · Compliance topics · Program-specific needs",
-      href: "#contact",
+      href: "/training-compliance-courses/",
     },
     {
       id: "custom-software",

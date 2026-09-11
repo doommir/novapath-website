@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 
 const DEFAULT_TITLE =
-  "NovaPath Education — K–12 Consulting & Custom Software";
+  "NovaPath — Schools, Head Start & Nonprofits";
 const DEFAULT_DESCRIPTION =
-  "K–12 consulting, custom software, and implementation support. NovaPath builds practical tools alongside the educators and school leaders who use them.";
+  "CoachingOS, wage and compensation studies, and training and compliance courses for schools, Head Start programs, and nonprofits.";
 const DEFAULT_OG_DESCRIPTION =
-  "K–12 consulting, custom software, and implementation support. Practical technology built around your schools.";
+  "Coaching software, compensation studies, and staff training for schools, Head Start programs, and nonprofits.";
 
 type PageMeta = {
   title: string;
@@ -31,6 +31,15 @@ function setMeta(
 
 function applyMeta({ title, description }: PageMeta, ogDescription?: string) {
   document.title = title;
+  const canonicalUrl = `https://explorenovapath.com${window.location.pathname.replace(/\/$/, "") || "/"}`;
+  let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+  }
+  canonical.href = canonicalUrl;
+  setMeta("property", "og:url", canonicalUrl);
   setMeta("name", "description", description);
   setMeta("property", "og:title", title);
   setMeta("property", "og:description", ogDescription ?? description);
