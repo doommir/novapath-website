@@ -158,8 +158,8 @@ export function registerRoutes(app: Express): Server {
       const validatedData = insertConsultingInquirySchema.parse(req.body);
       const consultingInquiry = await storage.createConsultingInquiry(validatedData);
       await notifyInquiry({
-        source: "consulting",
-        subject: `Education inquiry from ${validatedData.name}`,
+        source: validatedData.role === "Wage study prospect" ? "wage-study" : "consulting",
+        subject: `${validatedData.role === "Wage study prospect" ? "Wage study request" : "Education inquiry"} from ${validatedData.name}`,
         replyTo: validatedData.email,
         visitorName: validatedData.name,
         fields: {
