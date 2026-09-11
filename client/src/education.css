@@ -1083,3 +1083,26 @@
     transform: none !important;
   }
 }
+
+/* Featured paid offerings: visible before biography and project details. */
+.edu-featured-offers{display:grid;gap:20px;min-width:0}
+.edu-feature-kicker{display:block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.edu-wage-feature{display:block;padding:30px;background:#48283f;color:#fff;text-decoration:none;border:1px solid #48283f;border-radius:4px}
+.edu-wage-feature:hover{background:#3b2033}
+.edu-wage-promise{display:flex;align-items:center;gap:20px;margin:18px 0}
+.edu-wage-promise strong{font:normal 90px/1 Georgia,serif}
+.edu-wage-promise span{font-size:19px;line-height:1.4}
+.edu-wage-feature h2,.edu-coach-feature h2{font:normal 30px/1.15 Georgia,serif;letter-spacing:-.02em;margin:0 0 12px}
+.edu-wage-feature p,.edu-coach-feature>p{font-size:16px;line-height:1.6;margin:0 0 16px}
+.edu-wage-feature small{display:block;font-size:13px;line-height:1.5;color:#eadde6}
+.edu-feature-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid currentColor;font-size:15px;font-weight:600;text-decoration:none}
+.edu-coach-feature{padding:28px;background:#fff;border:1px solid #d9d1ca;border-radius:4px}
+.edu-coach-feature>.edu-feature-kicker{color:#79526a;margin-bottom:14px}
+.edu-coach-example{background:#f3eef2;border-left:3px solid #79526a;padding:18px}
+.edu-coach-example>.edu-feature-kicker{font-size:11px;letter-spacing:.05em;margin-bottom:12px;color:#66535f}
+.edu-coach-example details{border-top:1px solid #d7cad3;padding:12px 0}
+.edu-coach-example summary{font-size:15px;font-weight:600;cursor:pointer}
+.edu-coach-example details p{font-size:14px;line-height:1.55;margin:10px 0 0}
+.edu-featured-offers a:focus-visible,.edu-coach-example summary:focus-visible{outline:3px solid #b38b4b;outline-offset:5px}
+@media(min-width:850px){.edu-hero-grid{align-items:start}.edu-hero h1{font-size:clamp(54px,5.2vw,78px)}}
+@media(max-width:700px){.edu-wage-feature,.edu-coach-feature{padding:24px}.edu-wage-promise strong{font-size:72px}.edu-hero-grid{gap:28px}.edu-hero-foot{display:none}}

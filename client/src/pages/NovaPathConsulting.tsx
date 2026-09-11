@@ -51,13 +51,13 @@ export default function NovaPathConsulting() {
         <EducationHeader onHomePage />
         <main id="main" tabIndex={-1}>
           <Hero />
-          <div id="about">
-            <AboutDan />
-          </div>
+          <Services />
           <div id="results">
             <CaseStudies />
           </div>
-          <Services />
+          <div id="about">
+            <AboutDan />
+          </div>
           <div id="contact">
             <ContactForm />
           </div>
@@ -92,73 +92,36 @@ function Hero() {
               their people and run their programs.
             </p>
             <div className="edu-actions">
-              <a className="edu-button" href="#contact">
-                Discuss your organization’s needs <ArrowUpRight size={18} />
+              <a className="edu-button" href="#services">
+                Find the right support <ArrowUpRight size={18} />
               </a>
               <a className="edu-text-link" href="#results">
                 Explore our work <ArrowDown size={16} />
               </a>
             </div>
           </div>
-          <figure className="edu-product-study">
-            <div className="edu-study-label">
-              <span>Inside the work / 01</span>
-              <span>CoachingOS</span>
+          <div className="edu-featured-offers">
+            <a className="edu-wage-feature" href="/wage-compensation-studies/">
+              <span className="edu-feature-kicker">Wage & compensation studies</span>
+              <div className="edu-wage-promise"><strong>5</strong><span>business days<br />to your study draft</span></div>
+              <h2>Know where your pay stands.</h2>
+              <p>Salary and benefits benchmarks. Careful position matching. Clear priorities for your next compensation decision.</p>
+              <small>After scope and complete data are confirmed. Final revisions scheduled separately.</small>
+              <span className="edu-feature-cta">Request your study proposal <ArrowUpRight size={20} /></span>
+            </a>
+            <div className="edu-coach-feature">
+              <span className="edu-feature-kicker">CoachingOS</span>
+              <h2>Make the next classroom visit count.</h2>
+              <p>Keep the evidence, the agreed action, and the next conversation connected.</p>
+              <div className="edu-coach-example">
+                <span className="edu-feature-kicker">One coaching cycle · Illustrative example</span>
+                <details open><summary>01 / What happened?</summary><p>Four students shared an explanation. Others listened without rehearsing their own response.</p></details>
+                <details><summary>02 / What changes tomorrow?</summary><p>Give every student a partner rehearsal before asking for whole-group responses.</p></details>
+                <details><summary>03 / What will we look for next?</summary><p>Return to the agreed action: are more students explaining their thinking before the discussion?</p></details>
+              </div>
+              <a href="#contact" className="edu-feature-cta">Bring your coaching model to life <ArrowUpRight size={20} /></a>
             </div>
-            <div className="edu-sample-sheet">
-              <div className="edu-sheet-top">
-                <span>INSTRUCTIONAL COACHING</span>
-                <span>Illustrative example</span>
-              </div>
-              <h2>
-                From observation
-                <br />
-                to a useful next step.
-              </h2>
-              <p className="edu-sheet-subtitle">
-                A coaching cycle, made visible.
-              </p>
-              <div className="edu-evidence-row">
-                <span>01</span>
-                <div>
-                  <h3>Observe</h3>
-                  <p>
-                    Students explain their thinking during a small-group
-                    discussion.
-                  </p>
-                  <small>Classroom evidence</small>
-                </div>
-              </div>
-              <div className="edu-evidence-row">
-                <span>02</span>
-                <div>
-                  <h3>Identify a focus</h3>
-                  <p>
-                    Make space for every student to contribute an explanation.
-                  </p>
-                  <small>Instructional priority</small>
-                </div>
-              </div>
-              <div className="edu-evidence-row">
-                <span>03</span>
-                <div>
-                  <h3>Agree on an action</h3>
-                  <p>
-                    Plan a partner rehearsal before the next group discussion.
-                  </p>
-                  <small>Next coaching conversation</small>
-                </div>
-              </div>
-              <div className="edu-sheet-bottom">
-                <span>Evidence → Focus → Action</span>
-                <span>NP / Education</span>
-              </div>
-            </div>
-            <figcaption>
-              CoachingOS connects observations and action steps. This sample
-              illustrates the workflow using fictional classroom content.
-            </figcaption>
-          </figure>
+          </div>
         </div>
         <div className="edu-hero-foot">
           <span>Built alongside educators.</span>
@@ -262,15 +225,15 @@ function CaseStudies() {
       name: "CoachingOS",
       area: "Instructional coaching",
       challenge:
-        "Classroom observations and follow-up actions need a shared place to live.",
+        "You leave a classroom with useful notes. By the next visit, the agreed next step can be hard to find.",
       built:
-        "A system that brings coaching activity, observation records, and targeted action steps into view.",
+        "CoachingOS keeps observations, instructional focus, and action steps connected so each conversation builds on the last.",
       workflow:
-        "Use classroom evidence to identify an instructional focus and make the next coaching conversation more useful.",
+        "Capture the evidence. Agree on one change to try. Return to it on the next visit and decide what comes next.",
       evidence:
         "1,892 classroom observations and 2,185 targeted action steps recorded.",
-      href: "/coachingOSdemo",
-      link: "Explore CoachingOS",
+      href: "#contact",
+      link: "Discuss your coaching model",
     },
     {
       name: "NaviGrade",
