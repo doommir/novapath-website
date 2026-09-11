@@ -11,6 +11,7 @@ import {
 
 import { ArrowUpRight, ArrowDown } from "lucide-react";
 import "@/education.css";
+import { inquiryDiscoverySummary } from "@/lib/discovery";
 import { PUBLIC_INQUIRY_EMAIL } from "@shared/contact";
 
 const CALENDLY_URL = "https://calendly.com/novapath711/30min";
@@ -167,14 +168,14 @@ function Services() {
       title: "Custom software",
       body: "Build around the work your team actually does, from instructional coaching to assessment and program operations.",
       detail: "Collaborative design · Working prototypes · Refinement",
-      href: "#contact",
+      href: "/custom-software/",
     },
     {
       id: "strategic-advisory",
       title: "Strategic advisory",
       body: "Define the problem, make informed decisions about AI, and develop an implementation plan around your organization’s priorities.",
       detail: "Priorities · Workflow discovery · Implementation planning",
-      href: "#contact",
+      href: "/strategic-advisory/",
     },
   ];
   return (
@@ -468,8 +469,13 @@ function ContactForm() {
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: typeof formData) =>
-      apiRequest("POST", "/api/consulting-inquiries", data),
+    mutationFn: async (data: typeof formData) => {
+      const discovery = inquiryDiscoverySummary();
+      return apiRequest("POST", "/api/consulting-inquiries", {
+        ...data,
+        challenge: [data.challenge, discovery ? "Discovery context (browser-reported):\n" + discovery : ""].filter(Boolean).join("\n\n"),
+      });
+    },
     onSuccess: () => {
       toast({
         title: "Thank you!",
