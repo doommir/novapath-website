@@ -126,9 +126,9 @@ export function EducationFooter({
               <BrandIdentity />
             </a>
             <p>
-              K–12 consulting, custom software,
+              Coaching, compensation studies,
               <br />
-              and a clear way forward.
+              and training for your team.
             </p>
             <a href={`mailto:${PUBLIC_INQUIRY_EMAIL}`}>{PUBLIC_INQUIRY_EMAIL}</a>
             <Link className="edu-footer-resource" href="/blog">
@@ -172,6 +172,7 @@ export function EducationFooter({
           <p>Practical software. Built around people.</p>
           <div className="edu-footer-legal-links">
             <Link href="/blog">Blog</Link>
+            <a href="/guides/">Buyer guides</a>
             <a
               href="https://www.linkedin.com/in/danwhitlock/"
               target="_blank"
