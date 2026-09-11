@@ -22,7 +22,7 @@
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"NovaPath Wage & Compensation Studies","serviceType":"Wage and compensation study","provider":{"@type":"Organization","name":"NovaPath","url":"https://explorenovapath.com"},"url":"https://explorenovapath.com/wage-compensation-studies/","description":"Salary and benefits benchmarking, position matching, and practical recommendations for Head Start programs and nonprofits. Complete draft within five business days after scope and complete data are confirmed."}</script>
-</head>
+<script src="/discovery.js" defer></script></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header><div class="wrap"><a class="brand" href="/" aria-label="NovaPath home"><img src="/brand/np-mark.svg" alt="">NovaPath</a><span class="eyebrow">Wage & compensation studies</span></div></header>
@@ -59,6 +59,7 @@ form.addEventListener('submit',async(event)=>{
   const values=new FormData(form);const query=new URLSearchParams(location.search);
   const sources=['utm_source','utm_medium','utm_campaign','utm_content'].map(key=>[key,(query.get(key)||'').slice(0,150)]).filter(([,value])=>value).map(([key,value])=>key+': '+value).join('\n');
   const payload={name:String(values.get('name')).trim(),email:String(values.get('email')).trim(),district:String(values.get('organization')).trim(),role:'Wage study prospect',challenge:'Wage & Compensation Study — five-business-day draft request\nDistinct job titles: '+values.get('positions')+'\nTarget date: '+(values.get('deadline')||'Not specified')+'\nSource: /wage-compensation-studies/\n'+sources};
+  const discovery=window.NovaPathDiscovery?.summary();if(discovery)payload.challenge+='\n\nDiscovery context (browser-reported):\n'+discovery;
   try{const response=await fetch('/api/consulting-inquiries',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const result=await response.json();if(!response.ok||!result.success)throw new Error('save failed');document.getElementById('sent-email').textContent=payload.email;form.hidden=true;document.getElementById('form-intro').hidden=true;document.getElementById('success').hidden=false;document.getElementById('success-title').focus();}
   catch(e){error.textContent='We couldn’t confirm your request. Your details are still here. Please try again, or email hello@explorenovapath.com.';error.hidden=false;button.disabled=false;button.textContent='Request my study proposal';}
 });
