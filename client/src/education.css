@@ -1098,6 +1098,10 @@
 .edu-feature-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid currentColor;font-size:15px;font-weight:600;text-decoration:none}
 .edu-coach-feature{padding:28px;background:#fff;border:1px solid #d9d1ca;border-radius:4px}
 .edu-coach-feature>.edu-feature-kicker{color:#79526a;margin-bottom:14px}
+.edu-coach-feature{color:#302230}
+.edu-coach-feature h2,.edu-coach-feature summary,.edu-coach-feature .edu-feature-cta{color:#302230}
+.edu-coach-feature>p,.edu-coach-example details p{color:#514750}
+.edu-coach-feature .edu-feature-cta{border-color:#d7cad3}
 .edu-coach-example{background:#f3eef2;border-left:3px solid #79526a;padding:18px}
 .edu-coach-example>.edu-feature-kicker{font-size:11px;letter-spacing:.05em;margin-bottom:12px;color:#66535f}
 .edu-coach-example details{border-top:1px solid #d7cad3;padding:12px 0}
