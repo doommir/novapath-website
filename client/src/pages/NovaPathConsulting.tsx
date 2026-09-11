@@ -73,26 +73,27 @@ function Hero() {
     <section className="edu-hero" id="hero">
       <div className="edu-container">
         <div className="edu-hero-kicker">
-          <span>K–12 consulting & custom software</span>
+          <span>For schools, Head Start & nonprofits</span>
           <span>Insight · Design · Implementation</span>
         </div>
         <div className="edu-hero-grid">
           <div>
             <h1>
-              School expertise.
+              Stronger teams.
               <br />
               <em>
-                Built into
-                <br /> better systems.
+                Better-run
+                <br /> programs.
               </em>
             </h1>
             <p className="edu-hero-intro">
-              K–12 consulting, custom software, and implementation support
-              grounded in how schools work.
+              Coaching software, wage and compensation studies, and training
+              that help schools, Head Start programs, and nonprofits support
+              their people and run their programs.
             </p>
             <div className="edu-actions">
               <a className="edu-button" href="#contact">
-                Discuss your school’s needs <ArrowUpRight size={18} />
+                Discuss your organization’s needs <ArrowUpRight size={18} />
               </a>
               <a className="edu-text-link" href="#results">
                 Explore our work <ArrowDown size={16} />
@@ -178,28 +179,39 @@ function Hero() {
 function Services() {
   const services = [
     {
-      number: "01",
-      title: "Strategic advisory",
-      body: "Define the problem, make informed decisions about AI, and develop an implementation plan around your school’s priorities.",
-      detail: "Priorities · Workflow discovery · Implementation planning",
+      id: "coachingos",
+      title: "CoachingOS",
+      body: "Give your coaching team one place to capture observations, identify a focus, and follow through on next steps. Implementation support connects the platform to your instructional model.",
+      detail: "Classroom observations · Coaching cycles · Follow-through",
+      href: "#contact",
     },
     {
-      number: "02",
+      id: "wage-compensation-studies",
+      title: "Wage & compensation studies",
+      body: "Know how your pay compares and what to prioritize next. Receive a complete study draft within five business days after scope and complete data are confirmed.",
+      detail: "Position matching · Salary and benefits benchmarks · Clear recommendations",
+      href: "/wage-compensation-studies/",
+    },
+    {
+      id: "training-compliance-courses",
+      title: "Training & compliance courses",
+      body: "Prepare staff for the work they need to do with training and compliance courses built around your program’s needs. Start with the topics, audience, and requirements you need to address.",
+      detail: "Staff training · Compliance topics · Program-specific needs",
+      href: "#contact",
+    },
+    {
+      id: "custom-software",
       title: "Custom software",
       body: "Build around the work your team actually does, from instructional coaching to assessment and program operations.",
       detail: "Collaborative design · Working prototypes · Refinement",
+      href: "#contact",
     },
     {
-      number: "03",
-      title: "Platform implementation",
-      body: "Explore whether a tool such as CoachingOS fits your needs, then work through how it will support your people and practices.",
-      detail: "Fit assessment · Introduction · Ongoing learning",
-    },
-    {
-      number: "04",
-      title: "Wage & compensation studies",
-      body: "Plan competitive pay with clear salary and benefits comparisons for Head Start programs, schools, and nonprofits. Documented findings and practical recommendations support your next compensation decision.",
-      detail: "Position matching · Market benchmarks · Leadership reports",
+      id: "strategic-advisory",
+      title: "Strategic advisory",
+      body: "Define the problem, make informed decisions about AI, and develop an implementation plan around your organization’s priorities.",
+      detail: "Priorities · Workflow discovery · Implementation planning",
+      href: "#contact",
     },
   ];
   return (
@@ -221,15 +233,15 @@ function Services() {
           </a>
         </div>
         <div>
-          {services.map((service) => (
+          {services.map((service, index) => (
             <a
-              key={service.number}
-              href="#contact"
+              key={service.id}
+              href={service.href}
               className="edu-engagement"
-              id={service.number === "04" ? "wage-compensation-studies" : undefined}
-              aria-label={service.number === "04" ? "Inquire about wage and compensation studies" : undefined}
+              id={service.id}
+              aria-label={`Explore ${service.title}`}
             >
-              <span>{service.number}</span>
+              <span>{String(index + 1).padStart(2, "0")}</span>
               <div>
                 <h3>{service.title}</h3>
                 <p>{service.body}</p>
@@ -294,7 +306,7 @@ function CaseStudies() {
           <div>
             <p className="edu-eyebrow">Selected work</p>
             <h2>
-              School challenges.
+              Everyday challenges.
               <br />
               <em>Considered solutions.</em>
             </h2>

@@ -83,11 +83,22 @@ export function visitorConfirmationSubject(visitorName: string): string {
   return `We received your inquiry, ${visitorName.trim()}`;
 }
 
-export function buildVisitorConfirmationEmail(visitorName: string): {
+export function buildVisitorConfirmationEmail(visitorName: string, source?: string): {
   html: string;
   text: string;
 } {
   const name = visitorName.trim();
+  if (source === "wage-study") {
+    const paragraphs = [
+      `Hi ${name},`,
+      "We received your wage and compensation study request.",
+      "We’ll follow up by email to confirm your study scope, fee, and information checklist. No need to book a call or submit another form.",
+      "The five-business-day draft timeline starts after the scope is agreed and we confirm your data is complete. Final delivery follows your consolidated feedback on an agreed schedule.",
+      "If your target date or requirements change, reply here. Please wait for secure transfer instructions before sharing employee-level information.",
+      "NovaPath",
+    ];
+    return { text: paragraphs.join("\n\n"), html: paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join("") };
+  }
   const text = [
     `Hi ${name},`,
     "",
@@ -216,7 +227,7 @@ export async function notifyVisitorInquiry(
 ): Promise<boolean> {
   const team = inquiryToEmail();
   const from = inquiryFromEmail();
-  const { html, text } = buildVisitorConfirmationEmail(input.visitorName);
+  const { html, text } = buildVisitorConfirmationEmail(input.visitorName, input.source);
 
   return sendInquiryEmail({
     to: input.replyTo,
