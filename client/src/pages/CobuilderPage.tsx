@@ -699,6 +699,7 @@ function CobuilderForm() {
       return apiRequest("POST", "/api/cobuilder-inquiries", data);
     },
     onSuccess: () => {
+      (window as Window & { NovaPathAnalytics?: { track: (event: string) => void } }).NovaPathAnalytics?.track("generate_lead");
       toast({
         title: "Got it!",
         description: "We'll review your project and be in touch within 24 hours.",
