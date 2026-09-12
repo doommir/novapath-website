@@ -477,6 +477,7 @@ function ContactForm() {
       });
     },
     onSuccess: () => {
+      (window as Window & { NovaPathAnalytics?: { track: (event: string) => void } }).NovaPathAnalytics?.track("generate_lead");
       toast({
         title: "Thank you!",
         description: "We'll be in touch within 24 hours.",
